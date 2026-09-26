@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>carlaylz · IA con contexto</title>
+  <meta name="description" content="Tips, ideas y ejemplos reales para usar la IA en tu trabajo y en tu empresa, sin tecnicismos. Apúntate y te los envío por correo.">
+  <meta property="og:title" content="carlaylz · IA con contexto">
+  <meta property="og:description" content="Ideas prácticas para usar la IA en tu trabajo, sin complicarte.">
+  <meta property="og:image" content="assets/carla.png">
+  <meta name="theme-color" content="#C0D9DF">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="landing">
+    <div class="tarjeta">
+      <img class="foto" src="assets/carla.png" alt="Carla" width="112" height="112">
+      <p class="usuario">@carlaylz</p>
+
+      <div id="bloque-form">
+        <h1>La IA <span class="subrayado">no espera</span>.</h1>
+        <p class="intro">
+          Hola, soy Carla 👋. Escribo (no la ia) un email cortito cada semana, con ideas de IA
+          que puedas aplicar en tu vida profesional y personal. 
+        </p>
+        <form id="form" novalidate>
+          <div class="campo">
+            <label for="nombre">Nombre</label>
+            <input id="nombre" name="nombre" type="text" placeholder="Tu nombre" autocomplete="given-name" maxlength="80" required>
+          </div>
+          <div class="campo">
+            <label for="email">Correo electrónico</label>
+            <input id="email" name="email" type="email" placeholder="Tu correo electrónico" autocomplete="email" maxlength="254" required>
+          </div>
+
+          <div class="hp" aria-hidden="true">
+            <label for="empresa_web">No rellenar</label>
+            <input id="empresa_web" name="empresa_web" type="text" tabindex="-1" autocomplete="off">
+          </div>
+
+          <label class="consentimiento">
+            <input id="consentimiento" name="consentimiento" type="checkbox" required>
+            <span>
+              Acepto recibir comunicaciones por correo electrónico y he leído la
+              <a href="privacidad.html" target="_blank">política de privacidad</a> y los
+              <a href="terminos.html" target="_blank">términos y condiciones</a>.
+            </span>
+          </label>
+
+          <button id="boton" type="submit">Quiero recibirlo</button>
+          <p id="mensaje" class="mensaje" role="alert" aria-live="polite"></p>
+          <p class="nota">Sin spam. Puedes darte de baja cuando quieras.</p>
+        </form>
+      </div>
+
+      <div id="gracias" class="gracias" hidden>
+        <h2>¡Ya estás dentro! ✅</h2>
+        <p>Gracias, <span id="nombre-gracias"></span>. Te escribiré pronto con ideas que puedas aplicar en tu trabajo.</p>
+      </div>
+    </div>
+
+    <footer>
+      <a href="privacidad.html">Privacidad</a>
+      <a href="terminos.html">Términos</a>
+    </footer>
+  </main>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
