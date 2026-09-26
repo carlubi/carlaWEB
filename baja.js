@@ -24,18 +24,14 @@
     mensaje.textContent = "";
 
     try {
-      const res = await fetch(
-        SUPABASE_URL + "/rest/v1/suscriptores?id=eq." + encodeURIComponent(id),
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-            apikey: SUPABASE_KEY,
-            Prefer: "return=minimal"
-          },
-          body: JSON.stringify({ baja_at: new Date().toISOString() })
-        }
-      );
+      const res = await fetch(SUPABASE_URL + "/rest/v1/rpc/darse_de_baja", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          apikey: SUPABASE_KEY
+        },
+        body: JSON.stringify({ p_id: id })
+      });
 
       if (!res.ok) throw new Error("HTTP " + res.status);
 

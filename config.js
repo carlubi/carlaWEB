@@ -4,6 +4,6 @@
 // NUNCA pongas aquí la clave "secret" / "service_role".
 window.CONFIG = {
   SUPABASE_URL: "https://zqautpepyjivwkzobfha.supabase.co",
-  SUPABASE_KEY: "PEGA_AQUI_TU_PUBLISHABLE_KEY",
+  SUPABASE_KEY: "sb_publishable_Ly0aaOm_Ef50mPeui_ke4w_0Y5sxcv7",
   VERSION_POLITICA: "2026-09-26"
 };
