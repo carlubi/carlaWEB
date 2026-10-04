@@ -1,0 +1,55 @@
+---
+import Layout from '../layouts/Layout.astro';
+import NewsletterForm from '../components/NewsletterForm.astro';
+import LegalFooter from '../components/LegalFooter.astro';
+---
+<Layout title="Reto de 7 días con Claude | carlaylz" description="Descarga gratis el reto de 7 días con Claude: aprende a usar la IA en tu trabajo, paso a paso y aunque no seas técnica.">
+  <header class="mx-auto flex w-[min(1120px,calc(100%-32px))] items-center justify-between py-7 sm:w-[min(1120px,calc(100%-40px))]">
+    <span class="font-brand text-xl font-black tracking-[-.04em] text-petroleum">carlaylz</span>
+    <span class="text-sm text-muted">IA práctica para trabajar mejor</span>
+  </header>
+  <main>
+    <section class="mx-auto grid w-[min(1120px,calc(100%-32px))] items-center gap-12 py-12 sm:w-[min(1120px,calc(100%-40px))] sm:py-20 lg:grid-cols-[.95fr_.8fr] lg:gap-24 lg:pb-28" aria-labelledby="reto-titulo">
+      <div>
+        <p class="eyebrow">Guía gratuita · @carlaylz</p>
+        <h1 id="reto-titulo" class="mb-6 max-w-3xl font-sans text-[clamp(3.3rem,7vw,6.5rem)] font-black leading-[.95] tracking-[-.06em] text-petroleum">Reto de <span class="text-[#e8b839]">7 días</span> con Claude</h1>
+        <p class="mb-4 max-w-xl text-xl font-bold leading-snug text-ink sm:text-2xl">Aprende a usar la IA en tu trabajo desde cero, paso a paso y aunque no seas técnica.</p>
+        <p class="mb-8 max-w-lg text-muted">Una guía práctica para dejar de mirar la IA desde fuera y empezar a probarla con sentido.</p>
+        <a class="inline-flex items-center gap-3 rounded-full bg-petroleum px-6 py-4 font-bold text-white shadow-lg shadow-petroleum/20 transition hover:-translate-y-0.5 hover:bg-[#184c74]" href="#descarga">Quiero la guía gratis <span class="text-xl text-warm" aria-hidden="true">↓</span></a>
+        <p class="mt-3 ml-2 text-xs text-muted">20 minutos al día · Sin tecnicismos · A tu ritmo</p>
+      </div>
+      <div class="mx-auto w-full max-w-[440px] rotate-[2.5deg]">
+        <div class="relative min-h-[580px] overflow-hidden rounded-md bg-[#286891] p-9 text-white shadow-[18px_22px_0_rgba(31,92,139,.08),0_20px_45px_rgba(31,92,139,.2)]">
+          <div class="absolute -right-44 -top-44 h-[420px] w-[420px] rounded-full bg-[#4e8fb5]/45"></div>
+          <div class="absolute -bottom-10 -left-24 h-48 w-48 rounded-full bg-warm"></div>
+          <p class="relative inline-block rounded-full bg-warm px-4 py-2 text-[.68rem] font-black tracking-wide text-ink">GUÍA GRATUITA · @carlaylz</p>
+          <p class="relative mt-14 font-sans text-[clamp(2.8rem,5vw,4.4rem)] font-black leading-[.9] tracking-[-.07em]">Reto de<br><strong class="text-warm">7 días</strong> con<br>Claude</p>
+          <p class="relative mt-8 text-sm leading-relaxed text-slate-100">Aprende a usar la IA en tu trabajo desde cero,<br>paso a paso y aunque no seas técnica.</p>
+          <div class="absolute bottom-28 left-9 right-6 grid grid-cols-7 gap-1.5" aria-hidden="true">
+            {['Prepara tu|espacio','Aprende a|pedir','Dale|contexto','Sube|archivos','Crea tu|herramienta','Conéctalo|todo','Hazlo tu|rutina'].map((day, index) => <span class="grid min-h-16 place-items-center rounded-lg bg-white text-center text-xl font-black leading-none text-ink">{index + 1}<small class="mt-1 block text-[.38rem] font-bold leading-tight text-petroleum">{day.split('|').map((line) => <>{line}<br /></>)}</small></span>)}
+          </div>
+          <div class="absolute bottom-7 left-9 font-brand text-lg font-black text-warm">carlaylz <span class="block text-[.65rem] font-normal text-white">IA práctica para trabajar mejor</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="mx-auto w-[min(1120px,calc(100%-32px))] border-t border-petroleum/10 py-20 sm:w-[min(1120px,calc(100%-40px))] sm:py-28" aria-labelledby="que-encontraras">
+      <div class="grid items-end gap-8 lg:grid-cols-[.72fr_1fr] lg:gap-20">
+        <div><p class="eyebrow">Una semana, un primer paso</p><h2 id="que-encontraras" class="max-w-xl font-sans text-4xl font-black leading-[1.02] tracking-[-.05em] text-petroleum sm:text-5xl">Al terminar, tendrás una forma de usar Claude que podrás repetir.</h2></div>
+        <p class="max-w-lg text-lg leading-relaxed text-muted">No necesitas saber programar ni entender cómo funciona por dentro. Solo reservar 20 minutos al día y seguir el siguiente paso.</p>
+      </div>
+      <ol class="relative mt-14 grid overflow-hidden rounded-[1.75rem] bg-petroleum px-5 py-8 text-white sm:mt-16 sm:px-9 sm:py-10 md:grid-cols-7 md:gap-0" aria-label="Los siete días del reto">
+        <div class="pointer-events-none absolute left-9 right-9 top-[4.1rem] hidden border-t border-warm/70 md:block"></div>
+        {[
+          ['1','Prepara tu','espacio'], ['2','Aprende a','pedir'], ['3','Dale','contexto'], ['4','Sube','archivos'], ['5','Crea tu','herramienta'], ['6','Conéctalo','todo'], ['7','Hazlo tu','rutina']
+        ].map(([day, first, second]) => <li class="relative grid grid-cols-[2.25rem_1fr] items-start gap-3 py-4 first:pt-0 last:pb-0 md:grid-cols-1 md:gap-4 md:py-0 md:text-center"><span class="relative z-10 grid h-9 w-9 place-items-center rounded-full bg-warm font-sans text-sm font-black text-ink md:mx-auto">{day}</span><span class="font-sans text-base font-bold leading-tight text-white md:mt-1 md:text-sm">{first}<br /><span class="font-normal text-sky">{second}</span></span></li>)}
+      </ol>
+    </section>
+
+    <section id="descarga" class="mx-auto grid w-[min(1120px,calc(100%-32px))] items-center gap-12 border-t border-petroleum/10 py-20 sm:w-[min(1120px,calc(100%-40px))] sm:py-28 lg:grid-cols-[.82fr_1fr] lg:gap-24" aria-labelledby="descarga-titulo">
+      <div class="max-w-xl"><p class="eyebrow">Tu guía, en PDF</p><h2 id="descarga-titulo" class="mb-5 font-sans text-4xl font-black leading-[1.02] tracking-[-.05em] text-petroleum sm:text-5xl">Recíbela gratis y empieza hoy.</h2><p class="max-w-lg text-lg leading-relaxed text-muted">Déjame tu correo y te añado a mi newsletter: un email corto, con ideas de IA aplicables al trabajo real. Al terminar el registro, podrás descargar la guía completa.</p><div class="mt-8 border-l-2 border-warm pl-4 text-sm font-bold leading-relaxed text-ink"><p>Los 7 pasos explicados sin tecnicismos</p><p>Ejemplos prácticos para copiar y adaptar</p><p>Un reto corto para cada día</p></div></div>
+      <div class="rounded-[1.75rem] bg-[#e7eee8] p-2 sm:p-3"><NewsletterForm download source="reto-7-dias" /></div>
+    </section>
+  </main>
+  <LegalFooter />
+</Layout>

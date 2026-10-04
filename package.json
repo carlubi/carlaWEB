@@ -2,11 +2,17 @@
   "name": "carlaylz-landing",
   "private": true,
   "version": "1.0.0",
-  "description": "Landing de captación de contactos de carlaylz",
+  "description": "Landing de captación de contactos de carlaylz en Astro y Tailwind",
   "scripts": {
-    "dev": "serve . -l 3000"
+    "dev": "astro dev --host 0.0.0.0 --port 3000",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check"
   },
   "devDependencies": {
-    "serve": "^14.2.4"
+    "@astrojs/tailwind": "^6.0.2",
+    "astro": "^5.18.2",
+    "serve": "^14.2.4",
+    "tailwindcss": "^3.4.17"
   }
 }

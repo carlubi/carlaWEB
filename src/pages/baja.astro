@@ -1,0 +1,39 @@
+---
+import Layout from '../layouts/Layout.astro';
+import LegalFooter from '../components/LegalFooter.astro';
+---
+<Layout title="Darse de baja · carlaylz" noindex>
+  <main class="flex min-h-screen flex-col items-center justify-center px-4 py-12">
+    <section class="w-full max-w-md text-center">
+      <img class="mx-auto mb-5 h-28 w-28 rounded-full border-4 border-white/70 object-cover shadow-lg" src="/assets/carla.png" alt="Carla" width="112" height="112" />
+      <p class="mb-8 text-sm text-muted">@carlaylz</p>
+      <div id="bloque-confirmar">
+        <h1 class="mb-4 font-sans text-4xl font-black text-petroleum">¿Quieres darte de baja?</h1>
+        <p class="mb-8 text-lg leading-relaxed text-muted">Dejarás de recibir mis correos con ideas de IA para tu trabajo. Puedes volver a apuntarte cuando quieras.</p>
+        <button id="boton-baja" class="min-h-12 w-full rounded-xl bg-petroleum px-5 py-3.5 font-bold text-white transition hover:bg-[#184c74]" type="button">Sí, darme de baja</button>
+        <a class="mt-4 block text-sm font-semibold text-muted hover:text-petroleum hover:underline" href="/">No, quiero seguir</a>
+        <p id="mensaje-baja" class="min-h-6 pt-3 text-sm" role="alert" aria-live="polite"></p>
+      </div>
+      <div id="hecho" class="hidden rounded-2xl bg-white/70 p-8 text-left"><h2 class="mb-2 font-sans text-2xl font-extrabold text-petroleum">Ya está.</h2><p class="text-muted">No recibirás más correos míos. Si cambias de idea, puedes volver a apuntarte cuando quieras.</p><a class="mt-4 inline-block font-semibold text-petroleum hover:underline" href="/">Volver al inicio</a></div>
+      <div id="sin-enlace" class="hidden rounded-2xl bg-white/70 p-8 text-left"><h2 class="mb-2 font-sans text-2xl font-extrabold text-petroleum">Este enlace no es válido</h2><p class="text-muted">Usa el botón para darte de baja que aparece al final de cualquiera de mis correos.</p></div>
+    </section>
+    <LegalFooter />
+  </main>
+  <script>
+    const id = new URLSearchParams(location.search).get('id');
+    const valid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id || '');
+    const block = document.getElementById('bloque-confirmar');
+    const invalid = document.getElementById('sin-enlace');
+    if (!valid) { block.classList.add('hidden'); invalid.classList.remove('hidden'); }
+    document.getElementById('boton-baja')?.addEventListener('click', async () => {
+      const button = document.getElementById('boton-baja');
+      const message = document.getElementById('mensaje-baja');
+      button.disabled = true; button.textContent = 'Procesando…';
+      try {
+        const response = await fetch('https://zqautpepyjivwkzobfha.supabase.co/rest/v1/rpc/darse_de_baja', { method: 'POST', headers: { 'Content-Type': 'application/json', apikey: 'sb_publishable_Ly0aaOm_Ef50mPeui_ke4w_0Y5sxcv7' }, body: JSON.stringify({ p_id: id }) });
+        if (!response.ok) throw new Error('HTTP ' + response.status);
+        block.classList.add('hidden'); document.getElementById('hecho').classList.remove('hidden');
+      } catch (error) { console.error(error); message.textContent = 'No se ha podido procesar la baja. Inténtalo de nuevo en unos minutos.'; message.className = 'min-h-6 pt-3 text-sm text-[#b3261e]'; button.disabled = false; button.textContent = 'Sí, darme de baja'; }
+    });
+  </script>
+</Layout>

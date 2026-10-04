@@ -1,0 +1,79 @@
+---
+interface Props { download?: boolean; source?: string; }
+const { download = false, source = 'directo' } = Astro.props;
+const id = download ? 'reto' : 'principal';
+---
+<div class={download ? 'rounded-3xl border border-petroleum/10 bg-white p-6 shadow-card sm:p-8' : ''}>
+  <div data-form-content>
+    {download && <p class="mb-2 text-xs font-black uppercase tracking-[.12em] text-[#bd8e1b]">Desbloquea la descarga</p>}
+    {download && <h3 class="mb-6 font-sans text-2xl font-extrabold leading-tight text-petroleum">¿Dónde te envío el acceso?</h3>}
+    <form data-newsletter-form data-source={source} data-download={download ? 'true' : 'false'} novalidate>
+      <div class="grid gap-3">
+        <div>
+          <label class="field-label" for={`${id}-nombre`}>Nombre</label>
+          <input class="field-input" id={`${id}-nombre`} name="nombre" type="text" placeholder="Tu nombre" autocomplete="given-name" maxlength="80" required />
+        </div>
+        <div>
+          <label class="field-label" for={`${id}-email`}>Correo electrónico</label>
+          <input class="field-input" id={`${id}-email`} name="email" type="email" placeholder="Tu correo electrónico" autocomplete="email" maxlength="254" required />
+        </div>
+      </div>
+      <div aria-hidden="true" class="absolute -left-[9999px] h-px w-px overflow-hidden"><label for={`${id}-web`}>No rellenar</label><input id={`${id}-web`} name="empresa_web" type="text" tabindex="-1" autocomplete="off" /></div>
+      <label class="mt-3 flex cursor-pointer items-start gap-2 text-xs leading-relaxed text-muted" for={`${id}-consentimiento`}>
+        <input class="mt-0.5 h-4 w-4 shrink-0 accent-petroleum" id={`${id}-consentimiento`} name="consentimiento" type="checkbox" required />
+        <span>Acepto recibir comunicaciones por correo electrónico y he leído la <a class="legal-link" href="/privacidad" target="_blank">política de privacidad</a> y los <a class="legal-link" href="/terminos" target="_blank">términos y condiciones</a>.</span>
+      </label>
+      <button class="mt-4 min-h-12 w-full rounded-xl bg-petroleum px-5 py-3.5 font-bold text-white transition hover:-translate-y-0.5 hover:bg-[#184c74] disabled:cursor-wait disabled:opacity-60" type="submit">{download ? 'Quiero descargar la guía' : 'Quiero recibirlo'}</button>
+      <p class="min-h-6 pt-2 text-center text-sm" data-message role="alert" aria-live="polite"></p>
+      <p class="text-center text-xs text-muted">Sin spam. Puedes darte de baja cuando quieras.</p>
+    </form>
+  </div>
+  <div class="hidden" data-success>
+    <p class="mb-4 grid h-12 w-12 place-items-center rounded-full bg-warm text-xl font-black text-ink" aria-hidden="true">✓</p>
+    <h3 class="mb-2 font-sans text-2xl font-extrabold leading-tight text-petroleum" data-success-title>¡Ya estás dentro!</h3>
+    <p class="text-muted" data-success-text>Gracias. Te escribiré pronto con ideas de IA aplicables al trabajo real.</p>
+    {download && <a class="mt-5 inline-flex items-center gap-2 rounded-xl bg-petroleum px-5 py-3.5 font-bold text-white transition hover:bg-[#184c74]" href="/assets/reto-7-dias-claude-carlaylz.pdf" download>Descargar el PDF <span aria-hidden="true">↓</span></a>}
+  </div>
+</div>
+
+<script>
+  const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+  const SUPABASE_URL = 'https://zqautpepyjivwkzobfha.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_Ly0aaOm_Ef50mPeui_ke4w_0Y5sxcv7';
+  const VERSION_POLITICA = '2026-09-26';
+
+  document.querySelectorAll('[data-newsletter-form]').forEach((form) => {
+    const message = form.querySelector('[data-message]');
+    const button = form.querySelector('button');
+    const content = form.closest('[data-form-content]');
+    const success = content?.nextElementSibling;
+    const source = form.getAttribute('data-source') || 'directo';
+
+    const showError = (text) => { message.textContent = text; message.className = 'min-h-6 pt-2 text-center text-sm text-[#b3261e]'; };
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      message.textContent = '';
+      const name = form.elements.namedItem('nombre').value.trim();
+      const email = form.elements.namedItem('email').value.trim().toLowerCase();
+      if (form.elements.namedItem('empresa_web').value) return;
+      if (!name) return showError('Escribe tu nombre.');
+      if (!EMAIL_RE.test(email)) return showError('Revisa tu correo electrónico.');
+      if (!form.elements.namedItem('consentimiento').checked) return showError('Necesito tu consentimiento para poder escribirte.');
+      button.disabled = true;
+      button.textContent = 'Enviando…';
+      try {
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/rpc/suscribir`, { method: 'POST', headers: { 'Content-Type': 'application/json', apikey: SUPABASE_KEY }, body: JSON.stringify({ p_nombre: name, p_email: email, p_version: VERSION_POLITICA, p_origen: source }) });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        await response.json();
+        content.hidden = true;
+        success.classList.remove('hidden');
+        success.querySelector('[data-success-title]').textContent = form.dataset.download === 'true' ? `Ya tienes la guía, ${name}.` : `¡Ya estás dentro, ${name}!`;
+      } catch (error) {
+        console.error(error);
+        showError('No se ha podido enviar. Inténtalo de nuevo en unos minutos.');
+        button.disabled = false;
+        button.textContent = form.dataset.download === 'true' ? 'Quiero descargar la guía' : 'Quiero recibirlo';
+      }
+    });
+  });
+</script>
