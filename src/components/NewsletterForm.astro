@@ -3,7 +3,7 @@ interface Props { download?: boolean; source?: string; }
 const { download = false, source = 'directo' } = Astro.props;
 const id = download ? 'reto' : 'principal';
 ---
-<div class={download ? 'rounded-3xl border border-petroleum/10 bg-white p-6 shadow-card sm:p-8' : ''}>
+<div class={download ? 'rounded-[1.5rem] border border-[#315B70]/10 bg-[#FBFAF5] p-6 shadow-[0_14px_35px_rgba(49,91,112,.09)] sm:p-8 [&_button]:bg-deepTeal [&_button:hover]:bg-[#234B5E]' : ''}>
   <div data-form-content>
     {download && <p class="mb-2 text-xs font-black uppercase tracking-[.12em] text-[#bd8e1b]">Desbloquea la descarga</p>}
     {download && <h3 class="mb-6 font-sans text-2xl font-extrabold leading-tight text-petroleum">¿Dónde te envío el acceso?</h3>}

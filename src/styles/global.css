@@ -14,7 +14,19 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid 
   .eyebrow { @apply mb-4 text-xs font-black uppercase tracking-[.14em] text-petroleum; }
   .field-label { @apply sr-only; }
   .field-input { @apply w-full rounded-xl border border-petroleum/20 bg-white/80 px-4 py-3.5 text-base text-ink placeholder:text-slate-400 outline-none transition focus:border-petroleum focus:bg-white focus:ring-4 focus:ring-petroleum/10; }
-  .legal-link { @apply text-petroleum underline decoration-petroleum/30 underline-offset-2 hover:decoration-petroleum; }
+.legal-link { @apply text-petroleum underline decoration-petroleum/30 underline-offset-2 hover:decoration-petroleum; }
+
+  .roadmap-step.is-active .roadmap-step__marker { @apply border-warm bg-warm text-ink shadow-[0_0_0_5px_rgba(243,201,105,.18)]; }
+  .roadmap-step.is-active .roadmap-step__label { @apply font-extrabold; }
+  .roadmap-confetti { @apply pointer-events-none absolute inset-0 z-20 overflow-hidden rounded-[1.75rem]; }
+  .roadmap-confetti span { position: absolute; left: var(--confetti-x); top: 38%; width: 8px; height: 16px; border-radius: 2px; background: var(--confetti-color); opacity: 0; transform: rotate(var(--confetti-rotate)); }
+  .roadmap.is-celebrating .roadmap-confetti span { animation: roadmap-confetti 1.7s cubic-bezier(.2,.8,.25,1) var(--confetti-delay) both; }
+}
+
+@keyframes roadmap-confetti {
+  0% { opacity: 0; transform: translate3d(0, 0, 0) rotate(var(--confetti-rotate)) scale(.7); }
+  12% { opacity: 1; }
+  100% { opacity: 0; transform: translate3d(var(--confetti-drift), 230px, 0) rotate(320deg) scale(1.1); }
 }
 
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; } }
