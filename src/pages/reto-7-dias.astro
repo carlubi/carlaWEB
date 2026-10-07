@@ -4,36 +4,36 @@ import NewsletterForm from '../components/NewsletterForm.astro';
 import LegalFooter from '../components/LegalFooter.astro';
 
 const confetti = [
-  ['8%', '#F3C969', '0ms', '14deg', '-34px'], ['15%', '#1F5C8B', '90ms', '-18deg', '-18px'], ['24%', '#C0D9DF', '140ms', '28deg', '-8px'],
-  ['33%', '#F3C969', '40ms', '-32deg', '14px'], ['42%', '#1F5C8B', '180ms', '18deg', '28px'], ['51%', '#C0D9DF', '70ms', '-22deg', '38px'],
-  ['60%', '#F3C969', '120ms', '35deg', '-32px'], ['69%', '#1F5C8B', '30ms', '-12deg', '-12px'], ['78%', '#C0D9DF', '160ms', '22deg', '20px'],
-  ['87%', '#F3C969', '210ms', '-28deg', '34px'], ['12%', '#1F5C8B', '260ms', '20deg', '-46px'], ['29%', '#F3C969', '230ms', '-18deg', '-24px'],
-  ['47%', '#C0D9DF', '300ms', '30deg', '18px'], ['64%', '#1F5C8B', '250ms', '-24deg', '30px'], ['82%', '#F3C969', '190ms', '16deg', '44px']
+  ['8%', '#F3C969', '0ms', '14deg', '-34px'], ['15%', '#691B32', '90ms', '-18deg', '-18px'], ['24%', '#E9D4D9', '140ms', '28deg', '-8px'],
+  ['33%', '#F3C969', '40ms', '-32deg', '14px'], ['42%', '#691B32', '180ms', '18deg', '28px'], ['51%', '#E9D4D9', '70ms', '-22deg', '38px'],
+  ['60%', '#F3C969', '120ms', '35deg', '-32px'], ['69%', '#691B32', '30ms', '-12deg', '-12px'], ['78%', '#E9D4D9', '160ms', '22deg', '20px'],
+  ['87%', '#F3C969', '210ms', '-28deg', '34px'], ['12%', '#691B32', '260ms', '20deg', '-46px'], ['29%', '#F3C969', '230ms', '-18deg', '-24px'],
+  ['47%', '#E9D4D9', '300ms', '30deg', '18px'], ['64%', '#691B32', '250ms', '-24deg', '30px'], ['82%', '#F3C969', '190ms', '16deg', '44px']
 ];
 ---
 <Layout title="Reto de 7 días con Claude | Carla López" description="Descarga gratis el reto de 7 días con Claude: aprende a usar la IA en tu trabajo, paso a paso y aunque no seas técnica.">
   <header class="mx-auto flex w-[min(1120px,calc(100%-32px))] items-center justify-between py-7 sm:w-[min(1120px,calc(100%-40px))]">
-    <span class="font-sans text-xl font-bold tracking-[-.04em] text-petroleum">carla lópez</span>
+    <span class="font-sans text-xl font-bold tracking-[-.04em] text-burgundy">carla lópez</span>
     <span class="text-sm text-muted">IA práctica para trabajar mejor</span>
   </header>
   <main>
     <section class="mx-auto grid w-[min(1120px,calc(100%-32px))] items-center gap-12 py-12 sm:w-[min(1120px,calc(100%-40px))] sm:py-20 lg:grid-cols-[.95fr_.8fr] lg:gap-24 lg:pb-28" aria-labelledby="reto-titulo">
       <div>
-        <p class="eyebrow text-softBlue">Guía gratuita · @carlaylz</p>
+        <p class="eyebrow text-softRose">Guía gratuita · @carlaylz</p>
         <h1 id="reto-titulo" class="mb-6 max-w-3xl font-sans text-[clamp(3.3rem,7vw,6.5rem)] font-black leading-[.95] tracking-[-.06em] text-ink">Reto de <span class="underline decoration-sand decoration-[.16em] underline-offset-[.12em]">7 días</span> con Claude</h1>
         <p class="mb-4 max-w-xl text-xl font-bold leading-snug text-ink sm:text-2xl">Aprende a usar la IA en tu trabajo desde cero, paso a paso y aunque no seas técnica.</p>
         <p class="mb-8 max-w-lg text-muted">He creado esta guía práctica para dejes de mirar la IA desde fuera y empiezes a sacarle el máximo rendimiento.</p>
-        <a class="inline-flex items-center gap-3 rounded-full bg-petroleum px-6 py-4 font-bold text-white shadow-lg shadow-petroleum/20 transition hover:-translate-y-0.5 hover:bg-[#184c74]" href="#descarga">Quiero la guía gratis <span class="text-xl text-warm" aria-hidden="true">↓</span></a>
+        <a class="inline-flex items-center gap-3 rounded-full bg-burgundy px-6 py-4 font-bold text-white shadow-lg shadow-burgundy/20 transition hover:-translate-y-0.5 hover:bg-[#521326]" href="#descarga">Quiero la guía gratis <span class="text-xl text-warm" aria-hidden="true">↓</span></a>
         <p class="mt-3 ml-2 text-xs text-muted">20 minutos al día · Sin tecnicismos · A tu ritmo</p>
       </div>
       <div class="mx-auto w-full max-w-[440px] rotate-[2.5deg]">
-        <img class="block w-full rounded-md shadow-[18px_22px_0_rgba(31,92,139,.08),0_20px_45px_rgba(31,92,139,.2)]" src="/assets/reto-7-dias-portada.png" alt="Portada del reto de 7 días con Claude" width="1240" height="1754" />
+        <img class="block w-full rounded-md shadow-[18px_22px_0_rgba(105,27,50,.08),0_20px_45px_rgba(105,27,50,.2)]" src="/assets/reto-7-dias-portada-granate.png" alt="Portada del reto de 7 días con Claude" width="1240" height="1754" />
       </div>
     </section>
 
-    <section class="mx-auto w-[min(1120px,calc(100%-32px))] border-t border-petroleum/10 py-20 sm:w-[min(1120px,calc(100%-40px))] sm:py-28" aria-labelledby="que-encontraras">
+    <section class="mx-auto w-[min(1120px,calc(100%-32px))] border-t border-burgundy/10 py-20 sm:w-[min(1120px,calc(100%-40px))] sm:py-28" aria-labelledby="que-encontraras">
       <div class="grid items-end gap-8 lg:grid-cols-[.72fr_1fr] lg:gap-20">
-        <div><p class="eyebrow text-softBlue">Una semana, un primer paso</p><h2 id="que-encontraras" class="max-w-xl font-sans text-4xl font-black leading-[1.02] tracking-[-.05em] text-ink sm:text-5xl">Al terminar, podrás crear tu propio flujo de trabajo con Claude</h2></div>
+        <div><p class="eyebrow text-softRose">Una semana, un primer paso</p><h2 id="que-encontraras" class="max-w-xl font-sans text-4xl font-black leading-[1.02] tracking-[-.05em] text-ink sm:text-5xl">Al terminar, podrás crear tu propio flujo de trabajo con Claude</h2></div>
         <p class="max-w-lg text-lg leading-relaxed text-muted">No necesitas saber programar ni entender cómo funciona por dentro. Solo reservar 20 minutos al día y seguir el siguiente paso.</p>
       </div>
       <div class="roadmap relative mt-14" data-roadmap>
@@ -41,15 +41,15 @@ const confetti = [
           <span class="pointer-events-none absolute left-9 right-9 top-[4.1rem] hidden border-t border-ink/20 md:block"></span>
           {[
             ['1','Prepara tu','espacio'], ['2','Aprende a','pedir'], ['3','Dale','contexto'], ['4','Sube','archivos'], ['5','Crea tu','herramienta'], ['6','Conéctalo','todo'], ['7','Hazlo tu','rutina']
-          ].map(([day, first, second]) => <li class="roadmap-step relative grid grid-cols-[2.25rem_1fr] items-start gap-3 py-4 first:pt-0 last:pb-0 md:grid-cols-1 md:gap-4 md:py-0 md:text-center" data-step={day} data-label={`${first} ${second}`}><span class="roadmap-step__marker relative z-10 grid h-9 w-9 place-items-center rounded-full border border-petroleum/35 bg-[#F8F7F2] font-sans text-sm font-black text-petroleum transition-all duration-500 md:mx-auto">{day}</span><span class="roadmap-step__label font-sans text-base font-bold leading-tight text-ink transition-colors duration-500 md:mt-1 md:text-sm">{first}<br /><span class="font-normal text-muted">{second}</span></span></li>)}
+          ].map(([day, first, second]) => <li class="roadmap-step relative grid grid-cols-[2.25rem_1fr] items-start gap-3 py-4 first:pt-0 last:pb-0 md:grid-cols-1 md:gap-4 md:py-0 md:text-center" data-step={day} data-label={`${first} ${second}`}><span class="roadmap-step__marker relative z-10 grid h-9 w-9 place-items-center rounded-full border border-burgundy/35 bg-[#F8F7F2] font-sans text-sm font-black text-burgundy transition-all duration-500 md:mx-auto">{day}</span><span class="roadmap-step__label font-sans text-base font-bold leading-tight text-ink transition-colors duration-500 md:mt-1 md:text-sm">{first}<br /><span class="font-normal text-muted">{second}</span></span></li>)}
         </ol>
         <div class="roadmap-confetti" aria-hidden="true">{confetti.map(([x, color, delay, rotate, drift]) => <span style={`--confetti-x:${x};--confetti-color:${color};--confetti-delay:${delay};--confetti-rotate:${rotate};--confetti-drift:${drift}`}></span>)}</div>
         <p class="sr-only" data-roadmap-status aria-live="polite">Día 1: Prepara tu espacio</p>
       </div>
     </section>
 
-    <section id="descarga" class="mx-auto grid w-[min(1120px,calc(100%-32px))] items-center gap-12 border-t border-petroleum/10 py-20 sm:w-[min(1120px,calc(100%-40px))] sm:py-28 lg:grid-cols-[.82fr_1fr] lg:gap-24" aria-labelledby="descarga-titulo">
-      <div class="max-w-xl"><p class="eyebrow text-softBlue">Tu guía, en PDF</p><h2 id="descarga-titulo" class="mb-5 font-sans text-4xl font-black leading-[1.02] tracking-[-.05em] text-ink sm:text-5xl">Recíbela gratis y empieza hoy.</h2><p class="max-w-lg text-lg leading-relaxed text-muted">Déjame tu correo y te añado a mi newsletter: un email corto, con ideas de IA aplicables al trabajo real. Al terminar el registro, podrás descargar la guía completa.</p><div class="mt-8 border-l-2 border-sand pl-4 text-sm font-bold leading-relaxed text-ink"><p>Los 7 pasos explicados sin tecnicismos</p><p>Ejemplos prácticos para copiar y adaptar</p><p>Un reto corto para cada día</p></div></div>
+    <section id="descarga" class="mx-auto grid w-[min(1120px,calc(100%-32px))] items-center gap-12 border-t border-burgundy/10 py-20 sm:w-[min(1120px,calc(100%-40px))] sm:py-28 lg:grid-cols-[.82fr_1fr] lg:gap-24" aria-labelledby="descarga-titulo">
+      <div class="max-w-xl"><p class="eyebrow text-softRose">Tu guía, en PDF</p><h2 id="descarga-titulo" class="mb-5 font-sans text-4xl font-black leading-[1.02] tracking-[-.05em] text-ink sm:text-5xl">Recíbela gratis y empieza hoy.</h2><p class="max-w-lg text-lg leading-relaxed text-muted">Déjame tu correo y te añado a mi newsletter: un email corto, con ideas de IA aplicables al trabajo real. Al terminar el registro, podrás descargar la guía completa.</p><div class="mt-8 border-l-2 border-sand pl-4 text-sm font-bold leading-relaxed text-ink"><p>Los 7 pasos explicados sin tecnicismos</p><p>Ejemplos prácticos para copiar y adaptar</p><p>Un reto corto para cada día</p></div></div>
       <div class="rounded-[1.75rem] bg-[#ECEAE2] p-2 sm:p-3"><NewsletterForm download source="reto-7-dias" /></div>
     </section>
   </main>

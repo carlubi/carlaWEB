@@ -4,17 +4,17 @@
 @tailwind components;
 @tailwind utilities;
 
-:root { font-family: "Canva Sans", Arial, system-ui, sans-serif; color: #1C3A52; background: #F8F5ED; }
+:root { font-family: "Canva Sans", Arial, system-ui, sans-serif; color: #3B252D; background: #F8F5ED; }
 html { scroll-behavior: smooth; }
 body { min-width: 320px; margin: 0; -webkit-font-smoothing: antialiased; }
 button, input { font: inherit; }
 button:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid #F3C969; outline-offset: 3px; }
 
 @layer components {
-  .eyebrow { @apply mb-4 text-xs font-black uppercase tracking-[.14em] text-petroleum; }
+  .eyebrow { @apply mb-4 text-xs font-black uppercase tracking-[.14em] text-burgundy; }
   .field-label { @apply sr-only; }
-  .field-input { @apply w-full rounded-xl border border-petroleum/20 bg-white/80 px-4 py-3.5 text-base text-ink placeholder:text-slate-400 outline-none transition focus:border-petroleum focus:bg-white focus:ring-4 focus:ring-petroleum/10; }
-.legal-link { @apply text-petroleum underline decoration-petroleum/30 underline-offset-2 hover:decoration-petroleum; }
+  .field-input { @apply w-full rounded-xl border border-burgundy/20 bg-white/80 px-4 py-3.5 text-base text-ink placeholder:text-slate-400 outline-none transition focus:border-burgundy focus:bg-white focus:ring-4 focus:ring-burgundy/10; }
+  .legal-link { @apply text-burgundy underline decoration-burgundy/30 underline-offset-2 hover:decoration-burgundy; }
 
   .roadmap-step.is-active .roadmap-step__marker { @apply border-warm bg-warm text-ink shadow-[0_0_0_5px_rgba(243,201,105,.18)]; }
   .roadmap-step.is-active .roadmap-step__label { @apply font-extrabold; }

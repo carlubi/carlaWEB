@@ -40,12 +40,12 @@ Es un username personal y directo, sin puntos, corto y fácil de recordar, const
 
 La identidad visual principal de `carlaylz` utiliza una combinación de confianza y cercanía:
 
-- **Color primario:** Azul petróleo `#1F5C8B`.
+- **Color primario:** Granate `#691B32`.
 - **Color secundario:** Amarillo cálido `#F3C969`.
 
 Uso recomendado:
 
-- El azul petróleo se utiliza en textos principales, fondos, títulos, portadas y elementos de identidad.
+- El granate se utiliza en textos principales, fondos, títulos, portadas y elementos de identidad.
 - El amarillo cálido se utiliza para destacar palabras, datos, subrayados, botones y llamadas de atención.
 - El amarillo debe funcionar como acento, no como color dominante.
 - Mantener suficiente contraste y utilizar fondos claros cuando sea necesario para facilitar la lectura.
