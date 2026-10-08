@@ -1,12 +1,17 @@
 ---
-interface Props { download?: boolean; source?: string; }
-const { download = false, source = 'directo' } = Astro.props;
+interface Props { download?: boolean; source?: string; downloadHref?: string; downloadFilename?: string; }
+const {
+  download = false,
+  source = 'directo',
+  downloadHref = '/assets/reto-7-dias-claude-carlaylz.pdf?v=2026-10-07',
+  downloadFilename = 'Reto-7-dias-Claude-carlaylz.pdf'
+} = Astro.props;
 const id = download ? 'reto' : 'principal';
 ---
 <div class={download ? 'rounded-[1.5rem] border border-burgundy/10 bg-[#FBFAF5] p-6 shadow-[0_14px_35px_rgba(105,27,50,.09)] sm:p-8' : ''}>
   <div data-form-content>
-    {download && <p class="mb-2 text-xs font-black uppercase tracking-[.12em] text-[#bd8e1b]">Desbloquea la descarga</p>}
-    {download && <h3 class="mb-6 font-sans text-2xl font-extrabold leading-tight text-burgundy">¿Dónde te envío el acceso?</h3>}
+    {download && <p class="mb-2 text-xs font-black uppercase tracking-[.12em] text-[#805A00]">Desbloquea la descarga</p>}
+    {download && <h3 class="mb-6 font-sans text-2xl font-extrabold leading-tight text-burgundy">Descarga tu guía gratuita</h3>}
     <form data-newsletter-form data-source={source} data-download={download ? 'true' : 'false'} novalidate>
       <div class="grid gap-3">
         <div>
@@ -31,8 +36,8 @@ const id = download ? 'reto' : 'principal';
   <div class="hidden" data-success>
     <p class="mb-4 grid h-12 w-12 place-items-center rounded-full bg-warm text-xl font-black text-ink" aria-hidden="true">✓</p>
     <h3 class="mb-2 font-sans text-2xl font-extrabold leading-tight text-burgundy" data-success-title>¡Ya estás dentro!</h3>
-    <p class="text-muted" data-success-text>Gracias. Te escribiré pronto con ideas de IA aplicables al trabajo real.</p>
-    {download && <a class="mt-5 inline-flex items-center gap-2 rounded-xl bg-burgundy px-5 py-3.5 font-bold text-white transition hover:bg-[#521326]" href="/assets/reto-7-dias-claude-carlaylz.pdf?v=2026-10-07" download="Reto-7-dias-Claude-carlaylz.pdf">Descargar el PDF <span aria-hidden="true">↓</span></a>}
+    <p class="text-muted" data-success-text>{download ? 'Ya puedes descargarla. También recibirás mis ideas de IA por correo.' : 'Gracias. Te escribiré pronto con ideas de IA aplicables al trabajo real.'}</p>
+    {download && <a class="mt-5 inline-flex items-center gap-2 rounded-xl bg-burgundy px-5 py-3.5 font-bold text-white transition hover:bg-[#521326]" href={downloadHref} download={downloadFilename}>Descargar el PDF <span aria-hidden="true">↓</span></a>}
   </div>
 </div>
 

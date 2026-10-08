@@ -1,0 +1,92 @@
+---
+import Layout from '../layouts/Layout.astro';
+import NewsletterForm from '../components/NewsletterForm.astro';
+import LegalFooter from '../components/LegalFooter.astro';
+
+const tools = [
+  'El chat',
+  'Proyectos',
+  'La memoria',
+  'Docs, Slides y Design',
+  'Tareas con archivos',
+  'Tareas programadas',
+  'Conectores',
+  'Habilidades',
+  'Claude en Chrome',
+  'Los modelos'
+];
+---
+<Layout
+  title="Claude, sin complicarte | Guía gratuita de herramientas de Claude"
+  description="Descarga gratis una guía práctica para conocer 10 herramientas de Claude. Explicaciones claras, trucos y tareas para empezar a usar la app en tu trabajo."
+>
+  <header class="mx-auto flex w-[min(1120px,calc(100%-32px))] items-center justify-between py-7 sm:w-[min(1120px,calc(100%-40px))]">
+    <a class="font-sans text-xl font-bold tracking-[-.04em] text-burgundy hover:underline" href="/">carla lópez</a>
+    <span class="hidden text-sm text-muted sm:block">IA práctica para trabajar mejor</span>
+  </header>
+
+  <main>
+    <section class="mx-auto grid w-[min(1120px,calc(100%-32px))] items-center gap-12 py-12 sm:w-[min(1120px,calc(100%-40px))] sm:py-20 lg:grid-cols-[.9fr_1.1fr] lg:gap-16 lg:pb-28" aria-labelledby="guia-titulo">
+      <div class="min-w-0">
+        <p class="mb-5 text-sm font-bold text-softRose">Guía gratuita · Herramientas de Claude</p>
+        <h1 id="guia-titulo" class="mb-7 max-w-xl font-sans text-[clamp(2.8rem,6vw,5.8rem)] font-black leading-[.98] tracking-[-.06em] text-ink">Claude, sin complicarte.</h1>
+        <p class="mb-5 max-w-lg text-xl font-semibold leading-snug text-ink sm:text-2xl">Conoce la app desde cero y empieza a usar sus herramientas en tu trabajo.</p>
+        <p class="mb-9 max-w-lg text-base leading-relaxed text-muted sm:text-lg">Un recorrido por 10 herramientas de Claude, con explicaciones claras, trucos y una tarea concreta para probar cada una.</p>
+        <a class="inline-flex min-h-12 items-center gap-3 rounded-full bg-burgundy px-6 py-3.5 font-bold text-white shadow-lg shadow-burgundy/15 transition hover:bg-[#521326]" href="#descarga">Quiero descargar la guía <span class="text-xl text-warm" aria-hidden="true">↓</span></a>
+        <p class="mt-4 text-sm text-muted">PDF gratuito · 15 páginas · A tu ritmo</p>
+      </div>
+
+      <figure class="mx-auto w-full min-w-0 max-w-[640px]">
+        <img class="block w-full rounded-xl border border-burgundy/10 shadow-[0_24px_55px_rgba(105,27,50,.16)]" src="/assets/claude-sin-complicarte-portada.png" alt="Portada de la guía Claude, sin complicarte" width="1600" height="900" fetchpriority="high" />
+        <figcaption class="mt-3 text-right text-xs text-muted">Vista previa de la guía</figcaption>
+      </figure>
+    </section>
+
+    <section class="mx-auto w-[min(1120px,calc(100%-32px))] border-t border-burgundy/15 py-20 sm:w-[min(1120px,calc(100%-40px))] sm:py-28" aria-labelledby="contenido-titulo">
+      <div class="grid gap-6 lg:grid-cols-[.75fr_1fr] lg:gap-20">
+        <h2 id="contenido-titulo" class="max-w-md font-sans text-4xl font-black leading-[1.04] tracking-[-.05em] text-ink sm:text-5xl">Un mapa claro de la app</h2>
+        <p class="max-w-xl text-lg leading-relaxed text-muted">La guía te ayuda a reconocer para qué sirve cada herramienta, dónde encontrarla y cuál probar según lo que necesitas hacer. Empieza por lo básico y avanza hacia funciones para crear, organizar y conectar tu trabajo.</p>
+      </div>
+
+      <ol class="mt-12 grid gap-x-12 md:grid-cols-2" aria-label="Las diez herramientas incluidas en la guía">
+        {tools.map((tool, index) => (
+          <li class="flex items-baseline gap-5 border-b border-burgundy/15 py-4">
+            <span class="w-7 shrink-0 font-sans text-sm font-bold tabular-nums text-softRose" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+            <span class="font-sans text-lg font-semibold text-ink">{tool}</span>
+          </li>
+        ))}
+      </ol>
+      <p class="mt-8 max-w-3xl text-sm leading-relaxed text-muted">También incluye una explicación del uso en Claude, una lista para marcar tus prácticas y un anexo con instrucciones que puedes adaptar a tu trabajo.</p>
+    </section>
+
+    <section class="border-y border-burgundy/10 bg-[#F1E9E5]" aria-labelledby="metodo-titulo">
+      <div class="mx-auto w-[min(1120px,calc(100%-32px))] py-20 sm:w-[min(1120px,calc(100%-40px))] sm:py-24">
+        <h2 id="metodo-titulo" class="max-w-2xl font-sans text-3xl font-black tracking-[-.04em] text-ink sm:text-4xl">Cada herramienta termina en algo que puedes hacer</h2>
+        <div class="mt-10 grid gap-8 md:grid-cols-3 md:gap-10">
+          <div class="border-t-2 border-burgundy pt-5"><h3 class="mb-2 font-sans text-xl font-bold text-burgundy">Entiende</h3><p class="leading-relaxed text-muted">Lee qué hace la función y dónde está en la app, sin dar por hecho que ya conoces los menús.</p></div>
+          <div class="border-t-2 border-burgundy pt-5"><h3 class="mb-2 font-sans text-xl font-bold text-burgundy">Aprende un truco</h3><p class="leading-relaxed text-muted">Quédate con una forma práctica de usarla mejor desde el primer intento.</p></div>
+          <div class="border-t-2 border-burgundy pt-5"><h3 class="mb-2 font-sans text-xl font-bold text-burgundy">Pruébala</h3><p class="leading-relaxed text-muted">Haz la tarea propuesta y decide cómo aplicarla a tu propio trabajo.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="descarga" class="mx-auto grid w-[min(1120px,calc(100%-32px))] items-center gap-12 py-20 sm:w-[min(1120px,calc(100%-40px))] sm:py-28 lg:grid-cols-[.9fr_1fr] lg:gap-24" aria-labelledby="descarga-titulo">
+      <div>
+        <p class="mb-4 text-sm font-bold text-softRose">La guía, en PDF</p>
+        <h2 id="descarga-titulo" class="mb-6 max-w-xl font-sans text-4xl font-black leading-[1.04] tracking-[-.05em] text-ink sm:text-5xl">Descárgala y empieza por una tarea real.</h2>
+        <p class="max-w-lg text-lg leading-relaxed text-muted">Déjame tu nombre y correo para unirte a mi newsletter. Al completar el registro podrás descargar la guía y seguir explorando Claude a tu ritmo.</p>
+        <p class="mt-7 max-w-lg border-l-2 border-warm pl-4 text-sm leading-relaxed text-ink">Escribo un email cortito cada semana, con ideas de IA que puedas aplicar en tu vida profesional y personal.</p>
+      </div>
+      <div class="rounded-[1.75rem] bg-[#ECE3E1] p-2 sm:p-3">
+        <NewsletterForm
+          download
+          source="herramientas-claude"
+          downloadHref="/assets/claude-sin-complicarte.pdf"
+          downloadFilename="Claude-sin-complicarte.pdf"
+        />
+      </div>
+    </section>
+  </main>
+
+  <LegalFooter />
+</Layout>
