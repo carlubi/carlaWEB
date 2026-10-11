@@ -1,0 +1,93 @@
+---
+import Layout from '../layouts/Layout.astro';
+import NewsletterForm from '../components/NewsletterForm.astro';
+import LegalFooter from '../components/LegalFooter.astro';
+
+const tools = [
+  ['Chat', 'Escribe, resume y mejora tus textos'],
+  ['Proyectos', 'Ten el contexto de cada tarea en un lugar'],
+  ['Work', 'Encarga trabajos de varios pasos'],
+  ['Navegador', 'Busca y compara información con enlaces'],
+  ['Complementos', 'Conecta las aplicaciones que ya usas'],
+  ['Habilidades', 'Guarda una forma de hacer tareas repetidas'],
+  ['Tareas programadas', 'Prepara encargos que se repiten'],
+  ['Sitios', 'Crea una página a partir de una idea'],
+  ['Uso del ordenador', 'Practica con archivos y aplicaciones']
+];
+---
+
+<Layout
+  title="ChatGPT para tu trabajo | Guía práctica gratuita de Carla López"
+  description="Descarga gratis la guía ChatGPT para tu trabajo. Empieza desde cero y practica con 9 herramientas de la app, ejemplos, trucos y una tarea para cada una."
+>
+  <header class="mx-auto flex w-[min(1120px,calc(100%-32px))] items-center justify-between py-7 sm:w-[min(1120px,calc(100%-40px))]">
+    <a class="font-sans text-xl font-bold tracking-[-.04em] text-burgundy hover:underline" href="/">carla lópez</a>
+    <span class="hidden text-sm text-muted sm:block">IA práctica para trabajar mejor</span>
+  </header>
+
+  <main>
+    <section class="mx-auto grid w-[min(1120px,calc(100%-32px))] items-center gap-12 py-12 sm:w-[min(1120px,calc(100%-40px))] sm:py-20 lg:grid-cols-[.9fr_1.1fr] lg:gap-16 lg:pb-28" aria-labelledby="guia-titulo">
+      <div class="min-w-0">
+        <p class="mb-5 text-sm font-bold text-softRose">Guía práctica gratuita · @carlaylz</p>
+        <h1 id="guia-titulo" class="mb-7 max-w-xl font-sans text-[clamp(2.8rem,6vw,5.8rem)] font-black leading-[.98] tracking-[-.06em] text-ink">ChatGPT, para tu trabajo.</h1>
+        <p class="mb-5 max-w-lg text-xl font-semibold leading-snug text-ink sm:text-2xl">Empieza desde cero y aprende a usarlo con soltura en tareas reales.</p>
+        <p class="mb-9 max-w-lg text-base leading-relaxed text-muted sm:text-lg">Recorre 9 herramientas de la app paso a paso. Para cada una encontrarás una explicación sencilla, un truco y una tarea que puedes probar por tu cuenta.</p>
+        <a class="inline-flex min-h-12 items-center gap-3 rounded-full bg-burgundy px-6 py-3.5 font-bold text-white shadow-lg shadow-burgundy/15 transition hover:bg-[#521326]" href="#descarga">Quiero descargar la guía <span class="text-xl text-warm" aria-hidden="true">↓</span></a>
+        <p class="mt-4 text-sm text-muted">PDF gratuito · 14 páginas · A tu ritmo</p>
+      </div>
+
+      <figure class="mx-auto w-full min-w-0 max-w-[640px]">
+        <img class="block w-full rounded-xl border border-burgundy/10 shadow-[0_24px_55px_rgba(105,27,50,.16)]" src="/assets/chatgpt-para-tu-trabajo-portada.png" alt="Portada de la guía ChatGPT, para tu trabajo" width="1600" height="900" fetchpriority="high" />
+        <figcaption class="mt-3 text-right text-xs text-muted">Vista previa de la guía</figcaption>
+      </figure>
+    </section>
+
+    <section class="mx-auto w-[min(1120px,calc(100%-32px))] border-t border-burgundy/15 py-20 sm:w-[min(1120px,calc(100%-40px))] sm:py-28" aria-labelledby="contenido-titulo">
+      <div class="grid gap-6 lg:grid-cols-[.75fr_1fr] lg:gap-20">
+        <h2 id="contenido-titulo" class="max-w-md font-sans text-4xl font-black leading-[1.04] tracking-[-.05em] text-ink sm:text-5xl">Del primer chat a tareas más completas</h2>
+        <p class="max-w-xl text-lg leading-relaxed text-muted">Empieza con lo que puedes hacer hoy en un chat. Después aprende a organizar proyectos, trabajar con archivos y explorar funciones para buscar, conectar y automatizar. Tú eliges hasta dónde llegar.</p>
+      </div>
+
+      <ol class="mt-12 grid gap-x-12 md:grid-cols-2" aria-label="Las nueve herramientas de la guía">
+        {tools.map(([name, description], index) => (
+          <li class="flex gap-5 border-b border-burgundy/15 py-5">
+            <span class="w-7 shrink-0 pt-1 font-sans text-sm font-bold tabular-nums text-softRose" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+            <div><h3 class="font-sans text-lg font-bold text-ink">{name}</h3><p class="mt-1 text-sm leading-relaxed text-muted">{description}</p></div>
+          </li>
+        ))}
+      </ol>
+      <p class="mt-8 max-w-3xl text-sm leading-relaxed text-muted">La guía también incluye una lista para marcar tus prácticas y un ejemplo de instrucciones personalizadas que puedes adaptar a tu trabajo.</p>
+    </section>
+
+    <section class="border-y border-burgundy/10 bg-[#F1E9E5]" aria-labelledby="metodo-titulo">
+      <div class="mx-auto w-[min(1120px,calc(100%-32px))] py-20 sm:w-[min(1120px,calc(100%-40px))] sm:py-24">
+        <h2 id="metodo-titulo" class="max-w-2xl font-sans text-3xl font-black tracking-[-.04em] text-ink sm:text-4xl">Lee un poco. Prueba algo. Sigue avanzando.</h2>
+        <div class="mt-10 grid gap-8 md:grid-cols-3 md:gap-10">
+          <div class="border-t-2 border-burgundy pt-5"><h3 class="mb-2 font-sans text-xl font-bold text-burgundy">Entiende</h3><p class="leading-relaxed text-muted">Descubre para qué sirve cada herramienta y cómo empezar sin tener conocimientos técnicos.</p></div>
+          <div class="border-t-2 border-burgundy pt-5"><h3 class="mb-2 font-sans text-xl font-bold text-burgundy">Aplica un truco</h3><p class="leading-relaxed text-muted">Quédate con un consejo concreto para obtener una respuesta o un resultado más útil.</p></div>
+          <div class="border-t-2 border-burgundy pt-5"><h3 class="mb-2 font-sans text-xl font-bold text-burgundy">Haz la tarea</h3><p class="leading-relaxed text-muted">Practica con una propuesta pequeña y adapta lo aprendido a tu propio trabajo.</p></div>
+        </div>
+        <p class="mt-10 max-w-3xl border-l-2 border-burgundy/35 pl-4 text-sm leading-relaxed text-muted">Para probar todas las herramientas, la guía recomienda la app de escritorio y un plan de pago. Algunas funciones pueden variar según tu plan o región.</p>
+      </div>
+    </section>
+
+    <section id="descarga" class="mx-auto grid w-[min(1120px,calc(100%-32px))] items-center gap-12 py-20 sm:w-[min(1120px,calc(100%-40px))] sm:py-28 lg:grid-cols-[.9fr_1fr] lg:gap-24" aria-labelledby="descarga-titulo">
+      <div>
+        <p class="mb-4 text-sm font-bold text-softRose">La guía, en PDF</p>
+        <h2 id="descarga-titulo" class="mb-6 max-w-xl font-sans text-4xl font-black leading-[1.04] tracking-[-.05em] text-ink sm:text-5xl">Descárgala y empieza con tu primera tarea.</h2>
+        <p class="max-w-lg text-lg leading-relaxed text-muted">Déjame tu nombre y correo para unirte a mi newsletter. Al completar el registro podrás descargar la guía y practicar a tu ritmo.</p>
+        <p class="mt-7 max-w-lg border-l-2 border-warm pl-4 text-sm leading-relaxed text-ink">Escribo un email cortito cada semana, con ideas de IA que puedas aplicar en tu vida profesional y personal.</p>
+      </div>
+      <div class="rounded-[1.75rem] bg-[#ECE3E1] p-2 sm:p-3">
+        <NewsletterForm
+          download
+          source="guia-chatgpt-trabajo"
+          downloadHref="/assets/chatgpt-para-tu-trabajo.pdf"
+          downloadFilename="ChatGPT-para-tu-trabajo.pdf"
+        />
+      </div>
+    </section>
+  </main>
+
+  <LegalFooter />
+</Layout>

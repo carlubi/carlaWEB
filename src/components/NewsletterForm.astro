@@ -33,12 +33,12 @@ const id = download ? 'reto' : 'principal';
       <p class="text-center text-xs text-muted">Sin spam. Puedes darte de baja cuando quieras.</p>
     </form>
   </div>
-  <div class="hidden" data-success>
-    <p class="mb-4 grid h-12 w-12 place-items-center rounded-full bg-warm text-xl font-black text-ink" aria-hidden="true">✓</p>
+  <section class={download ? 'hidden' : 'hidden rounded-[1.5rem] border border-burgundy/10 bg-[#FBFAF5] px-6 py-8 shadow-[0_14px_35px_rgba(105,27,50,.09)] sm:px-8'} data-success aria-live="polite">
+    <p class={`mb-4 grid h-12 w-12 place-items-center rounded-full bg-warm text-xl font-black text-ink ${download ? '' : 'mx-auto'}`} aria-hidden="true">✓</p>
     <h3 class="mb-2 font-sans text-2xl font-extrabold leading-tight text-burgundy" data-success-title>¡Ya estás dentro!</h3>
     <p class="text-muted" data-success-text>{download ? 'Ya puedes descargarla. También recibirás mis ideas de IA por correo.' : 'Gracias. Te escribiré pronto con ideas de IA aplicables al trabajo real.'}</p>
     {download && <a class="mt-5 inline-flex items-center gap-2 rounded-xl bg-burgundy px-5 py-3.5 font-bold text-white transition hover:bg-[#521326]" href={downloadHref} download={downloadFilename}>Descargar el PDF <span aria-hidden="true">↓</span></a>}
-  </div>
+  </section>
 </div>
 
 <script>
