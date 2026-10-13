@@ -1,0 +1,38 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import days from '../../../data/adviento-meta.json';
+import { dayIcon, iconHref } from '../../../data/adviento-icons';
+import '../../../styles/adviento.css';
+import '../../../styles/adviento-day.css';
+import { readFileSync } from 'node:fs';
+export function getStaticPaths() {
+  return days.map(day => ({ params: { dia: String(day.dia) }, props: { day } }));
+}
+const { day } = Astro.props;
+const localPreview = import.meta.env.DEV;
+const previewContent = localPreview
+  ? JSON.parse(readFileSync('src/data/adviento-preview.json','utf8')).find((item: { dia:number }) => item.dia === day.dia)?.contenido
+  : null;
+---
+<Layout title={`Día ${day.dia}: ${day.titulo} · Adviento IA`} description={day.descripcion} noindex>
+  <div class="advent-world challenge-page" id="day-app" data-day={day.dia} data-preview={localPreview ? 'true' : 'false'} data-preview-content={localPreview ? JSON.stringify(previewContent) : undefined}>
+    <div class="winter-glow" aria-hidden="true"></div>
+    <header class="advent-topbar"><a class="advent-brand" href="/" aria-label="carlaylz, ir al inicio">carla<span>ylz</span><i></i></a><span class="topbar-year">Calendario de Adviento 2026</span></header>
+    <main class="challenge-main">
+      <a class="back-link" href="/adviento"><span aria-hidden="true">←</span> Volver al calendario</a>
+      {localPreview && <div class="preview-banner day-preview-banner" role="status"><span><strong>Vista local</strong> · Contenido completo del día {day.dia}. La apertura y el progreso son de prueba.</span></div>}
+      <div id="challenge-loading" class="challenge-loading" role="status" aria-live="polite"><span class="loading-star" aria-hidden="true">✦</span><p>Preparando tu regalo…</p></div>
+      <div id="challenge-error" class="challenge-error" hidden><h1>Esta puerta sigue cerrada.</h1><p id="challenge-error-text">Vuelve al calendario para abrirla cuando llegue su día.</p><a class="main-button" href="/adviento">Ir al calendario <span aria-hidden="true">↗</span></a></div>
+      <article id="challenge-content" hidden>
+        <div class="challenge-hero">
+          <div class="challenge-heading"><p class="day-count">Día {String(day.dia).padStart(2,'0')} de 24 <span aria-hidden="true">✦</span> {day.tipo}</p><h1>{day.titulo}</h1><p class="challenge-lead">{day.descripcion}</p><div class="challenge-meta"><span>{day.herramienta}</span><span>{day.minutos} minutos</span><span>{day.datos}</span></div></div>
+          <div class="challenge-present" aria-hidden="true"><div class="present-glow"></div><div class="present-object"><span class="present-lid"></span><span class="present-base"></span><span class="present-ribbon"></span></div><span class="present-symbol"><svg viewBox="0 0 24 24" focusable="false"><use href={iconHref(dayIcon(day.dia))} /></svg></span><span class="present-ground"></span></div>
+        </div>
+        <div class="challenge-layout"><div class="challenge-reading"><div id="challenge-sections"></div><section id="challenge-prompt" class="challenge-prompt" hidden></section><section id="challenge-downloads" class="challenge-downloads" hidden></section></div><aside class="challenge-aside"><div class="aside-glass"><span class="aside-star" aria-hidden="true">✦</span><h2>Lo importante es probar.</h2><p>Dedícale un rato, adapta los pasos a tu trabajo y marca el reto cuando hayas terminado.</p><button id="complete-button" class="main-button" type="button">Marcar como completado <span aria-hidden="true">✓</span></button><p id="complete-status" role="status" aria-live="polite"></p></div></aside></div>
+      </article>
+    </main>
+    <footer class="advent-footer"><span>Una idea nueva cada día. A tu manera.</span><div><a href="/adviento">Calendario</a><a href="/privacidad">Privacidad</a></div></footer>
+    <dialog id="complete-dialog" class="complete-dialog" aria-labelledby="complete-title"><div class="complete-light" aria-hidden="true"><span>✦</span><span>✧</span><span>✳</span></div><p>Reto completado</p><h2 id="complete-title">Una más para tu colección.</h2><span class="complete-count" id="complete-count">0 de 24</span><a href="/adviento" class="main-button">Volver al calendario <span aria-hidden="true">↗</span></a><button id="stay-button" type="button" class="text-button">Seguir leyendo</button></dialog>
+  </div>
+</Layout>
+<script src="../../../scripts/adviento-day.ts"></script>

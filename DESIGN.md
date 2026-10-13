@@ -1,0 +1,87 @@
+# Sistema visual de carlaylz
+
+Referencia de dirección: la claridad, densidad contenida y componentes funcionales del manual de diseño aportado. Esta es una adaptación propia para una web de recursos de IA y un calendario de Adviento; no se usan la marca, los iconos ni las fuentes propietarias de Airbnb.
+
+## Identidad
+
+| Token | Valor | Uso |
+| --- | --- | --- |
+| `cherry` / `primary` | `#691B32` | CTA, enlaces, estados activos, títulos puntuales |
+| `cherry-active` | `#521326` | Pulsación y hover de CTA |
+| `cherry-soft` | `#E9D4D9` | Superficie secundaria o estado tenue |
+| `yellow` / `accent` | `#F3C969` | Acento, progreso y foco; nunca texto pequeño sobre blanco |
+| `white` / `canvas` | `#FFFFFF` | Fondo base y tarjetas |
+| `warm-white` / `surface` | `#F8F5ED` | Banda alterna y fondos de formulario |
+| `ink` | `#3B252D` | Texto principal |
+| `muted` | `#6B5960` | Texto secundario |
+| `hairline` | `rgba(59, 37, 45, .14)` | Divisores y contornos |
+
+El blanco domina. El cherry identifica las acciones y el amarillo señala momentos de avance. **La página de inicio conserva su fondo degradado original** en rosa y amarillo como excepción de marca; el calendario usa degradados por su carácter navideño. Las demás páginas de lectura y captación usan superficies planas. Las imágenes propias de Carla y las portadas de sus guías siguen siendo las protagonistas visuales.
+
+## Tipografía
+
+Una sola familia para toda la web: **Inter Tight**, alojada en `/public/fonts`, con `font-display: swap`. Se usa como alternativa libre y disponible a la familia citada en el manual. No declarar Canva Sans ni Airbnb Cereal si no existe un archivo con licencia para esta web.
+
+| Papel | Tamaño | Peso | Interlineado |
+| --- | --- | --- | --- |
+| Hero | `clamp(36px, 5vw, 64px)` | 600 | 1.05 |
+| Título de sección | `clamp(28px, 3vw, 40px)` | 600 | 1.15 |
+| Título de tarjeta | 20–22px | 600 | 1.2 |
+| Cuerpo | 16px | 400 | 1.5–1.65 |
+| Cuerpo pequeño | 14px | 400 | 1.43 |
+| Etiqueta | 12–14px | 600 | 1.3 |
+| Botón | 16px | 600 | 1.25 |
+
+La jerarquía nace de tamaño, peso y espacio; no de titulares negros gigantes o tracking extremo. Longitud máxima de lectura: 65–75 caracteres. Para cifras de progreso, usar números tabulares.
+
+## Geometría, espacio y contenedor
+
+- Escala de espacio: 4, 8, 12, 16, 24, 32, 48 y 64px.
+- Contenedor editorial: hasta 1120px; calendario: hasta 1280px. Márgenes laterales de al menos 16px en móvil.
+- Secciones: 64px de separación vertical en escritorio, 48px en móvil.
+- Tarjetas: radio de 14px y 24px de relleno. Formularios y botones: radio de 8px. Solo chips y controles circulares son píldoras.
+- Bordes de 1px o una única sombra sutil en superficies flotantes. Evitar pilas de sombras, halos y tarjetas anidadas.
+- La información sigue una retícula limpia. En móvil se reduce el número de columnas y se mantiene el orden de lectura.
+
+## Componentes
+
+### Navegación
+
+Cabecera blanca de aproximadamente 80px, nombre de marca a la izquierda y contexto o acción a la derecha. Línea inferior fina. En páginas de lectura, enlace claro para volver.
+
+### Botón principal
+
+Cherry con texto blanco, altura mínima de 48px, relleno de 14px por 24px, radio de 8px y peso 600. Hover `#521326`; estado deshabilitado visiblemente atenuado. Sin desplazamiento al pasar el cursor. El texto describe la acción real.
+
+### Botón secundario y enlace
+
+Secundario blanco con borde cherry tenue y texto cherry. Enlaces dentro de párrafos subrayados. Foco visible de 3px en amarillo con contorno cherry cuando sea necesario para mantener contraste.
+
+### Campo de formulario
+
+Superficie blanca, borde fino, radio de 8px, altura mínima de 56px. Etiqueta visible. En foco, borde cherry de 2px. Mensajes de error concretos junto al campo o formulario; consentimiento separado de acciones comerciales optativas.
+
+### Tarjeta y contenido
+
+Fotografías y portadas con radio de 14px; metadatos debajo, no flotando encima por defecto. Tarjetas de texto blancas con borde fino o sombra suave. Listas de pasos con divisores y espaciado de 16–24px.
+
+### Iconografía
+
+Iconos SVG de línea en retícula de 24px, trazo de 1.8px y extremos redondeados. Usar `currentColor` para mantener el mismo dibujo en cherry, blanco o amarillo según el estado. Cada icono comunica una tarea o logro concreto; los símbolos tipográficos quedan solo como decoración festiva. El sprite del Adviento vive en `public/assets/adviento-icons.svg` y su asignación en `src/data/adviento-icons.ts`.
+
+### Calendario de Adviento
+
+Es la excepción narrativa: el calendario es una casa con volumen, tejado nevado, chimenea y 24 cajones extraíbles. Se presenta directamente sobre el fondo blanco de la página, sin tarjeta ni degradado detrás; los arbolitos acompañan al objeto. El progreso se sitúa a la derecha del título principal. La estructura toma la idea de un calendario físico y se construye con capas 3D de CSS para conservar botones accesibles y carga ligera. La fachada usa cherry y los cajones alternan blanco cálido, cherry suave y amarillo. Al abrir un día, el cajón sale y aparece el regalo; los días futuros siguen cerrados. La interfaz que lo rodea usa la misma tipografía, botones, blancos, cherry, amarillo, radios y jerarquía de la web. Cada día tiene un icono relacionado con su contenido; los logros usan iconos propios y un estado completado amarillo. El acceso bloqueado muestra la casa difuminada. En móvil, cajones y retos siguen siendo operables con tacto y teclado.
+
+## Estados y accesibilidad
+
+- Objetivos táctiles de al menos 44px; acciones principales de 48px.
+- Contraste mínimo AA para texto. El amarillo funciona como acento y foco, no como cuerpo de texto sobre blanco.
+- `:focus-visible` visible en enlaces, botones y campos. Etiquetas reales y estados anunciados en formularios.
+- Animación breve y vinculada a una acción; respetar `prefers-reduced-motion`.
+- El progreso del Adviento distingue disponible, futuro, abierto y completado con texto/forma además del color.
+- Ningún contenido imprescindible depende de hover, blur o animación.
+
+## Aplicación
+
+`src/styles/global.css` y `tailwind.config.mjs` son la fuente técnica de tokens compartidos. Los componentes Astro consumen estas reglas. `src/styles/adviento.css` y `src/styles/adviento-day.css` aplican la variante festiva sin crear un segundo sistema de marca.

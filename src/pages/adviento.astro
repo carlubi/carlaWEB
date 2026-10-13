@@ -1,0 +1,63 @@
+---
+import Layout from '../layouts/Layout.astro';
+import days from '../data/adviento-meta.json';
+import { dayIcon, iconHref } from '../data/adviento-icons';
+import '../styles/adviento.css';
+import '../styles/adviento-house.css';
+const localPreview = import.meta.env.DEV;
+---
+<Layout title="Calendario de Adviento IA · carlaylz" description="Abre 24 pequeñas sorpresas para trabajar mejor con IA. Un nuevo reto cada día de diciembre.">
+  <div class="advent-world" id="advent-app" data-days={JSON.stringify(days)} data-preview={localPreview ? 'true' : 'false'}>
+    <div class="winter-glow" aria-hidden="true"></div>
+    <canvas id="snow" class="snow" aria-hidden="true"></canvas>
+    <header class="advent-topbar">
+      <a class="font-sans text-xl font-semibold tracking-[-.03em] text-burgundy hover:underline" href="/" aria-label="carla lópez, ir al inicio">carla lópez</a>
+      <span class="topbar-year">Calendario de Adviento 2026</span>
+      <button id="signout" class="quiet-button" type="button" hidden>Cerrar sesión</button>
+    </header>
+    <main class="advent-main">
+      {localPreview && <div class="preview-banner" role="status"><span><strong>Vista local</strong> · Los 24 días están disponibles. Los avances de prueba se guardan solo en este navegador.</span><button id="preview-reset" type="button">Reiniciar avances</button></div>}
+      <div class="intro">
+        <div><h1>Calendario de Adviento</h1><p>Un reto al día para descubrir nuevas formas de trabajar con IA.</p><span class="calendar-status-visually-hidden" id="calendar-status" role="status">El primer regalo llega el 1 de diciembre.</span></div>
+        <div class="progress-cluster"><div class="progress-copy"><strong id="welcome-name">Tu calendario</strong><span id="progress-caption">Entra para guardar tus avances</span></div><div class="progress-ring"><svg id="progress-ring" viewBox="0 0 148 148" role="img" aria-label="Progreso: 0 de 24 retos completados"></svg><div class="ring-center"><strong id="completed-count">0</strong><span>de 24</span></div></div></div>
+      </div>
+      <section class="calendar-stage is-locked" id="calendar-stage" aria-label="Calendario de Adviento">
+          <div class="house-scene" id="calendar-board" inert>
+            <div class="house-ground" aria-hidden="true"></div>
+            <div class="house-pine house-pine-left" aria-hidden="true"><i></i><i></i><i></i></div>
+            <div class="house-pine house-pine-right" aria-hidden="true"><i></i><i></i><i></i></div>
+            <div class="house-object" id="house-object">
+              <div class="house-chimney" aria-hidden="true"></div>
+              <div class="house-roof-plane" aria-hidden="true"></div>
+              <div class="house-roof" aria-hidden="true">
+                <svg class="roof-icing" viewBox="0 0 1000 250" preserveAspectRatio="none"><path d="M15 204 500 17 985 204"/><path d="M18 221Q45 235 72 221T126 221T180 221T234 221T288 221T342 221T396 221T450 221T504 221T558 221T612 221T666 221T720 221T774 221T828 221T882 221T936 221T990 221"/></svg>
+                <div class="roof-insignia"><span class="roof-star">✳</span><span>24 pequeñas sorpresas</span><span class="roof-year">DICIEMBRE · 2026</span></div>
+              </div>
+              <div class="house-side" aria-hidden="true"></div>
+              <div class="house-body">
+                <div class="house-eave" aria-hidden="true"><span>✦</span><span>✧</span><span>✦</span><span>✧</span><span>✦</span><span>✧</span><span>✦</span><span>✧</span><span>✦</span><span>✧</span><span>✦</span></div>
+                <div class="calendar-grid" id="door-grid" aria-label="Cajones del calendario">
+                  {days.map(day => <button class="calendar-door" type="button" disabled aria-label={`Día ${day.dia}, cerrado`}><span class="door-content"><span class="door-prize" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><use href={iconHref(dayIcon(day.dia))} /></svg></span><span class="door-title">{day.titulo}</span></span><span class="drawer-sleeve"><span class="drawer-side" aria-hidden="true"></span><span class="drawer-bottom" aria-hidden="true"></span><span class="door-front"><span class="drawer-notch" aria-hidden="true"></span><span class="door-number">{String(day.dia).padStart(2,'0')}</span><svg class="door-illustration" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href={iconHref(dayIcon(day.dia))} /></svg><span class="door-flake" aria-hidden="true">✳</span></span></span><span class="door-stamp" aria-hidden="true">✓</span></button>)}
+                </div>
+                <div class="house-plinth" aria-hidden="true"><span>Un pequeño descubrimiento cada día</span><span>✦</span></div>
+              </div>
+            </div>
+          </div>
+        <div class="access-gate" id="access-gate">
+          <div class="access-card" id="access-card"><div class="access-ornament" aria-hidden="true"><span>✦</span></div>
+            <h2 id="access-title">Tu diciembre empieza aquí.</h2><p class="access-description" id="access-description">Deja tu correo para abrir el calendario y guardar cada descubrimiento.</p>
+            <form id="email-form" novalidate><label for="email">Correo electrónico</label><input id="email" type="email" autocomplete="email" inputmode="email" maxlength="254" placeholder="tu@correo.com" required /><button class="main-button" type="submit">Entrar al calendario <span aria-hidden="true">↗</span></button><p class="form-help">Te enviaremos un enlace de acceso. No necesitas contraseña.</p></form>
+            <div id="verify-step" hidden><p>Hemos enviado el acceso a <strong id="sent-email"></strong>. Abre el enlace del correo para continuar.</p><form id="code-form" novalidate><label for="code">¿Has recibido un código?</label><div class="code-row"><input id="code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="8" placeholder="Código" /><button type="submit">Verificar</button></div></form><button id="change-email" class="text-button" type="button">Usar otro correo</button></div>
+            <form id="register-form" novalidate hidden><p class="register-intro">Tu correo ya está verificado. Solo falta ponerle nombre a tu calendario.</p><label for="name">Tu nombre</label><input id="name" type="text" autocomplete="given-name" maxlength="80" placeholder="¿Cómo te llamas?" required /><label class="check-line" for="privacy-check"><input id="privacy-check" type="checkbox" /><span>He leído y acepto la <a href="/privacidad" target="_blank" rel="noopener">política de privacidad</a>.</span></label><label class="check-line" for="mail-check"><input id="mail-check" type="checkbox" /><span>Quiero recibir los avisos diarios y otras ideas de IA por correo.</span></label><button class="main-button" id="register-button" type="submit" disabled>Crear mi calendario <span aria-hidden="true">↗</span></button></form>
+            <p class="form-message" id="auth-message" role="alert" aria-live="polite"></p>
+          </div>
+        </div>
+      </section>
+      <p id="calendar-hint" class="calendar-hint">Los retos empiezan el 1 de diciembre. Puedes reservar tu sitio desde hoy.</p>
+      <section class="achievements" id="achievements" aria-labelledby="achievements-title" hidden><div class="achievements-heading"><h2 id="achievements-title">Logros</h2><p id="achievement-status">Se consiguen según avanzas.</p></div><div class="achievement-grid" id="achievement-grid"></div></section>
+    </main>
+    <footer class="advent-footer"><span>Un reto nuevo cada día</span><div><a href="/privacidad">Privacidad</a><a href="/terminos">Términos</a></div></footer>
+    <dialog id="gift-dialog" class="gift-dialog" aria-labelledby="gift-title"><button class="gift-close" id="gift-close" type="button" aria-label="Cerrar regalo">×</button><div class="gift-scene" aria-hidden="true"><span class="gift-rays"></span><div class="gift-box"><span class="gift-lid"></span><span class="gift-body"></span><span class="gift-ribbon"></span></div><span class="gift-star"><svg viewBox="0 0 24 24" focusable="false"><use id="gift-icon-use" href={iconHref('gift')} /></svg></span></div><p class="gift-day" id="gift-day"></p><h2 id="gift-title"></h2><p id="gift-description"></p><a id="gift-link" class="main-button" href="/adviento">Descubrir el reto <span aria-hidden="true">↗</span></a></dialog>
+  </div>
+</Layout>
+<script src="../scripts/adviento.ts"></script>

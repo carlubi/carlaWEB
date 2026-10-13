@@ -8,10 +8,10 @@ const {
 } = Astro.props;
 const id = download ? 'reto' : 'principal';
 ---
-<div class={download ? 'rounded-[1.5rem] border border-burgundy/10 bg-[#FBFAF5] p-6 shadow-[0_14px_35px_rgba(105,27,50,.09)] sm:p-8' : ''}>
+<div class={download ? 'site-card p-6 sm:p-8' : ''}>
   <div data-form-content>
-    {download && <p class="mb-2 text-xs font-black uppercase tracking-[.12em] text-[#805A00]">Desbloquea la descarga</p>}
-    {download && <h3 class="mb-6 font-sans text-2xl font-extrabold leading-tight text-burgundy">Descarga tu guía gratuita</h3>}
+    {download && <p class="mb-2 text-xs font-semibold uppercase tracking-[.12em] text-[#805A00]">Desbloquea la descarga</p>}
+    {download && <h3 class="mb-6 font-sans text-2xl font-semibold leading-tight text-burgundy">Descarga tu guía gratuita</h3>}
     <form data-newsletter-form data-source={source} data-download={download ? 'true' : 'false'} novalidate>
       <div class="grid gap-3">
         <div>
@@ -28,16 +28,16 @@ const id = download ? 'reto' : 'principal';
         <input class="mt-0.5 h-4 w-4 shrink-0 accent-burgundy" id={`${id}-consentimiento`} name="consentimiento" type="checkbox" required />
         <span>Acepto recibir comunicaciones por correo electrónico y he leído la <a class="legal-link" href="/privacidad" target="_blank">política de privacidad</a> y los <a class="legal-link" href="/terminos" target="_blank">términos y condiciones</a>.</span>
       </label>
-      <button class="mt-4 min-h-12 w-full rounded-xl bg-burgundy px-5 py-3.5 font-bold text-white transition hover:-translate-y-0.5 hover:bg-[#521326] disabled:cursor-wait disabled:opacity-60" type="submit">{download ? 'Quiero descargar la guía' : 'Quiero recibirlo'}</button>
+      <button class="site-button mt-4 min-h-12 w-full disabled:cursor-wait" type="submit">{download ? 'Quiero descargar la guía' : 'Quiero recibirlo'}</button>
       <p class="min-h-6 pt-2 text-center text-sm" data-message role="alert" aria-live="polite"></p>
       <p class="text-center text-xs text-muted">Sin spam. Puedes darte de baja cuando quieras.</p>
     </form>
   </div>
-  <section class={download ? 'hidden' : 'hidden rounded-[1.5rem] border border-burgundy/10 bg-[#FBFAF5] px-6 py-8 shadow-[0_14px_35px_rgba(105,27,50,.09)] sm:px-8'} data-success aria-live="polite">
-    <p class={`mb-4 grid h-12 w-12 place-items-center rounded-full bg-warm text-xl font-black text-ink ${download ? '' : 'mx-auto'}`} aria-hidden="true">✓</p>
-    <h3 class="mb-2 font-sans text-2xl font-extrabold leading-tight text-burgundy" data-success-title>¡Ya estás dentro!</h3>
+  <section class={download ? 'hidden' : 'hidden site-card px-6 py-8 sm:px-8'} data-success aria-live="polite">
+    <p class={`mb-4 grid h-12 w-12 place-items-center rounded-full bg-warm text-xl font-semibold text-ink ${download ? '' : 'mx-auto'}`} aria-hidden="true">✓</p>
+    <h3 class="mb-2 font-sans text-2xl font-semibold leading-tight text-burgundy" data-success-title>¡Ya estás dentro!</h3>
     <p class="text-muted" data-success-text>{download ? 'Ya puedes descargarla. También recibirás mis ideas de IA por correo.' : 'Gracias. Te escribiré pronto con ideas de IA aplicables al trabajo real.'}</p>
-    {download && <a class="mt-5 inline-flex items-center gap-2 rounded-xl bg-burgundy px-5 py-3.5 font-bold text-white transition hover:bg-[#521326]" href={downloadHref} download={downloadFilename}>Descargar el PDF <span aria-hidden="true">↓</span></a>}
+    {download && <a class="site-button mt-5 items-center gap-2" href={downloadHref} download={downloadFilename}>Descargar el PDF <span aria-hidden="true">↓</span></a>}
   </section>
 </div>
 

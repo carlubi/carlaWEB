@@ -1,0 +1,150 @@
+/* A small cardboard house on the page itself, with no surrounding panel. */
+.winter-glow{background:none}
+.calendar-stage{border:0;border-radius:0;background:none;box-shadow:none}
+.advent-main{padding-top:18px}
+.intro{align-items:center;margin-bottom:0}
+.intro h1{font-size:clamp(36px,4.4vw,58px)}
+.calendar-status-visually-hidden{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.progress-cluster{flex:none;color:#691b32}
+.progress-copy span{color:#6b5960}
+.progress-copy strong,.ring-center strong{color:#691b32}
+.ring-center span{color:#6b5960}
+.progress-ring{width:76px;height:76px}
+
+.house-scene{position:relative;perspective:1350px;padding:76px clamp(28px,8vw,100px) 72px;min-height:400px}
+.house-scene::before{display:none}
+.house-ground{position:absolute;bottom:28px;left:11%;width:75%;height:75px;border-radius:50%;background:#542b2a;filter:blur(30px);opacity:.28;transform:rotate(-3deg);z-index:-1}
+.house-object{--roof-h:clamp(130px,16vw,170px);--extrude-x:58px;--extrude-y:22px;position:relative;width:min(100%,900px);margin:auto;transform-style:preserve-3d;z-index:2}
+.house-roof-plane{position:absolute;top:calc(-1 * var(--extrude-y));left:calc(-1 * var(--extrude-x));width:calc(50% + var(--extrude-x));height:calc(var(--roof-h) * .8 + var(--extrude-y));clip-path:polygon(0 calc(100% - var(--extrude-y)),calc(100% - var(--extrude-x)) 0,100% var(--extrude-y),var(--extrude-x) 100%);background:linear-gradient(145deg,#43172c 8%,#6e2d46 70%,#b37686 100%);box-shadow:inset 0 0 0 1px rgba(255,255,255,.18)}
+.house-roof{position:relative;height:var(--roof-h);clip-path:polygon(50% 0,100% 80%,100% 100%,0 100%,0 80%);background:radial-gradient(circle at 50% 42%,#9e405c 0,#78243f 58%,#50192e 100%);box-shadow:inset 0 0 20px rgba(38,8,22,.4);backface-visibility:hidden}
+.house-roof::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(80deg,transparent 0 21px,rgba(255,255,255,.04) 21px 22px);opacity:.5}
+.roof-icing{position:absolute;inset:0;width:100%;height:100%;overflow:visible;fill:none;stroke:#fff9ec;stroke-width:18;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 4px 2px rgba(50,12,28,.2));z-index:2}
+.roof-icing path:last-child{stroke-width:7}
+.roof-insignia{position:absolute;inset:31% 0 27%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:2px;color:#fff9ec;text-align:center;z-index:2}
+.roof-star{font-size:clamp(28px,3.4vw,39px);line-height:1;color:#f3c969}
+.roof-insignia>span:nth-child(2){font-size:clamp(11px,1.35vw,18px);font-weight:600;letter-spacing:.015em}
+.roof-year{font-size:clamp(8px,.85vw,11px);letter-spacing:.14em;opacity:.86}
+.house-chimney{position:absolute;top:8px;left:19%;width:clamp(30px,4.5vw,56px);height:clamp(53px,7vw,85px);background:linear-gradient(90deg,#431829 0 23%,#7b2d47 23% 85%,#9d4c61 85%);box-shadow:8px 6px 0 rgba(46,15,28,.35);transform:rotate(-3deg)}
+.house-chimney::before{content:"";position:absolute;left:-3px;right:-3px;top:-6px;height:14px;background:#fff9ed;border-radius:4px 4px 42% 35%;box-shadow:0 2px 1px rgba(255,255,255,.65)}
+.house-chimney::after{content:"";position:absolute;right:-7px;top:-7px;width:15px;height:10px;background:#ecdde0;transform:skewY(-28deg)}
+.house-side{position:absolute;top:calc(var(--roof-h) * .8 - var(--extrude-y));bottom:0;left:calc(-1 * var(--extrude-x));width:var(--extrude-x);clip-path:polygon(0 0,100% var(--extrude-y),100% 100%,0 calc(100% - var(--extrude-y)));background:linear-gradient(90deg,#3f162a,#71334a 84%,#8b435b);box-shadow:inset -6px 0 10px rgba(30,5,17,.22)}
+.house-side::before{content:"";position:absolute;inset:16px 15px;background:repeating-linear-gradient(to bottom,rgba(255,249,236,.3) 0 2px,transparent 2px 66px);opacity:.65}
+.house-body{position:relative;padding:0 clamp(10px,2vw,22px) clamp(13px,1.7vw,20px);border:clamp(6px,.8vw,10px) solid #4d172c;border-top:0;background:linear-gradient(95deg,#78233f,#692039 70%,#4c172d);box-shadow:inset 0 0 0 2px rgba(255,255,255,.14),inset 0 16px 25px rgba(34,6,18,.34),10px 15px 23px rgba(39,13,24,.16);backface-visibility:hidden}
+.house-eave{height:clamp(22px,2.5vw,30px);margin:0 calc(-1 * clamp(10px,2vw,22px)) clamp(10px,1.3vw,15px);display:flex;justify-content:space-around;align-items:center;color:#fff9ec;border-top:7px solid #fff9ec;border-bottom:3px solid rgba(255,249,236,.82);background:#672039;font-size:clamp(12px,1.5vw,20px)}
+.house-eave span:nth-child(even){color:#f3c969}
+.house-plinth{display:flex;justify-content:space-between;align-items:center;gap:12px;min-height:clamp(20px,3vw,31px);margin:clamp(10px,1.3vw,15px) 1px 0;color:#fff9ed;font-size:clamp(9px,1vw,13px);font-weight:500;letter-spacing:.04em}
+.house-plinth span:last-child{color:#f3c969;font-size:18px}
+
+.calendar-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));grid-auto-rows:clamp(84px,10vw,118px);grid-auto-flow:row;gap:clamp(5px,.9vw,9px);perspective:700px}
+.calendar-door,.calendar-door.wide,.calendar-door.grand{grid-column:auto;grid-row:auto;position:relative;display:block;min-width:0;padding:0;border:3px solid #3b1225;border-radius:3px;overflow:visible;background:#260b19;box-shadow:inset 0 5px 14px rgba(0,0,0,.75),inset 0 0 0 2px #944962,0 2px 0 rgba(255,255,255,.13);cursor:pointer;transform-style:preserve-3d;isolation:auto;filter:none;opacity:1}
+.calendar-door:disabled{cursor:default}
+.calendar-door:focus-visible{outline:3px solid #f3c969;outline-offset:3px;z-index:10}
+.calendar-door.future{filter:none;opacity:1}
+.calendar-door.available{border-color:#4e192c;box-shadow:inset 0 5px 13px rgba(0,0,0,.6),0 0 0 2px #f3c969}
+.calendar-door.opened,.calendar-door.completed{border-color:#f3c969;box-shadow:inset 0 5px 13px rgba(0,0,0,.5)}
+.door-content{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:3px;padding:5px;border:0;border-radius:1px;overflow:hidden;background:radial-gradient(circle at 50% 35%,#fff8e8,#eedab8);color:#691b32;text-align:center;box-shadow:inset 0 0 0 3px rgba(96,34,53,.2),inset 0 8px 14px rgba(55,20,32,.18)}
+.door-prize,.calendar-door.wide .door-prize{width:clamp(30px,4.3vw,49px);height:clamp(30px,4.3vw,49px);flex:none;border:1px solid rgba(105,27,50,.19);border-radius:50%;background:#fff;color:#691b32;box-shadow:0 2px 5px rgba(59,37,45,.09)}
+.door-prize svg,.calendar-door.wide .door-prize svg{width:clamp(19px,2.5vw,29px);height:clamp(19px,2.5vw,29px)}
+.door-title,.calendar-door.wide .door-title{max-width:95%;font-size:clamp(9px,1.06vw,12px);font-weight:600;line-height:1.05;text-wrap:balance}
+.drawer-sleeve{position:absolute;inset:0;z-index:2;display:block;transform-style:preserve-3d;transform:translateZ(1px);transition:transform .26s ease,opacity .18s ease}
+.calendar-door.available:hover .door-front{transform:translateZ(0);box-shadow:inset 0 0 0 2px rgba(243,201,105,.65),inset 0 1px 0 rgba(255,255,255,.85)}
+.door-front{position:absolute;inset:0;display:block;overflow:hidden;border:1px solid rgba(71,24,39,.24);border-radius:2px;background:#f8f5ed;box-shadow:inset 0 1px 0 rgba(255,255,255,.75),inset 0 -2px 0 rgba(112,50,67,.12);transform:translateZ(0);backface-visibility:visible;color:#691b32}
+.door-front::before,.door-front::after{display:none}
+.calendar-door:nth-child(5n) .door-front{background:#f8f5ed;color:#691b32}
+.calendar-door:nth-child(4n+2) .door-front{background:#e9d4d9;color:#691b32}
+.calendar-door:nth-child(6n+4) .door-front,.calendar-door:nth-child(9n) .door-front{background:#78243f;color:#fff9ec}
+.calendar-door:nth-child(7n) .door-front{background:#f3c969;color:#691b32}
+.drawer-notch{position:absolute;top:-1px;left:50%;width:clamp(20px,2.8vw,33px);height:clamp(10px,1.3vw,15px);border-radius:0 0 50% 50%;background:#351020;box-shadow:inset 0 -2px 2px rgba(255,255,255,.16);transform:translateX(-50%)}
+.door-number{position:absolute;left:clamp(7px,1.3vw,16px);bottom:clamp(5px,.8vw,10px);font-family:"Inter Tight",Arial,system-ui,sans-serif;font-size:clamp(26px,3.1vw,39px);font-weight:600;line-height:1;letter-spacing:-.02em;color:inherit;text-shadow:none;font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1}
+.calendar-door.available .door-number{color:inherit}
+.door-illustration{position:absolute;right:clamp(7px,1vw,13px);top:50%;box-sizing:border-box;width:clamp(32px,3.4vw,42px);height:clamp(32px,3.4vw,42px);padding:5px;transform:translateY(-50%);border:1px solid rgba(105,27,50,.15);border-radius:8px;background:rgba(105,27,50,.055);color:inherit;opacity:1;shape-rendering:geometricPrecision}
+.calendar-door:nth-child(6n+4) .door-illustration,.calendar-door:nth-child(9n) .door-illustration{border-color:rgba(255,249,236,.25);background:rgba(255,249,236,.12)}
+.door-flake{position:absolute;top:clamp(7px,1vw,12px);left:clamp(8px,1.1vw,13px);right:auto;bottom:auto;font-size:clamp(10px,1.2vw,14px);color:inherit;opacity:.65}
+.drawer-side{position:absolute;inset:0 0 0 auto;width:24px;background:linear-gradient(90deg,#c99199,#7a344e);border:1px solid #5a2036;transform-origin:right center;transform:rotateY(90deg);backface-visibility:visible;opacity:0}
+.drawer-bottom{position:absolute;inset:auto 0 0;height:24px;background:linear-gradient(#a7556d,#69304a);border:1px solid #5a2036;transform-origin:bottom center;transform:rotateX(-90deg);backface-visibility:visible;opacity:0}
+.calendar-door.opening .drawer-side,.calendar-door.opening .drawer-bottom{opacity:1}
+.calendar-door.opening .drawer-sleeve{animation:drawer-pull .88s cubic-bezier(.21,.68,.26,1) both}
+.calendar-door.opened .drawer-sleeve,.calendar-door.completed .drawer-sleeve{opacity:0;transform:translate3d(0,72%,70px);pointer-events:none}
+.calendar-door.opening .door-front,.calendar-door.opened .door-front,.calendar-door.completed .door-front{transform:translateZ(0);box-shadow:inset 0 1px 0 rgba(255,255,255,.75),0 4px 5px rgba(35,10,23,.2)}
+.calendar-door.opening .door-content{animation:interior-glow .85s both}
+.calendar-door.opening .door-prize{animation:prize-pop .65s .22s both}
+.door-stamp{z-index:3;width:21px;height:21px;right:3px;top:3px;background:#f3c969;color:#691b32;border:1px solid #691b32;box-shadow:none;font-size:13px}
+.house-pine{position:absolute;bottom:54px;width:82px;height:157px;z-index:0;opacity:.94;filter:drop-shadow(5px 10px 4px rgba(74,29,43,.16))}
+.house-pine-left{left:1.5%;transform:rotate(-5deg)}
+.house-pine-right{right:2%;transform:scale(.77) rotate(6deg);transform-origin:bottom center}
+.house-pine::after{content:"";position:absolute;left:calc(50% - 8px);bottom:0;width:16px;height:38px;border-radius:4px;background:#cba778}
+.house-pine i{position:absolute;left:50%;width:0;height:0;transform:translateX(-50%);border-left:41px solid transparent;border-right:41px solid transparent;border-top:0;border-bottom:73px solid #5f755d;filter:drop-shadow(0 3px 0 #e9efdf)}
+.house-pine i:first-child{top:7px;border-left-width:27px;border-right-width:27px;border-bottom-width:64px;z-index:3}
+.house-pine i:nth-child(2){top:43px;border-left-width:35px;border-right-width:35px;z-index:2}
+.house-pine i:nth-child(3){top:78px;z-index:1}
+
+.calendar-stage.is-locked #calendar-board{filter:blur(4px);pointer-events:none}
+.access-gate{border-radius:0;background:none;backdrop-filter:none;-webkit-backdrop-filter:none;padding-top:clamp(70px,10vw,130px)}
+.access-card{box-shadow:0 18px 60px rgba(59,37,45,.23)}
+
+@keyframes drawer-pull{0%{transform:translate3d(0,0,1px);opacity:1}55%{transform:translate3d(0,15%,56px);opacity:1}84%{transform:translate3d(0,72%,72px);opacity:1}100%{transform:translate3d(0,72%,72px);opacity:0}}
+
+@media(max-width:900px){
+  .house-scene{padding:58px 42px 54px}
+  .house-object{--roof-h:clamp(118px,20vw,158px);--extrude-x:38px;--extrude-y:15px}
+  .calendar-grid{grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-rows:clamp(83px,13vw,105px)}
+  .house-pine{width:52px;opacity:.65;transform:scale(.65);transform-origin:bottom center}
+  .house-pine-left{left:-1%}.house-pine-right{right:-1%}
+}
+@media(max-width:600px){
+  .intro{align-items:flex-start;gap:7px;margin-bottom:0}
+  .intro h1{font-size:clamp(32px,9vw,36px)}
+  .intro p{font-size:13px}
+  .progress-cluster{gap:4px;align-self:flex-start;margin-top:3px}
+  .progress-copy{display:flex}
+  .progress-copy strong{display:none}
+  .progress-copy span{max-width:82px;font-size:11px;line-height:1.22}
+  .progress-ring{width:64px;height:64px}
+  .house-scene{padding:40px 21px 42px;perspective:950px}
+  .house-object{--roof-h:clamp(102px,31vw,142px);--extrude-x:18px;--extrude-y:8px}
+  .house-chimney{top:10px;left:19%;width:30px;height:49px}
+  .roof-icing{stroke-width:23}
+  .roof-insignia{inset:29% 0 25%;gap:0}
+  .roof-star{font-size:25px}.roof-insignia>span:nth-child(2){font-size:10px}.roof-year{font-size:7px}
+  .house-body{padding:0 6px 8px;border-width:5px;border-top:0}
+  .house-eave{height:20px;margin:0 -6px 8px;border-top-width:4px;border-bottom-width:2px;font-size:10px}
+  .house-eave span:nth-child(even){display:none}
+  .calendar-grid{grid-auto-rows:clamp(65px,20vw,82px);gap:4px}
+  .door-prize,.calendar-door.wide .door-prize{width:28px;height:28px}
+  .door-prize svg,.calendar-door.wide .door-prize svg{width:19px;height:19px}
+  .door-title,.calendar-door.wide .door-title{font-size:8px}
+  .door-number{font-size:clamp(19px,6vw,26px);left:5px;bottom:5px}
+  .door-illustration{width:26px;height:26px;padding:3px;border-radius:5px;right:5px}
+  .door-flake{font-size:9px;left:5px;top:5px}
+  .drawer-notch{width:19px;height:9px}
+  .house-plinth{font-size:8px;min-height:16px;margin-top:6px}
+  .house-pine{display:block;bottom:20px;opacity:.75}
+  .house-pine-left{left:-20px;transform:scale(.4) rotate(-5deg)}
+  .house-pine-right{right:-20px;transform:scale(.35) rotate(6deg)}
+  .house-ground{bottom:23px}
+  .access-gate{padding-top:36px}
+}
+@media(max-width:370px){
+  .intro h1{font-size:31px}
+  .progress-copy span{max-width:72px;font-size:10px}
+  .progress-ring{width:58px;height:58px}
+}
+@media(prefers-reduced-motion:reduce){
+  .house-object,.drawer-sleeve{transition:none!important}
+  .calendar-door.opening .drawer-sleeve{animation:none!important;opacity:0}
+}
+@media(prefers-reduced-transparency:reduce){.access-gate{backdrop-filter:none;-webkit-backdrop-filter:none;background:none}}
+
+/* WebGL house: the canvas draws the model, the real buttons sit on the projected drawer fronts. */
+.house-scene.is-3d{padding:0;min-height:0;perspective:none;contain:layout paint;cursor:grab;user-select:none;-webkit-user-select:none}
+.house-scene.is-3d,.house-scene.is-3d *{touch-action:pan-y}
+.house-scene.is-3d.is-dragging,.house-scene.is-3d.is-dragging *{cursor:grabbing}
+.house-canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.house-scene.is-3d .house-ground,.house-scene.is-3d .house-pine,.house-scene.is-3d .house-chimney,.house-scene.is-3d .house-roof-plane,.house-scene.is-3d .house-roof,.house-scene.is-3d .house-side,.house-scene.is-3d .house-eave,.house-scene.is-3d .house-plinth{display:none}
+.house-scene.is-3d .house-object{position:absolute;inset:0;width:auto;margin:0;transform:none}
+.house-scene.is-3d .house-body{position:static;padding:0;border:0;background:none;box-shadow:none}
+.house-scene.is-3d .calendar-grid{position:absolute;inset:0;display:block;perspective:none}
+.house-scene.is-3d .calendar-door{position:absolute;left:0;top:0;border:0;border-radius:6px;background:transparent;box-shadow:none;transform-style:flat;will-change:transform}
+.house-scene.is-3d .calendar-door>*{display:none}
+.house-scene.is-3d .calendar-door:focus-visible{outline:3px solid #f3c969;outline-offset:2px}
+@media(prefers-reduced-motion:reduce){.house-scene.is-3d .calendar-door{will-change:auto}}
