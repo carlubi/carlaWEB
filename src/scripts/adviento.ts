@@ -260,6 +260,8 @@ if (root) {
     resize();draw();addEventListener('resize',resize,{passive:true});document.addEventListener('visibilitychange',()=>{if(document.hidden){cancelAnimationFrame(frame);frame=0;}else if(!frame)draw();});
   }
   const houseScene = document.querySelector<HTMLElement>('.house-scene');
-  if (houseScene) import('./adviento-house3d').then(module => module.mountHouse3D(houseScene, $('door-grid'), days)).catch(error => console.warn('Casa 3D no disponible, se mantiene la versión CSS.', error));
+  /* La casa CSS queda oculta hasta saber si hay WebGL; solo se muestra como respaldo. */
+  const houseFallback = (error?:unknown) => { houseScene?.classList.add('is-fallback'); if (error) console.warn('Casa 3D no disponible, se muestra la versión CSS.', error); };
+  if (houseScene) import('./adviento-house3d').then(module => module.mountHouse3D(houseScene, $('door-grid'), days)).then(house => { if (!house) houseFallback(); }).catch(houseFallback);
   snow(); start();
 }

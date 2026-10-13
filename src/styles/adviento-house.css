@@ -148,3 +148,12 @@
 .house-scene.is-3d .calendar-door>*{display:none}
 .house-scene.is-3d .calendar-door:focus-visible{outline:3px solid #f3c969;outline-offset:2px}
 @media(prefers-reduced-motion:reduce){.house-scene.is-3d .calendar-door{will-change:auto}}
+
+/* Mientras carga la casa WebGL no se pinta la casa CSS: se reserva su hueco con la proporción del encuadre 3D (layoutFor) para evitar el parpadeo y el salto de altura. La casa CSS solo aparece como respaldo (.is-fallback) si WebGL no está disponible. */
+.house-scene:not(.is-3d):not(.is-fallback){padding:0;min-height:0;aspect-ratio:10.53/7.8;perspective:none}
+.house-scene:not(.is-3d):not(.is-fallback)>*{visibility:hidden}
+.house-scene:not(.is-3d):not(.is-fallback) .house-object{position:absolute;inset:0;overflow:hidden}
+@media(max-width:900px){.house-scene:not(.is-3d):not(.is-fallback){aspect-ratio:6.28/9.93}}
+.house-canvas{animation:house-in .45s ease-out both}
+@keyframes house-in{from{opacity:0}to{opacity:1}}
+@media(prefers-reduced-motion:reduce){.house-canvas{animation:none}}
