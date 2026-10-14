@@ -5,7 +5,7 @@
     "tipo": "Reto + regalo",
     "herramienta": "Claude",
     "minutos": 15,
-    "datos": "no hace falta conectar nada ni usar datos reales",
+    "datos": "No hace falta conectar nada ni usar datos reales",
     "descripcion": "Haz un mapa de tus tareas y descubre por dónde empezar. Hoy también te llevas el kit de arranque.",
     "simbolo": "⌖",
     "abre_el": "2026-12-01"
@@ -16,7 +16,7 @@
     "tipo": "Tip",
     "herramienta": "Claude",
     "minutos": 5,
-    "datos": "ninguno todavía",
+    "datos": "Hoy no se conecta nada",
     "descripcion": "Entiende qué puede ver un conector y aprende a revisar sus permisos antes de usarlo.",
     "simbolo": "⚿",
     "abre_el": "2026-12-02"
@@ -27,7 +27,7 @@
     "tipo": "Reto",
     "herramienta": "Claude (conectores)",
     "minutos": 15,
-    "datos": "calendario propio, o el CSV de prueba si no puede conectar nada",
+    "datos": "Tu calendario, o los correos de prueba si no puedes conectar nada",
     "descripcion": "Conecta tu calendario y pídele a Claude un resumen útil de tu semana. Hay alternativa con datos de prueba.",
     "simbolo": "⟟",
     "abre_el": "2026-12-03"
@@ -38,7 +38,7 @@
     "tipo": "Tip",
     "herramienta": "Claude (Proyectos)",
     "minutos": 10,
-    "datos": "2 documentos suyos, sin datos personales",
+    "datos": "Dos documentos tuyos, sin datos personales",
     "descripcion": "Crea un proyecto que recuerde el contexto de tu trabajo para no repetirlo en cada conversación.",
     "simbolo": "▣",
     "abre_el": "2026-12-04"
@@ -49,7 +49,7 @@
     "tipo": "Sorpresa",
     "herramienta": "Claude (artefactos)",
     "minutos": 10,
-    "datos": "ninguno",
+    "datos": "Ninguno",
     "descripcion": "Pide una pequeña herramienta hecha a tu medida y ajústala con un segundo mensaje.",
     "simbolo": "✦",
     "abre_el": "2026-12-05"
@@ -60,8 +60,8 @@
     "tipo": "Tip",
     "herramienta": "Claude",
     "minutos": 10,
-    "datos": "facturas-2026.csv",
-    "descripcion": "Pon a prueba una respuesta de la IA con un archivo que esconde errores. Aprende a detectarlos.",
+    "datos": "Facturas de prueba",
+    "descripcion": "La IA también se equivoca, y a veces con mucha seguridad. Aprende a pillarla en treinta segundos.",
     "simbolo": "⌕",
     "abre_el": "2026-12-06"
   },
@@ -71,7 +71,7 @@
     "tipo": "Reto",
     "herramienta": "Claude (tareas programadas)",
     "minutos": 15,
-    "datos": "el calendario que conectó el día 3",
+    "datos": "El calendario que conectaste el día 3",
     "descripcion": "Prepara una tarea que trabaje sola a una hora concreta y comprueba su resultado.",
     "simbolo": "◷",
     "abre_el": "2026-12-07"
@@ -82,18 +82,18 @@
     "tipo": "Tip",
     "herramienta": "Claude",
     "minutos": 5,
-    "datos": "ninguno",
+    "datos": "Ninguno",
     "descripcion": "Aprende cinco frases que vuelven cualquier petición a la IA mucho más clara.",
     "simbolo": "◌",
     "abre_el": "2026-12-08"
   },
   {
     "dia": 9,
-    "titulo": "De notas a presentación",
+    "titulo": "De datos a presentación",
     "tipo": "Reto",
     "herramienta": "Claude (slides)",
     "minutos": 20,
-    "datos": "ventas-2026.csv",
+    "datos": "Ventas de prueba",
     "descripcion": "Convierte datos de prueba en una presentación breve y comprueba que cada cifra sea correcta.",
     "simbolo": "▰",
     "abre_el": "2026-12-09"
@@ -104,7 +104,7 @@
     "tipo": "Reto",
     "herramienta": "NotebookLM",
     "minutos": 20,
-    "datos": "manual-interno-ejemplo.md (o documentos suyos)",
+    "datos": "El manual de ejemplo, o documentos tuyos",
     "descripcion": "Haz preguntas a un documento de ejemplo y encuentra respuestas con fuentes comprobables.",
     "simbolo": "▤",
     "abre_el": "2026-12-10"
@@ -115,7 +115,7 @@
     "tipo": "Reto",
     "herramienta": "Claude + conector de calendario o Drive",
     "minutos": 15,
-    "datos": "notas-reunion-ejemplo.md",
+    "datos": "Las notas de ejemplo, o notas tuyas anonimizadas",
     "descripcion": "Transforma notas de una reunión en un acta con tareas, responsables y próximos pasos.",
     "simbolo": "☷",
     "abre_el": "2026-12-11"
@@ -126,8 +126,8 @@
     "tipo": "Regalo",
     "herramienta": "Claude (Proyectos)",
     "minutos": 10,
-    "datos": "ninguno",
-    "descripcion": "Descarga una plantilla de asistente de oficina y adáptala a tu forma de trabajar.",
+    "datos": "Ninguno",
+    "descripcion": "Llévate una plantilla de asistente de oficina y adáptala a tu forma de trabajar.",
     "simbolo": "✧",
     "abre_el": "2026-12-12"
   },
@@ -137,7 +137,7 @@
     "tipo": "Sorpresa",
     "herramienta": "Higgsfield (u otra de vídeo)",
     "minutos": 15,
-    "datos": "ninguno",
+    "datos": "Ninguno",
     "descripcion": "Crea un vídeo breve con IA por pura curiosidad. Usa una idea propia y cuida los permisos.",
     "simbolo": "▹",
     "abre_el": "2026-12-13"
@@ -148,7 +148,7 @@
     "tipo": "Reto",
     "herramienta": "Claude",
     "minutos": 25,
-    "datos": "ventas-2026.csv + facturas-2026.csv",
+    "datos": "Ventas y facturas de prueba",
     "descripcion": "Cruza dos archivos de prueba y prepara un informe con conclusiones que puedas verificar.",
     "simbolo": "▥",
     "abre_el": "2026-12-14"
@@ -159,7 +159,7 @@
     "tipo": "Reto",
     "herramienta": "Claude + Canva",
     "minutos": 20,
-    "datos": "ninguno",
+    "datos": "Ninguno",
     "descripcion": "Diseña una pieza útil para tu trabajo con ayuda de Claude y Canva.",
     "simbolo": "◈",
     "abre_el": "2026-12-15"
@@ -170,7 +170,7 @@
     "tipo": "Formación",
     "herramienta": "Claude + Gemini para comparar",
     "minutos": 25,
-    "datos": "ninguno",
+    "datos": "Ninguno",
     "descripcion": "Investiga un tema con enlaces y aprende a distinguir una fuente sólida de una respuesta convincente.",
     "simbolo": "✥",
     "abre_el": "2026-12-16"
@@ -179,9 +179,9 @@
     "dia": 17,
     "titulo": "¿Cuándo uso cada una?",
     "tipo": "Tip",
-    "herramienta": "varias",
+    "herramienta": "Varias",
     "minutos": 5,
-    "datos": "ninguno",
+    "datos": "Ninguno",
     "descripcion": "Elige la herramienta adecuada para cada tarea con una tabla sencilla.",
     "simbolo": "⑂",
     "abre_el": "2026-12-17"
@@ -192,7 +192,7 @@
     "tipo": "Reto",
     "herramienta": "Claude (Proyectos)",
     "minutos": 25,
-    "datos": "un procedimiento suyo",
+    "datos": "Un procedimiento tuyo",
     "descripcion": "Convierte un procedimiento repetido en un asistente que puedas volver a usar.",
     "simbolo": "⚙",
     "abre_el": "2026-12-18"
@@ -203,7 +203,7 @@
     "tipo": "Regalo",
     "herramienta": "Claude (tareas programadas)",
     "minutos": 10,
-    "datos": "ninguno",
+    "datos": "Ninguno",
     "descripcion": "Llévate cinco tareas programadas listas para adaptar a tu semana.",
     "simbolo": "✧",
     "abre_el": "2026-12-19"
@@ -214,7 +214,7 @@
     "tipo": "Sorpresa",
     "herramienta": "Claude en Chrome",
     "minutos": 15,
-    "datos": "ninguno sensible",
+    "datos": "Nada sensible",
     "descripcion": "Prueba cómo una IA puede ayudarte a navegar, leer y actuar en páginas web con criterio.",
     "simbolo": "⌁",
     "abre_el": "2026-12-20"
@@ -225,7 +225,7 @@
     "tipo": "Reto",
     "herramienta": "Claude (varios conectores)",
     "minutos": 20,
-    "datos": "facturas-2026.csv + bandeja-entrada.csv, o sus propios datos",
+    "datos": "Tu calendario y tu correo, o los archivos de prueba",
     "descripcion": "Reúne calendario, correo y un archivo de prueba en un solo plan para el lunes.",
     "simbolo": "◒",
     "abre_el": "2026-12-21"
@@ -236,7 +236,7 @@
     "tipo": "Reto",
     "herramienta": "Claude (tarea programada + conector de correo)",
     "minutos": 25,
-    "datos": "bandeja-entrada.csv para ensayar, su correo para la versión real",
+    "datos": "Los correos de prueba para ensayar; tu correo para la versión real",
     "descripcion": "Prepara un vigilante de la bandeja que detecte lo importante sin enviar nada por ti.",
     "simbolo": "✉",
     "abre_el": "2026-12-22"
@@ -247,7 +247,7 @@
     "tipo": "Reto",
     "herramienta": "Claude",
     "minutos": 20,
-    "datos": "el vigilante de ayer",
+    "datos": "El vigilante que montaste ayer",
     "descripcion": "Decide qué puede hacer la IA sola, qué debe consultarte y qué prefieres hacer tú.",
     "simbolo": "◉",
     "abre_el": "2026-12-23"
@@ -258,7 +258,7 @@
     "tipo": "Regalo",
     "herramienta": "Claude",
     "minutos": 15,
-    "datos": "el mapa que hizo el día 1",
+    "datos": "El mapa que hiciste el día 1",
     "descripcion": "Vuelve a tu mapa del día 1 y escribe tres pasos concretos para empezar 2027.",
     "simbolo": "✶",
     "abre_el": "2026-12-24"

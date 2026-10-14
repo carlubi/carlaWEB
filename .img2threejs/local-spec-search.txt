@@ -1,0 +1,31 @@
+### painted ceramic glaze terracotta figurine material roughness
+Query: painted ceramic glaze terracotta figurine material roughness
+Collection: core_3d
+Index: hit (current) 62f2831e1d52eeb6dbb94a87c44fa25b1f4926626a7b1f8c2bcadc63e04e9471
+1. core.pbr-roughness  score=4.201878
+   source: grimoire/glossary/3d_vocabulary.md :: Material And PBR
+   Roughness is microfacet scatter: high roughness reads matte and low roughness reads glossy. Recognition cues: low roughness reads as a sharp, mirror-like, tight specular highlight; high roughness reads as a blurry, ...
+2. core.pbr-orm-channel-packing  score=3.446066
+   source: docs/raw/img2threejs-skill-dataset.json :: categories.material_pbr[10]
+   Convention of packing AO, Roughness, and Metalness grayscale maps into the R, G, B channels of a single texture to cut texture-fetch and VRAM cost. Quy ước đóng gói ba bản đồ grayscale AO, Roughness, Metalness vào ...
+3. core.shader-mapping-orm-packed-texture-assignment  score=2.997635
+   source: docs/raw/img2threejs-skill-dataset.json :: categories.rendering_shader_mapping[13]
+   ... cùng lúc, theo quy ước ORM của glTF. Recognition cues: Source 2/CS2 exports often ship AO/Roughness/Metalness pre-packed into one file rather than three separate grayscale images Dấu hiệu nhận ...
+### stylized chibi character proportions head units crouch
+Query: stylized chibi character proportions head units crouch
+Collection: core_3d
+Index: hit (current) 62f2831e1d52eeb6dbb94a87c44fa25b1f4926626a7b1f8c2bcadc63e04e9471
+1. core.coordinate-relative-units  score=6.548517
+   source: grimoire/glossary/3d_vocabulary.md :: Geometry And Topology
+   A bevel radius is sized in object-relative units.
+2. core.measurement-source-text  score=5.268490
+   source: grimoire/intake/image_analysis.md :: Layer 2 — Overall form & silhouette
+   Record proportions relative to a named reference dimension and keep observations separate from inference.
+3. core.pbr-hand-painted-vs-pbr-texture  score=2.632305
+   source: docs/raw/img2threejs-skill-dataset.json :: categories.material_pbr[12]
+   Distinguishes textures with lighting baked directly into color (static, stylized) from textures that respond dynamically to scene lighting via separate PBR channels. Phân biệt kết cấu có ánh sáng được nướng trực ...
+### smoke puff particles sprite dissolve
+Query: smoke puff particles sprite dissolve
+Collection: core_3d
+Index: hit (current) 62f2831e1d52eeb6dbb94a87c44fa25b1f4926626a7b1f8c2bcadc63e04e9471
+No matches.

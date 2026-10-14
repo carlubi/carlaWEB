@@ -1,0 +1,18 @@
+<!--
+  Plantilla para Supabase → Authentication → Emails → Templates.
+  Pégala en «Magic link» y también en «Confirm signup» (las personas nuevas reciben esa).
+  Asunto sugerido: Tu código para el Calendario de Adviento: {{ .Token }}
+  Lleva {{ .Token }} (el código) y NO {{ .ConfirmationURL }}: así Supabase envía un código en vez de un enlace.
+-->
+<div style="margin:0;padding:32px 16px;background:#f8f5ed;font-family:Arial,Helvetica,sans-serif;color:#3b252d">
+  <div style="max-width:480px;margin:0 auto;padding:32px 28px;background:#ffffff;border:1px solid #e6dfe1;border-radius:14px">
+    <p style="margin:0 0 24px;font-size:18px;font-weight:bold;color:#691b32">carla lópez</p>
+    <p style="margin:0 0 8px;font-size:12px;font-weight:bold;letter-spacing:.04em;text-transform:uppercase;color:#6b5960">Calendario de Adviento IA</p>
+    <h1 style="margin:0 0 12px;font-size:24px;line-height:1.2;color:#691b32">Tu código de acceso</h1>
+    <p style="margin:0 0 24px;font-size:16px;line-height:1.5;color:#6b5960">Escríbelo en la web para entrar a tu calendario. No necesitas contraseña.</p>
+    <p style="margin:0 0 24px;padding:18px 12px;border-radius:8px;background:#f8f5ed;text-align:center;font-size:32px;font-weight:bold;letter-spacing:8px;color:#3b252d">{{ .Token }}</p>
+    <p style="margin:0 0 8px;font-size:14px;line-height:1.45;color:#6b5960">Caduca en una hora y solo sirve una vez.</p>
+    <p style="margin:0;font-size:14px;line-height:1.45;color:#6b5960">Si no lo has pedido tú, ignora este correo: nadie podrá entrar sin el código.</p>
+  </div>
+  <p style="max-width:480px;margin:16px auto 0;font-size:12px;color:#6b5960;text-align:center">carla-lopez.com</p>
+</div>

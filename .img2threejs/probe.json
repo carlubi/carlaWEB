@@ -1,0 +1,13 @@
+{
+  "path": "/private/tmp/claude-501/-Users-b19920511-Desktop-Projects-carlaWEB/fc9846a4-e6dd-4168-8e39-9961e21d9c91/images/3.png",
+  "type": "png",
+  "bytes": 98251,
+  "width": 558,
+  "height": 343,
+  "aspectRatio": 1.6268221574344024,
+  "technicalSuitability": "conditional",
+  "warnings": [
+    "low resolution; small geometry/material details may be unreliable"
+  ],
+  "note": "This is only technical image probing. Semantic object suitability still requires visual inspection."
+}

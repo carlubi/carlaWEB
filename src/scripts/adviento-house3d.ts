@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry.js';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
 import { dayIcon, iconHref } from '../data/adviento-icons';
+import { createCaganerModel, createSmokePuff } from './adviento-caganer';
 
 /*
  * Procedural Three.js advent house. The 24 drawers stay as real <button>s
@@ -33,7 +34,7 @@ const SPEC = {
     wine:{ bg:'#78243f', ink:'#fff9ec', tile:'rgba(255,249,236,.12)', tileBorder:'rgba(255,249,236,.28)' },
     gold:{ bg:'#f3c969', ink:'#691b32', tile:'rgba(105,27,50,.07)', tileBorder:'rgba(105,27,50,.18)' }
   } satisfies Record<string,FrontStyle>,
-  camera: { fov:30, yaw:-.34, pitch:.13, yawRange:[-.62, .02], pitchRange:[.04, .21], dragSpeed:.0055 },
+  camera: { fov:30, yaw:-.34, pitch:.13, yawRange:[-.62, .3], pitchRange:[.04, .21], dragSpeed:.0055 },
   openMs: 900
 };
 
@@ -173,6 +174,9 @@ export async function mountHouse3D(scene:HTMLElement, grid:HTMLElement, days:Day
   let ppu = 256;
   let sceneWidth = 0;
   const disposables = new Set<{ dispose():void }>();
+  let caganer:THREE.Group|null = null;
+  let caganerGone = false;
+  let poof:{ start:number; scale:number; group:THREE.Group; update(elapsed:number):boolean; told:boolean }|null = null;
   const track = <T extends { dispose():void }>(item:T) => { disposables.add(item); return item; };
 
   function canvasTexture(w:number, h:number, draw:(ctx:CanvasRenderingContext2D, w:number, h:number) => void, repeat = false) {
@@ -481,6 +485,16 @@ export async function mountHouse3D(scene:HTMLElement, grid:HTMLElement, days:Day
     else { left.position.set(-bodyW / 2 - .95, 0, .35); right.position.set(bodyW / 2 + .85, 0, .05); }
     root.add(left, right);
 
+    /* easter egg: a caganer squatting behind the back-right corner, only visible once the house is turned */
+    caganer = null;
+    if (!caganerGone) {
+      caganer = createCaganerModel(track);
+      if (L.compact) { caganer.position.set(bodyW / 2 + .12, 0, -depth - .15); caganer.scale.setScalar(.66); }
+      else { caganer.position.set(bodyW / 2 + .3, 0, -depth - .2); caganer.scale.setScalar(.85); }
+      caganer.rotation.y = .75;
+      root.add(caganer);
+    }
+
     /* ground: shadow catcher + soft ambient occlusion under the house */
     const ground = new THREE.Mesh(geo(new THREE.PlaneGeometry(40, 40)), track(new THREE.ShadowMaterial({ color:SPEC.color.shadow, opacity:.17 })));
     ground.rotation.x = -Math.PI / 2; ground.receiveShadow = true; root.add(ground);
@@ -662,6 +676,50 @@ export async function mountHouse3D(scene:HTMLElement, grid:HTMLElement, days:Day
   scene.addEventListener('pointercancel', endDrag);
   scene.addEventListener('click', e => { if (swallowClick) { e.preventDefault(); e.stopPropagation(); swallowClick = false; } }, true);
 
+  /* ---------- caganer easter egg ---------- */
+  const raycaster = new THREE.Raycaster(), pointer = new THREE.Vector2();
+  function caganerAt(e:PointerEvent|MouseEvent) {
+    if (!caganer || poof || scene.closest('.is-locked')) return false;
+    const rect = canvas.getBoundingClientRect();
+    pointer.set((e.clientX - rect.left) / rect.width * 2 - 1, -(e.clientY - rect.top) / rect.height * 2 + 1);
+    raycaster.setFromCamera(pointer, camera);
+    const hit = raycaster.intersectObject(caganer, true)[0];
+    if (!hit) return false;
+    /* the house must not be in front of it: only the peeking part is clickable */
+    raycaster.far = hit.distance;
+    const blocker = raycaster.intersectObject(house, true).find(h => !isCaganer(h.object));
+    raycaster.far = Infinity;
+    return !blocker;
+  }
+  const isCaganer = (obj:THREE.Object3D|null) => { for (let o = obj; o; o = o.parent) if (o === caganer) return true; return false; };
+  scene.addEventListener('pointermove', e => {
+    if (drag?.moved || e.pointerType !== 'mouse') return;
+    scene.classList.toggle('is-pointing', caganerAt(e));
+  });
+  scene.addEventListener('click', e => {
+    if (!caganerAt(e)) return;
+    e.preventDefault();
+    scene.classList.remove('is-pointing');
+    vanish();
+  });
+  function vanish() {
+    if (!caganer || poof) return;
+    const box = new THREE.Box3().setFromObject(caganer), center = box.getCenter(new THREE.Vector3()), size = box.getSize(new THREE.Vector3());
+    const puff = createSmokePuff(track, center, Math.max(size.x, size.y, size.z) * 1.1);
+    world.add(puff.group);
+    poof = { start:performance.now(), scale:caganer.scale.x, group:puff.group, update:puff.update, told:false };
+    if (reduceMotion.matches) finishVanish();
+    requestRender();
+  }
+  function finishVanish() {
+    if (!poof) return;
+    world.remove(poof.group);
+    if (caganer) { caganer.removeFromParent(); caganer = null; }
+    caganerGone = true; renderer.shadowMap.needsUpdate = true;
+    if (!poof.told) scene.dispatchEvent(new CustomEvent('caganer-found', { bubbles:true }));
+    poof = null;
+  }
+
   /* ---------- loop ---------- */
   let frame = 0, twinkle = 0, visible = true, dirty = true;
   const easeOut = (t:number) => 1 - Math.pow(1 - t, 3);
@@ -708,6 +766,18 @@ export async function mountHouse3D(scene:HTMLElement, grid:HTMLElement, days:Day
         }
         if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true;
       });
+    }
+
+    if (poof) {
+      animating = true;
+      const elapsed = time - poof.start;
+      if (caganer) {
+        const t = Math.min(elapsed / 170, 1);
+        caganer.scale.setScalar(poof.scale * (1 + .12 * Math.sin(t * Math.PI) - t * t));
+        caganer.visible = t < 1; renderer.shadowMap.needsUpdate = true;
+      }
+      if (!poof.told && elapsed > 850) { poof.told = true; scene.dispatchEvent(new CustomEvent('caganer-found', { bubbles:true })); }
+      if (!poof.update(Math.max(0, elapsed))) finishVanish();
     }
 
     renderer.render(world, camera);

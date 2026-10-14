@@ -1,0 +1,14 @@
+{
+  "admitted": true,
+  "reasons": [],
+  "provenance": {
+    "viewpoint": "reference",
+    "sourcePath": "/private/tmp/claude-501/-Users-b19920511-Desktop-Projects-carlaWEB/fc9846a4-e6dd-4168-8e39-9961e21d9c91/images/3.png",
+    "width": 558,
+    "height": 343,
+    "foregroundCoverage": 0.1957,
+    "largestComponentFraction": 1.0,
+    "pHash": 12393062482594216096,
+    "duplicateOfHash": null
+  }
+}

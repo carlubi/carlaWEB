@@ -5,10 +5,13 @@ export type AdventSession = {
   user: { id: string; email: string };
 };
 
+export type AdventPromptBlock = { tipo:'texto'; html:string } | { tipo:'prompt'; html:string; texto:string; adjuntos?:string[] };
+export type AdventDownload = { titulo:string; descripcion:string; nombre:string; formato:'PDF'|'CSV'; url:string; peso:string; copiar?:string };
+/* Generado por scripts/build-adviento.mjs a partir de Adviento/dia-NN-…/web.md. El HTML sale de nuestro propio Markdown. */
 export type AdventContent = {
-  secciones: { heading: string; body: string }[];
-  prompt: string;
-  recursos: { name: string; content: string; mime: string }[];
+  secciones: { titulo:string; html:string }[];
+  prompts: { titulo:string; bloques:AdventPromptBlock[] }[];
+  descargas: AdventDownload[];
 };
 
 const base = 'https://zqautpepyjivwkzobfha.supabase.co';
