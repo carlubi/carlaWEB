@@ -50,13 +50,13 @@ const localPreview = import.meta.env.DEV;
             <p class="access-step" id="access-eyebrow">Paso 1 de 3 · Tu correo</p>
             <h2 id="access-title">Tu diciembre empieza aquí</h2>
             <p class="access-description" id="access-description">24 retos para aprender IA, uno al día. Entra con tu correo y guardamos tus avances.</p>
-            <form id="email-form" novalidate><label for="email">Correo electrónico</label><input id="email" type="email" autocomplete="email" inputmode="email" maxlength="254" placeholder="tu@correo.com" required aria-describedby="email-help" /><button class="main-button" type="submit"><span class="button-label">Recibir mi código</span></button><p class="form-help" id="email-help">Te mandamos un código de 6 cifras. Sin contraseñas.</p></form>
+            <form id="email-form" novalidate><label for="email">Correo electrónico</label><input id="email" type="email" autocomplete="email" inputmode="email" maxlength="254" placeholder="tu@correo.com" required aria-describedby="email-help" /><button class="main-button" type="submit"><span class="button-label">Recibir mi código</span></button><p class="form-help" id="email-help">Te mandamos un código de 8 cifras. Sin contraseñas.</p></form>
             <div id="verify-step" hidden>
               <form id="code-form" novalidate>
-                <label for="code">Código de 6 cifras</label>
+                <label for="code">Código de 8 cifras</label>
                 <div class="code-field" id="code-field">
-                  <input id="code" class="code-input" type="text" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]*" maxlength="6" aria-describedby="code-help" />
-                  <div class="code-cells" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+                  <input id="code" class="code-input" type="text" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]*" maxlength="8" aria-describedby="code-help" />
+                  <div class="code-cells" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
                 </div>
                 <button class="main-button" type="submit"><span class="button-label">Entrar al calendario</span></button>
               </form>

@@ -56,8 +56,8 @@ if (root) {
     return /rate limit|429|too many/i.test(text) ? 'Has pedido varios accesos seguidos. Espera un minuto y vuelve a intentarlo.' : text;
   }
   function setMessage(text:string) { message.textContent = text; }
-  /* Supabase envía un código de 6 cifras (plantillas con {{ .Token }}); si cambias «Email OTP Length», cambia esto. */
-  const otpLength = 6;
+  /* La longitud del código configurada en Supabase debe coincidir con maxlength y las casillas del formulario. */
+  const otpLength = codeInput.maxLength;
   const accessCopy = {
     email: ['Paso 1 de 3 · Tu correo', 'Tu diciembre empieza aquí', '24 retos para aprender IA, uno al día. Entra con tu correo y guardamos tus avances.'],
     verify: ['Paso 2 de 3 · Tu código', 'Revisa tu correo', ''],
@@ -141,7 +141,7 @@ if (root) {
     catch (error) { setMessage('No hemos podido enviar el código. ' + errorText(error)); }
     finally { busy(button, null); }
   });
-  /* six visual cells over one real input: paste, autofill and screen readers keep working */
+  /* Eight visual cells over one real input: paste, autofill and screen readers keep working. */
   const codeField = $('code-field');
   const cells = [...codeField.querySelectorAll<HTMLElement>('.code-cells span')];
   function paintCode() {
