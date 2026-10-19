@@ -6,7 +6,13 @@ La página `/adviento` está implementada en Astro. Muestra el calendario bajo u
 
 Ejecuta `npm run build:adviento` y después `npm run dev`; abre `/adviento` en la URL local que muestre Astro. En este modo aparecen las **24 puertas disponibles sin correo**, puedes abrir cualquier día, leer sus pasos y prompts, descargar los materiales y probar la animación de completar. La banda «Vista local» permite reiniciar los avances de prueba. Estos avances viven solo en el almacenamiento local del navegador y no escriben en Supabase.
 
-`adviento-preview.json` se genera desde los archivos de `Adviento/` para esta vista. Astro lo incrusta únicamente durante `astro dev`; la compilación de producción no lo publica ni habilita el acceso anticipado. `npm run preview` sirve la compilación de producción y conserva sus restricciones reales.
+`adviento-preview.json` se genera desde los archivos de `Adviento/` para esta vista. Astro lo incrusta únicamente durante `astro dev`; la compilación de producción no lo publica. `npm run preview` sirve la compilación de producción con las restricciones reales de Supabase.
+
+## Acceso anticipado en producción
+
+La cuenta verificada `carla@innovalaus.com` tiene acceso anticipado a los 24 días. Debe iniciar sesión normalmente; Supabase identifica a la persona por su `user_id` y devuelve el permiso desde `adviento_estado()`. Las políticas RLS y `adviento_abrir()` aplican la excepción solo a esa cuenta. El permiso se limita al calendario y no concede privilegios de administración sobre Supabase ni sobre los datos de otras personas. Los avances y logros de prueba se guardan en la cuenta real.
+
+La migración `supabase/migrations/20261019210852_adviento_acceso_anticipado_admin.sql` instala el permiso y las políticas. La web debe estar desplegada con la versión que consulta `adviento_estado()` para mostrar las 24 puertas como disponibles.
 
 ## Configuración pendiente para el correo
 
@@ -21,7 +27,7 @@ Ejecuta `npm run build:adviento` y después `npm run dev`; abre `/adviento` en l
 
    La tarea `adviento-correo-2026` ya está programada. Hasta que existan el secreto de la función, la clave de Resend y el valor de Vault, no enviará avisos. Para comprobar el secreto de Vault sin mostrarlo, consulta `select name from vault.decrypted_secrets where name = 'adviento_cron_secret';`.
 
-5. Despliega esta versión de la web y comprueba con un correo propio el enlace de acceso, el registro, la persistencia de sesión y la baja de avisos. La apertura del primer reto solo podrá probarse de forma real desde el **1 de diciembre de 2026, hora de Madrid**; la fecha se valida en PostgreSQL.
+5. Despliega esta versión de la web y comprueba con un correo propio el enlace de acceso, el registro, la persistencia de sesión y la baja de avisos. La cuenta con acceso anticipado puede probar las aperturas antes del **1 de diciembre de 2026**; para las demás personas la fecha se valida en PostgreSQL.
 
 Los avisos se envían entre las 08:00 y las 09:59 de Madrid del 1 al 24 de diciembre de 2026, en lotes de hasta 100 personas cada cinco minutos. Cada envío lleva enlace de baja y una clave de idempotencia por persona y día. La casilla de avisos es opcional y empieza desmarcada.
 

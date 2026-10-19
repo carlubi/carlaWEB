@@ -19,6 +19,7 @@ const otpLength = 8;
     </header>
     <main class="advent-main">
       {localPreview && <div class="preview-banner" role="status"><span><strong>Vista local</strong> · Los 24 días están disponibles. Los avances de prueba se guardan solo en este navegador.</span><button id="preview-reset" type="button">Reiniciar avances</button></div>}
+      <div class="preview-banner" id="admin-preview-banner" role="status" hidden><span><strong>Acceso anticipado</strong> · Puedes probar los 24 días en producción. Los avances se guardan en tu cuenta.</span></div>
       <div class="intro">
         <div><h1>Calendario de Adviento</h1><p>Un reto al día para descubrir nuevas formas de trabajar con IA.</p><span class="calendar-status-visually-hidden" id="calendar-status" role="status">El primer regalo llega el 1 de diciembre.</span></div>
         <div class="progress-cluster"><div class="progress-copy"><strong id="welcome-name">Tu calendario</strong><span id="progress-caption">Entra para guardar tus avances</span><ul class="progress-legend" id="progress-legend" hidden><li><i class="legend-key is-done" aria-hidden="true"></i><span id="legend-done"></span></li><li><i class="legend-key is-open" aria-hidden="true"></i><span id="legend-open"></span></li></ul></div><div class="progress-ring"><svg id="progress-ring" viewBox="0 0 96 96" role="img" aria-label="Progreso: 0 de 24 retos completados" shape-rendering="geometricPrecision"></svg><div class="ring-center" aria-hidden="true"><strong id="completed-count">0</strong><span>de 24</span></div></div></div>

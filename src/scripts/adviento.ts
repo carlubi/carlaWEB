@@ -37,6 +37,7 @@ if (root) {
   let progress:Progress[] = [];
   let earned = new Set<string>();
   let today = '';
+  let adminPreview = false;
   let lastDoor:HTMLButtonElement|null = null;
 
   function makeIcon(name:string) {
@@ -222,18 +223,20 @@ if (root) {
 
   async function unlock() {
     if (!profile) return;
-    const [date,rows,medals] = await Promise.all([
-      db<string>('rpc/adviento_hoy','POST',{}),
+    const [state,rows,medals] = await Promise.all([
+      db<{hoy:string;vista_anticipada:boolean}>('rpc/adviento_estado','POST',{}),
       db<Progress[]>('adviento_progreso?select=dia,abierto_en,completado_en&order=dia'),
       db<{logro:string}[]>('adviento_logros?select=logro')
     ]);
-    today = date; progress = rows || []; earned = new Set((medals || []).map(item => item.logro));
+    today = state.hoy; adminPreview = state.vista_anticipada === true;
+    progress = rows || []; earned = new Set((medals || []).map(item => item.logro));
     stage.classList.remove('is-locked'); board.inert = false; gate.hidden = true;
     $('signout').hidden = false; $('achievements').hidden = false;
+    $('admin-preview-banner').hidden = !adminPreview;
     $('welcome-name').textContent = `Hola, ${profile.nombre.split(/\s+/)[0]}`;
     render();
   }
-  function available(day:Day) { return Boolean(today && day.abre_el <= today); }
+  function available(day:Day) { return adminPreview || Boolean(today && day.abre_el <= today); }
   function render() {
     const opened = progress.length;
     const completed = progress.filter(item => item.completado_en).length;
@@ -242,6 +245,9 @@ if (root) {
     if (previewMode) {
       $('calendar-status').textContent = 'Todos los cajones están disponibles para explorar.';
       $('calendar-hint').textContent = 'Abre cualquier día, descarga sus materiales y prueba la animación de completado.';
+    } else if (adminPreview) {
+      $('calendar-status').textContent = 'Tienes acceso anticipado a los 24 días.';
+      $('calendar-hint').textContent = 'Puedes abrir y completar cualquier reto. Tus avances se guardan en tu cuenta.';
     } else if (!released) {
       $('calendar-status').textContent = 'El primer regalo llega el 1 de diciembre.';
       $('calendar-hint').textContent = 'Tu sitio ya está reservado. El primer cajón se abre el 1 de diciembre.';
@@ -336,12 +342,15 @@ if (root) {
     } catch (error) { button.disabled = false; button.classList.remove('opening'); setMessage(errorText(error)); alert('No se ha podido abrir el cajón. ' + errorText(error)); }
   }
   function renderAchievements() {
-    const grid = $('achievement-grid'); grid.replaceChildren();
-    for (const [key,title,description] of achievements) {
-      const item = document.createElement('div'); item.className = `achievement${earned.has(key)?' earned':''}`;
-      const mark = document.createElement('span'); mark.className = 'achievement-mark'; mark.append(makeIcon(achievementIcon(key))); mark.setAttribute('aria-hidden','true');
-      const text = document.createElement('span'); const strong = document.createElement('strong'); strong.textContent = title; const small = document.createElement('small'); small.textContent = description; text.append(strong,small); item.append(mark,text); grid.append(item);
+    const grid = $('achievement-grid');
+    if (!grid.children.length) {
+      for (const [key,title,description] of achievements) {
+        const item = document.createElement('div'); item.className = 'achievement';
+        const mark = document.createElement('span'); mark.className = 'achievement-mark'; mark.append(makeIcon(achievementIcon(key))); mark.setAttribute('aria-hidden','true');
+        const text = document.createElement('span'); const strong = document.createElement('strong'); strong.textContent = title; const small = document.createElement('small'); small.textContent = description; text.append(strong,small); item.append(mark,text); grid.append(item);
+      }
     }
+    achievements.forEach(([key], index) => grid.children[index]?.classList.toggle('earned', earned.has(key)));
     $('achievement-status').textContent = `${achievements.filter(([key]) => earned.has(key)).length} de ${achievements.length} conseguidas`;
   }
   $('gift-close').addEventListener('click', () => gift.close());
