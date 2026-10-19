@@ -1,50 +1,40 @@
 # Día 5 · Tu mini-app en 5 minutos
 
-**Tipo:** ✨ Sorpresa (sábado)
+**Tipo:** ✨ Sorpresa
 **Herramienta:** Claude (artefactos)
-**Tiempo:** 10 minutos
+**Tiempo:** 15 minutos
 **Datos:** ninguno
+**Plan:** gratuito
 
 ## Objetivo
 
-Que descubra que puede pedir una herramienta a medida, no solo texto. Y que la haga ella, un sábado, sin que parezca trabajo.
+Sábado, nada de deberes. Que descubra que a Claude se le puede pedir una herramienta que funciona, que la retoque varias veces y que la comparta con un enlace.
 
-## Por qué es sorpresa y no reto
+## Lo que aprende
 
-Es sábado. Nadie quiere un deber de oficina. Pero este es el día que más suele sorprender: la gente no sabe que esto se puede pedir. Cuando ve que en dos minutos tiene una herramienta funcionando, cambia su idea de lo que es la IA.
+- Qué es un artefacto y dónde aparece.
+- Versiones: cada cambio crea una; las flechas vuelven atrás.
+- Publicar y compartir con enlace.
+- Que por detrás hay HTML y JavaScript, sin tener que tocarlos.
+- Iterar: pedir cambios concretos.
+- Comprobar los cálculos con casos conocidos (adelanta el día 6).
 
-## Pasos
+## Notas para ti
 
-1. Elige algo que hoy llevas en una libreta o en notas sueltas.
-2. Pídeselo a Claude con el prompt de `prompt.md`.
-3. Úsalo. Si algo no encaja, pídele que lo cambie y vuelve a probar.
-4. Guárdalo.
+- Las ideas están agrupadas por perfil (día a día, trabajo, estudio, críos) para que nadie piense que es un reto de oficina.
+- El ejemplo del test de examen engancha mucho a estudiantes y a madres y padres.
+- La calculadora de gastos de viaje es la que mejor queda en vídeo: se entiende al instante.
 
-## Ideas por si no se le ocurre nada
+## Capturas que hacen falta
 
-- Calculadora de horas trabajadas o de horas extra
-- Checklist de cierre de mes
-- Planificador de la semana con las tareas que se repiten
-- Contador de días hasta una fecha
-- Conversor de precios con y sin IVA
-- Reparto de tareas de casa entre varias personas
-
-La última es a propósito: es sábado y el calendario no es solo de oficina.
-
-## Lo que aprende sin que se lo digamos
-
-Que se puede iterar. "Hazlo otra vez pero con esto cambiado" es la habilidad más útil de todas, y aquí se practica sin riesgo.
-
-## Cómo saber si ha salido bien
-
-- La usa de verdad, aunque sea una vez.
-- Ha pedido al menos un cambio.
-
-## Aviso que debe salir en la web
-
-Lo que se guarde ahí dentro vive en su navegador. No es el sitio para datos importantes ni para algo que tenga que durar años. Para jugar y para herramientas pequeñas, perfecto.
+| Archivo | Qué tiene que salir |
+|---|---|
+| `d05-01-panel-artefacto.png` | Un artefacto tipo app funcionando, con las pestañas de vista previa y código, las flechas de versión y los botones de copiar y publicar |
+| `d05-02-publicar.png` | La ventana de publicar con el enlace para compartir |
 
 ## Por verificar antes de publicar
 
-- [ ] Si los artefactos están disponibles en gratuito
-- [ ] Qué pasa exactamente con lo que se guarda dentro
+- [ ] Que publicar artefactos siga disponible en el gratuito
+- [ ] Nombre exacto del botón de publicar en español
+- [ ] Si los artefactos ya guardan datos entre sesiones (hay versiones con almacenamiento); ajustar el aviso si cambia
+- [ ] Que quien abre el enlace no necesite cuenta

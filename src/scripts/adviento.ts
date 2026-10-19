@@ -181,7 +181,8 @@ if (root) {
   document.getElementById('preview-reset')?.addEventListener('click', () => { resetPreview(); progress = []; earned.clear(); render(); });
 
   function unlockPreview() {
-    today = '2026-12-25';
+    /* local preview: everything is open, or the date in ?hoy=2026-12-10 to see future drawers */
+    today = new URLSearchParams(location.search).get('hoy')?.match(/^2026-12-\d\d$/)?.[0] || '2026-12-25';
     progress = readPreview();
     earned = previewAchievements(progress);
     stage.classList.remove('is-locked'); board.inert = false; gate.hidden = true;
@@ -247,11 +248,13 @@ if (root) {
   }
   function renderDoors() {
     const grid = $('door-grid'); grid.replaceChildren();
-    for (const day of days) {
+    for (const [index, day] of days.entries()) {
       const item = progress.find(row => row.dia === day.dia);
       const state = item?.completado_en ? 'completed' : item ? 'opened' : available(day) ? 'available' : 'future';
       const button = document.createElement('button'); button.type = 'button'; button.dataset.day = String(day.dia);
-      button.className = `calendar-door ${state}`;
+      /* diagonal colour ribbons, shared with the 3D house (adviento-house3d.ts · frontStyle) */
+      const tone = day.dia === 24 ? 'eve' : day.tipo === 'Sorpresa' ? 'pine' : ((index % 6 - Math.floor(index / 6)) % 3 + 3) % 3;
+      button.className = `calendar-door tone-${tone}${day.tipo === 'Regalo' ? ' is-gift' : ''} ${state}`;
       button.disabled = state === 'future';
       button.setAttribute('aria-label',state==='future' ? `Día ${day.dia}, todavía cerrado` : `Día ${day.dia}: ${day.titulo}${state==='completed'?', completado':''}`);
       const inside = document.createElement('span'); inside.className = 'door-content';

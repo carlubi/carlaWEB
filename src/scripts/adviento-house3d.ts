@@ -10,14 +10,15 @@ import { createCaganerModel, createSmokePuff } from './adviento-caganer';
  * 3D drawer fronts. If WebGL is unavailable the CSS house remains as fallback.
  */
 
-type DayInfo = { dia:number; titulo:string };
+type DayInfo = { dia:number; titulo:string; abre_el?:string; tipo?:string };
 type DoorState = 'future'|'available'|'opened'|'completed';
-type FrontStyle = { bg:string; ink:string; tile:string; tileBorder:string };
+type FrontStyle = { bg:string; ink:string; tile:string; tileBorder:string; ribbon?:boolean; bow?:boolean };
 type Layout = ReturnType<typeof layoutFor>;
 type Drawer = {
   day:DayInfo; x:number; y:number; state:DoorState;
   group:THREE.Group; materials:THREE.Material[]; rim:THREE.MeshStandardMaterial;
   interior:THREE.Mesh; interiorMat:THREE.MeshStandardMaterial; interiorDrawn:string;
+  index:number; box:THREE.MeshStandardMaterial; face:THREE.CanvasTexture; frontDrawn:string;
   pull:number; openStart:number; button:HTMLButtonElement|null;
 };
 
@@ -25,26 +26,47 @@ type Drawer = {
 const SPEC = {
   color: {
     facade:'#78233f', side:'#5e1d37', liner:'#2a0c1b', roof:'#5a1a33', roofUnder:'#3d1124',
-    icing:'#fff9ec', gold:'#f3c969', rimMuted:'#9a5468', tray:'#b4687e', notch:'#351020',
+    icing:'#fff9ec', gold:'#f3c969', rimMuted:'#9a5468', tray:'#b4687e',
     pine:'#5f755d', pineDark:'#4f6550', trunk:'#b98f63', snow:'#fffdf8', chimney:'#6e2440', shadow:'#3b1225'
   },
   fronts: {
     cream:{ bg:'#f8f5ed', ink:'#691b32', tile:'rgba(105,27,50,.055)', tileBorder:'rgba(105,27,50,.16)' },
     pink:{ bg:'#e9d4d9', ink:'#691b32', tile:'rgba(105,27,50,.06)', tileBorder:'rgba(105,27,50,.16)' },
     wine:{ bg:'#78243f', ink:'#fff9ec', tile:'rgba(255,249,236,.12)', tileBorder:'rgba(255,249,236,.28)' },
-    gold:{ bg:'#f3c969', ink:'#691b32', tile:'rgba(105,27,50,.07)', tileBorder:'rgba(105,27,50,.18)' }
+    gold:{ bg:'#f3c969', ink:'#691b32', tile:'rgba(105,27,50,.07)', tileBorder:'rgba(105,27,50,.18)' },
+    /* surprise days: the fir green of the trees beside the house */
+    pine:{ bg:'#5f755d', ink:'#fff9ec', tile:'rgba(255,249,236,.14)', tileBorder:'rgba(255,249,236,.3)' },
+    /* Christmas Eve: the big present, deep pine wrapped in a gold ribbon with a bow */
+    eve:{ bg:'#34503f', ink:'#fff9ec', tile:'rgba(255,249,236,.14)', tileBorder:'rgba(243,201,105,.45)', ribbon:true, bow:true }
   } satisfies Record<string,FrontStyle>,
   camera: { fov:30, yaw:-.34, pitch:.13, yawRange:[-.62, .3], pitchRange:[.04, .21], dragSpeed:.0055 },
-  openMs: 900
+  openMs: 900,
+  /* where the opened card rests, and where it waits while the tray slides out past it */
+  cardZ: { rest:-.1, behindTray:-.55 }
 };
 
-/* Same colour rhythm as the CSS nth-child rules, so both renderers agree. */
-function frontStyle(n:number):FrontStyle {
-  let style = SPEC.fronts.cream;
-  if (n % 4 === 2) style = SPEC.fronts.pink;
-  if (n % 6 === 4 || n % 9 === 0) style = SPEC.fronts.wine;
-  if (n % 7 === 0) style = SPEC.fronts.gold;
-  return style;
+/*
+ * Fronts run in diagonal ribbons (warm white, cherry soft, cherry), like wrapping paper, so the
+ * rhythm reads as intended at 6 and at 4 columns. Yellow is not decoration: DESIGN.md keeps it
+ * for progress, so only a drawer you can open now turns yellow. The CSS fallback uses the same
+ * ribbons through the tone-* classes set in adviento.astro.
+ */
+const ribbons = [SPEC.fronts.cream, SPEC.fronts.pink, SPEC.fronts.wine];
+function frontStyle(index:number, cols:number, state:DoorState, day:DayInfo):FrontStyle {
+  /* day 24 keeps its wrapping even when it can be opened; its «Ábrelo» says so in yellow */
+  if (day.dia === 24) return SPEC.fronts.eve;
+  if (state === 'available') return SPEC.fronts.gold;
+  if (day.tipo === 'Sorpresa') return SPEC.fronts.pine;
+  const r = Math.floor(index / cols), c = index % cols;
+  const base = ribbons[((c - r) % 3 + 3) % 3];
+  /* gift days wear a gold ribbon over their usual colour */
+  return day.tipo === 'Regalo' ? { ...base, ribbon:true } : base;
+}
+
+const months = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+function shortDate(iso?:string) {
+  const m = iso?.match(/^\d{4}-(\d{2})-(\d{2})/);
+  return m ? `${Number(m[2])} ${months[Number(m[1]) - 1]}` : '';
 }
 
 function layoutFor(compact:boolean) {
@@ -233,51 +255,185 @@ export async function mountHouse3D(scene:HTMLElement, grid:HTMLElement, days:Day
     return tex;
   }
 
-  function drawFront(ctx:CanvasRenderingContext2D, w:number, h:number, day:DayInfo, icon:HTMLImageElement|null) {
-    const style = frontStyle(day.dia); const u = Math.min(w, h);
+  /*
+   * A closed drawer front: a lacquered panel with a fine inset (shaker cabinet), the day number
+   * and its icon on one baseline, and the brass pull as real geometry above. The state is said
+   * with shape and words, not colour alone (DESIGN.md · Estados): a padlock and the date while it
+   * is still closed, «Ábrelo» when it can be opened.
+   */
+  function drawFront(ctx:CanvasRenderingContext2D, w:number, h:number, d:Drawer, style:FrontStyle, icon:HTMLImageElement|null) {
+    const u = Math.min(w, h);
+    ctx.clearRect(0, 0, w, h);
     ctx.fillStyle = style.bg; ctx.fillRect(0, 0, w, h);
+    /* lacquer: a little light at the top, a little weight at the bottom */
     const g = ctx.createLinearGradient(0, 0, 0, h);
-    g.addColorStop(0, 'rgba(255,255,255,.14)'); g.addColorStop(.45, 'rgba(255,255,255,0)'); g.addColorStop(1, 'rgba(60,10,30,.09)');
+    g.addColorStop(0, 'rgba(255,255,255,.16)'); g.addColorStop(.5, 'rgba(255,255,255,0)'); g.addColorStop(1, 'rgba(60,10,30,.08)');
     ctx.fillStyle = g; ctx.fillRect(0, 0, w, h);
-    ctx.fillStyle = SPEC.color.notch;
-    ctx.beginPath(); ctx.ellipse(w / 2, 0, u * .14, u * .085, 0, 0, Math.PI); ctx.fill();
-    ctx.fillStyle = style.ink; ctx.textBaseline = 'middle'; ctx.textAlign = 'left';
-    ctx.globalAlpha = .62; ctx.font = `600 ${u * .12}px ${FONT}`;
-    ctx.fillText(day.dia % 3 === 0 ? '✦' : '✳', u * .09, u * .17);
-    ctx.globalAlpha = 1; ctx.textBaseline = 'alphabetic';
-    ctx.font = `600 ${u * .42}px ${FONT}`;
-    ctx.fillText(String(day.dia).padStart(2, '0'), u * .09, h - u * .1);
-    const s = u * .4, x = w - s - u * .08, y = h * .46 - s / 2;
-    roundRect(ctx, x, y, s, s, s * .2); ctx.fillStyle = style.tile; ctx.fill();
-    ctx.lineWidth = Math.max(1, u * .008); ctx.strokeStyle = style.tileBorder; ctx.stroke();
-    if (icon) ctx.drawImage(icon, x + s * .15, y + s * .15, s * .7, s * .7);
+    /* inset panel: a light edge over a dark one reads as a shallow groove */
+    const inset = u * .075, panelR = u * .05;
+    roundRect(ctx, inset + 1, inset + 1, w - inset * 2, h - inset * 2, panelR);
+    ctx.lineWidth = Math.max(1, u * .007); ctx.strokeStyle = 'rgba(255,255,255,.28)'; ctx.stroke();
+    roundRect(ctx, inset, inset, w - inset * 2, h - inset * 2, panelR);
+    ctx.strokeStyle = style.tileBorder; ctx.stroke();
+
+    const pad = inset + u * .065;
+    if (style.ribbon) {
+      /* gift wrap: one band down the gap between number and icon, one across above the label */
+      const band = u * .08, ry = h * .3, rx = w * (L.compact ? .6 : .56);
+      ctx.fillStyle = SPEC.color.gold;
+      ctx.fillRect(rx - band / 2, 0, band, h);
+      ctx.fillRect(0, ry - band / 2, w, band);
+      ctx.fillStyle = 'rgba(120,70,20,.22)';
+      ctx.fillRect(rx - band / 2, 0, band * .18, h); ctx.fillRect(0, ry + band * .32, w, band * .18);
+      if (style.bow) {
+        /* the bow: two loops and two tails where the bands cross */
+        const bx = rx, by = ry, lw = u * .14, lh = u * .09;
+        ctx.lineWidth = Math.max(2, u * .03); ctx.strokeStyle = SPEC.color.gold; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+        ctx.beginPath(); ctx.ellipse(bx - lw * .55, by - lh * .15, lw * .55, lh * .5, -.35, 0, Math.PI * 2); ctx.stroke();
+        ctx.beginPath(); ctx.ellipse(bx + lw * .55, by - lh * .15, lw * .55, lh * .5, .35, 0, Math.PI * 2); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(bx, by); ctx.lineTo(bx - lw * .45, by + lh * .7); ctx.moveTo(bx, by); ctx.lineTo(bx + lw * .45, by + lh * .7); ctx.stroke();
+        ctx.beginPath(); ctx.arc(bx, by, u * .035, 0, Math.PI * 2); ctx.fillStyle = '#e2b44f'; ctx.fill();
+        /* a few stars on the paper */
+        ctx.fillStyle = 'rgba(243,201,105,.75)'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.font = `600 ${u * .08}px ${FONT}`;
+        for (const [sx, sy] of [[.2, .17], [.86, .16], [.88, .5]]) ctx.fillText('✦', w * sx, h * sy);
+      }
+    }
+
+    /* number and icon share a baseline at the bottom of the panel */
+    const numSize = u * (L.compact ? .38 : .36);
+    const base = h - pad;
+    ctx.fillStyle = style.ink; ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic';
+    ctx.font = `600 ${numSize}px ${FONT}`;
+    if ('letterSpacing' in ctx) (ctx as CanvasRenderingContext2D & { letterSpacing:string }).letterSpacing = `${(-numSize * .02).toFixed(1)}px`;
+    ctx.fillText(String(d.day.dia).padStart(2, '0'), pad - u * .01, base);
+    if ('letterSpacing' in ctx) (ctx as CanvasRenderingContext2D & { letterSpacing:string }).letterSpacing = '0px';
+    const r = u * .14, cx = w - pad - r, cy = base - numSize * .36;
+    ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2);
+    ctx.fillStyle = style.ribbon ? style.bg : style.tile; ctx.fill();
+    ctx.fillStyle = style.tile; ctx.fill();
+    ctx.lineWidth = Math.max(1, u * .007); ctx.strokeStyle = style.tileBorder; ctx.stroke();
+    if (icon) ctx.drawImage(icon, cx - r * .62, cy - r * .62, r * 1.24, r * 1.24);
+
+    /* state, in the free band just above the number (the pull keeps the top edge) */
+    const labelSize = u * (L.compact ? .13 : .115);
+    const mid = base - numSize * .78 - labelSize * .75;
+    ctx.textBaseline = 'middle'; ctx.textAlign = 'left';
+    ctx.font = `600 ${labelSize}px ${FONT}`;
+    if (d.state === 'future') {
+      const date = d.day.dia === 24 && !L.compact ? 'Nochebuena' : shortDate(d.day.abre_el);
+      const lw = labelSize * .72, lh = labelSize * .6, lx = pad, ly = mid - lh * .3;
+      const textW = ctx.measureText(date).width, plateW = lw + labelSize * .4 + textW + labelSize * .7;
+      if (style.ribbon) {
+        /* on wrapping paper the label sits on a small plate so the ribbon never cuts it */
+        roundRect(ctx, lx - labelSize * .35, mid - labelSize * .72, plateW, labelSize * 1.44, labelSize * .72);
+        ctx.fillStyle = style.bg; ctx.fill();
+      }
+      ctx.lineWidth = Math.max(1.4, labelSize * .12); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+      ctx.strokeStyle = style.ink; ctx.globalAlpha = .85;
+      roundRect(ctx, lx, ly, lw, lh, lw * .18); ctx.stroke();
+      ctx.beginPath(); ctx.arc(lx + lw / 2, ly, lw * .3, Math.PI, 0); ctx.stroke();
+      ctx.fillStyle = style.ink; ctx.fillText(date, lx + lw + labelSize * .4, mid + labelSize * .04);
+      ctx.globalAlpha = 1;
+    } else if (d.state === 'available') {
+      const label = 'Ábrelo', tw = ctx.measureText(label).width, ph = labelSize * 1.5, px = labelSize * .6;
+      roundRect(ctx, pad - px * .5, mid - ph / 2, tw + px * 2, ph, ph / 2);
+      ctx.fillStyle = d.day.dia === 24 ? SPEC.color.gold : 'rgba(105,27,50,.12)'; ctx.fill();
+      ctx.fillStyle = d.day.dia === 24 ? '#691b32' : style.ink;
+      ctx.fillText(label, pad - px * .5 + px, mid + labelSize * .04);
+    }
   }
 
+  /* repaint a front only when what it shows changes (its state or the layout) */
+  function paintFront(d:Drawer) {
+    if (d.state === 'opened' || d.state === 'completed') return;
+    const style = frontStyle(d.index, L.cols, d.state, d.day);
+    const key = `${d.state}|${L.cols}`;
+    if (d.frontDrawn === key) return;
+    d.frontDrawn = key;
+    d.box.color.set(style.bg);
+    const canvas = d.face.image as HTMLCanvasElement;
+    const draw = (img:HTMLImageElement|null) => { drawFront(canvas.getContext('2d')!, canvas.width, canvas.height, d, style, img); d.face.needsUpdate = true; };
+    draw(null);
+    icons.get(dayIcon(d.day.dia), style.ink).then(img => { if (img && d.frontDrawn === key && drawers.includes(d)) { draw(img); requestRender(); } });
+  }
+
+  /*
+   * The card inside an opened drawer (DESIGN.md: warm-white surface, cherry ink, yellow = done).
+   * It sits just behind the facade, but the camera looks in at an angle, so the hole's rim
+   * can still hide a strip of it: everything stays inside a safe margin sized for the widest yaw.
+   * Opened and completed differ by shape and words too, not only colour.
+   */
   function drawInterior(ctx:CanvasRenderingContext2D, w:number, h:number, day:DayInfo, completed:boolean, icon:HTMLImageElement|null) {
     const u = Math.min(w, h);
-    const bg = ctx.createRadialGradient(w / 2, h * .35, 0, w / 2, h * .35, Math.max(w, h) * .75);
-    bg.addColorStop(0, '#fff8e8'); bg.addColorStop(1, '#edd6b2');
-    ctx.fillStyle = bg; ctx.fillRect(0, 0, w, h);
-    const top = ctx.createLinearGradient(0, 0, 0, h * .22);
-    top.addColorStop(0, 'rgba(55,20,32,.24)'); top.addColorStop(1, 'rgba(55,20,32,0)');
-    ctx.fillStyle = top; ctx.fillRect(0, 0, w, h * .22);
-    ctx.lineWidth = u * .04; ctx.strokeStyle = 'rgba(96,34,53,.18)'; ctx.strokeRect(0, 0, w, h);
-    const r = u * .19, cx = w / 2, cy = h * .37;
-    ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2);
-    ctx.fillStyle = completed ? SPEC.color.gold : '#ffffff'; ctx.fill();
-    ctx.lineWidth = Math.max(1, u * .008); ctx.strokeStyle = completed ? SPEC.color.gold : 'rgba(105,27,50,.19)'; ctx.stroke();
-    if (icon) ctx.drawImage(icon, cx - r * .6, cy - r * .6, r * 1.2, r * 1.2);
-    ctx.fillStyle = '#691b32'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    const size = u * (L.compact ? .115 : .1); ctx.font = `600 ${size}px ${FONT}`;
-    const lines = wrapLines(ctx, day.titulo, w * .86, 3);
-    const start = h * .7 - (lines.length - 1) * size * .55;
-    lines.forEach((line, i) => ctx.fillText(line, cx, start + i * size * 1.1));
-    if (completed) {
-      const sr = u * .085, sx = w - u * .14, sy = u * .14;
-      ctx.beginPath(); ctx.arc(sx, sy, sr, 0, Math.PI * 2); ctx.fillStyle = SPEC.color.gold; ctx.fill();
-      ctx.lineWidth = Math.max(1, u * .01); ctx.strokeStyle = '#691b32'; ctx.stroke();
-      ctx.fillStyle = '#691b32'; ctx.font = `600 ${sr * 1.2}px ${FONT}`; ctx.fillText('✓', sx, sy + sr * .05);
+    const cherry = '#691b32';
+    const padX = w * .12, padTop = h * .11, padBottom = h * .1;
+    ctx.fillStyle = completed ? '#fff3d2' : '#fffaf1'; ctx.fillRect(0, 0, w, h);
+    /* soft light from above, like the drawer's own shadow falling on the card */
+    const top = ctx.createLinearGradient(0, 0, 0, h * .3);
+    top.addColorStop(0, 'rgba(59,37,45,.16)'); top.addColorStop(1, 'rgba(59,37,45,0)');
+    ctx.fillStyle = top; ctx.fillRect(0, 0, w, h * .3);
+
+    /* top row: which day this is, and its state in words */
+    ctx.textBaseline = 'middle';
+    const rowY = padTop + u * .06;
+    ctx.textAlign = 'left'; ctx.fillStyle = 'rgba(105,27,50,.78)';
+    ctx.font = `600 ${u * .13}px ${FONT}`;
+    ctx.fillText(String(day.dia).padStart(2, '0'), padX, rowY);
+    /* a drawn check, not a glyph: same stroke language as the icon set */
+    const check = (cx:number, cy:number, s:number) => {
+      ctx.beginPath(); ctx.moveTo(cx - s, cy); ctx.lineTo(cx - s * .25, cy + s * .75); ctx.lineTo(cx + s * 1.1, cy - s * .8);
+      ctx.lineWidth = Math.max(1.5, u * .016); ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.strokeStyle = cherry; ctx.stroke();
+    };
+    if (L.compact) {
+      /* on phones a word this small can't be read: the state becomes a shape, and the title gets the room */
+      if (completed) {
+        const sr = u * .1, sx = w - padX - sr, sy = rowY;
+        ctx.beginPath(); ctx.arc(sx, sy, sr, 0, Math.PI * 2); ctx.fillStyle = SPEC.color.gold; ctx.fill();
+        check(sx, sy, sr * .42);
+      }
+    } else {
+      const label = completed ? 'Hecho' : 'Por hacer';
+      ctx.font = `600 ${u * .095}px ${FONT}`;
+      const labelW = ctx.measureText(label).width;
+      const pillH = u * .155, pillPad = u * .06, stamp = completed ? pillH : 0;
+      const pillW = labelW + pillPad * 2 + stamp * .55;
+      const pillX = w - padX - pillW, pillY = rowY - pillH / 2;
+      roundRect(ctx, pillX, pillY, pillW, pillH, pillH / 2);
+      ctx.fillStyle = completed ? SPEC.color.gold : 'rgba(105,27,50,.08)'; ctx.fill();
+      ctx.fillStyle = cherry; ctx.textAlign = 'left';
+      ctx.fillText(label, pillX + pillPad + stamp * .55, rowY + u * .004);
+      if (completed) check(pillX + pillPad + stamp * .2, rowY, stamp * .2);
     }
+
+    /* the day's icon */
+    const r = u * .14, cx = w / 2, cy = h * .42;
+    ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2);
+    ctx.fillStyle = completed ? SPEC.color.gold : '#e9d4d9'; ctx.fill();
+    if (icon) ctx.drawImage(icon, cx - r * .58, cy - r * .58, r * 1.16, r * 1.16);
+
+    /* the title: as large as fits in three lines, shrinking before it would ever be cut */
+    const maxW = w - padX * 2, areaTop = cy + r + u * .05, areaBottom = h - padBottom * .8;
+    let size = u * (L.compact ? .17 : .135), lines:string[] = [];
+    for (; size > u * .07; size *= .94) {
+      ctx.font = `600 ${size}px ${FONT}`;
+      lines = wrapLines(ctx, day.titulo, maxW, 3);
+      const fits = !lines.at(-1)?.endsWith('…') && lines.every(line => ctx.measureText(line).width <= maxW);
+      if (fits && lines.length * size * 1.12 <= areaBottom - areaTop) break;
+    }
+    ctx.font = `600 ${size}px ${FONT}`; ctx.fillStyle = cherry; ctx.textAlign = 'center';
+    /* balance the lines (like text-wrap:balance) so no word is left alone on the last one */
+    if (lines.length > 1) {
+      let lo = maxW * .45, hi = maxW;
+      for (let i = 0; i < 12; i++) {
+        const mid = (lo + hi) / 2;
+        if (wrapLines(ctx, day.titulo, mid, lines.length).some(line => line.endsWith('…'))) lo = mid; else hi = mid;
+      }
+      lines = wrapLines(ctx, day.titulo, hi, lines.length);
+    }
+    const lineH = size * 1.12;
+    const start = areaTop + (areaBottom - areaTop - lines.length * lineH) / 2 + lineH / 2;
+    lines.forEach((line, i) => ctx.fillText(line, cx, start + i * lineH));
   }
 
   /* ---------- model ---------- */
@@ -316,6 +472,7 @@ export async function mountHouse3D(scene:HTMLElement, grid:HTMLElement, days:Day
     const frontGeo = geo(new RoundedBoxGeometry(L.cellW - .02, L.cellH - .02, .12, 3, .022));
     const facePlaneGeo = geo(new THREE.PlaneGeometry(L.cellW - .05, L.cellH - .05));
     const interiorGeo = geo(new THREE.PlaneGeometry(L.cellW + L.holePad - 2 * bevel.size, L.cellH + L.holePad - 2 * bevel.size));
+    const pullGeo = geo(new RoundedBoxGeometry(.2, .048, .05, 3, .021));
     const trayDepth = .44;
     const traySide = geo(new THREE.BoxGeometry(.035, L.cellH * .62, trayDepth));
     const trayBottom = geo(new THREE.BoxGeometry(L.cellW - .1, .035, trayDepth));
@@ -327,14 +484,17 @@ export async function mountHouse3D(scene:HTMLElement, grid:HTMLElement, days:Day
       const rimMat = mat({ color:SPEC.color.rimMuted, roughness:.32, metalness:.45, emissive:SPEC.color.gold, emissiveIntensity:0 });
       const rimMesh = shadowed(new THREE.Mesh(rimGeo, rimMat), true, true); rimMesh.position.set(x, y, -.012); root.add(rimMesh);
 
-      const interiorMat = mat({ color:'#ffffff', roughness:.85 });
-      const interior = new THREE.Mesh(interiorGeo, interiorMat); interior.position.set(x, y, -.55); interior.receiveShadow = true; interior.visible = false; root.add(interior);
+      /* the opened card sits just behind the facade: deep enough to read as a drawer, shallow
+         enough that the rim never hides the title when the camera looks in from the side */
+      const interiorMat = mat({ color:'#ffffff', roughness:.85, emissive:'#ffffff', emissiveIntensity:.32 });
+      const interior = new THREE.Mesh(interiorGeo, interiorMat); interior.position.set(x, y, SPEC.cardZ.rest); interior.receiveShadow = true; interior.visible = false; root.add(interior);
 
       const group = new THREE.Group(); group.position.set(x, y, 0);
-      const style = frontStyle(day.dia);
-      const boxMat = mat({ color:style.bg, roughness:.6 });
-      const faceTex = canvasTexture((L.cellW - .05) * ppu, (L.cellH - .05) * ppu, (ctx, w, h) => drawFront(ctx, w, h, day, null));
-      const faceMat = mat({ map:faceTex, roughness:.58 });
+      const boxMat = mat({ color:SPEC.fronts.cream.bg, roughness:.6 });
+      const faceTex = canvasTexture((L.cellW - .05) * ppu, (L.cellH - .05) * ppu, () => {});
+      const faceMat = mat({ map:faceTex, roughness:.5 });
+      /* the brass pull: the one physical detail that makes it a drawer, not a tile */
+      const pullMat = mat({ color:SPEC.color.gold, roughness:.28, metalness:.6 });
       const trayMat = mat({ color:SPEC.color.tray, roughness:.7 });
       const front = shadowed(new THREE.Mesh(frontGeo, boxMat)); front.position.z = -.08;
       const face = new THREE.Mesh(facePlaneGeo, faceMat); face.position.z = -.019; face.receiveShadow = true;
@@ -343,14 +503,10 @@ export async function mountHouse3D(scene:HTMLElement, grid:HTMLElement, days:Day
       const right = new THREE.Mesh(traySide, trayMat); right.position.set(L.cellW / 2 - .07, ty, tz);
       const bottom = new THREE.Mesh(trayBottom, trayMat); bottom.position.set(0, ty - L.cellH * .31, tz);
       const back = new THREE.Mesh(trayBack, trayMat); back.position.set(0, ty, tz - trayDepth / 2);
-      group.add(front, face, left, right, bottom, back);
+      const pull = shadowed(new THREE.Mesh(pullGeo, pullMat), true, false); pull.position.set(0, L.cellH / 2 - (L.compact ? .15 : .13), .012);
+      group.add(front, face, pull, left, right, bottom, back);
       root.add(group);
-      const drawer:Drawer = { day, x, y, state:'future', group, materials:[boxMat, faceMat, trayMat], rim:rimMat, interior, interiorMat, interiorDrawn:'', pull:0, openStart:-1, button:null };
-      icons.get(dayIcon(day.dia), style.ink).then(img => {
-        if (!img || !drawers.includes(drawer)) return;
-        drawFront((faceTex.image as HTMLCanvasElement).getContext('2d')!, faceTex.image.width, faceTex.image.height, day, img);
-        faceTex.needsUpdate = true;
-      });
+      const drawer:Drawer = { day, x, y, state:'future', group, materials:[boxMat, faceMat, trayMat, pullMat], rim:rimMat, interior, interiorMat, interiorDrawn:'', index:i, box:boxMat, face:faceTex, frontDrawn:'', pull:0, openStart:-1, button:null };
       return drawer;
     });
 
@@ -597,7 +753,7 @@ export async function mountHouse3D(scene:HTMLElement, grid:HTMLElement, days:Day
     const w = L.cellW * ppu, h = L.cellH * ppu;
     const old = d.interiorMat.map;
     const tex = canvasTexture(w, h, (ctx, cw, ch) => drawInterior(ctx, cw, ch, d.day, completed, null));
-    d.interiorMat.map = tex; d.interiorMat.needsUpdate = true;
+    d.interiorMat.map = tex; d.interiorMat.emissiveMap = tex; d.interiorMat.needsUpdate = true;
     if (old) { old.dispose(); disposables.delete(old); }
     icons.get(dayIcon(d.day.dia), '#691b32').then(img => {
       if (!img || d.interiorMat.map !== tex) return;
@@ -619,15 +775,16 @@ export async function mountHouse3D(scene:HTMLElement, grid:HTMLElement, days:Day
       const wasOpen = d.state === 'opened' || d.state === 'completed' || d.openStart >= 0;
       if (opening && !wasOpen) {
         d.state = 'opened'; showInterior(d);
-        if (reduceMotion.matches) { d.group.visible = false; }
-        else { d.openStart = performance.now(); setOpacity(d, 1); }
+        if (reduceMotion.matches) { d.group.visible = false; d.interior.position.z = SPEC.cardZ.rest; }
+        else { d.openStart = performance.now(); setOpacity(d, 1); d.interior.position.z = SPEC.cardZ.behindTray; }
       } else if (next === 'opened' || next === 'completed') {
         d.state = next; showInterior(d);
-        if (d.openStart < 0) d.group.visible = false;
+        if (d.openStart < 0) { d.group.visible = false; d.interior.position.z = SPEC.cardZ.rest; }
       } else {
         d.state = next; d.openStart = -1; d.group.visible = true; d.group.position.set(d.x, d.y, 0); setOpacity(d, 1);
         d.interior.visible = false;
       }
+      paintFront(d);
       const lit = d.state !== 'future';
       d.rim.color.set(lit ? SPEC.color.gold : SPEC.color.rimMuted);
     });
@@ -742,7 +899,9 @@ export async function mountHouse3D(scene:HTMLElement, grid:HTMLElement, days:Day
         const fade = THREE.MathUtils.clamp((t - .52) / .48, 0, 1);
         d.group.position.set(d.x, d.y - fade * fade * .18, pull);
         setOpacity(d, 1 - fade);
-        if (t >= 1) { d.openStart = -1; d.group.visible = false; setOpacity(d, 1); }
+        /* once the tray is out, the card comes forward to its resting place */
+        d.interior.position.z = THREE.MathUtils.lerp(SPEC.cardZ.behindTray, SPEC.cardZ.rest, easeOut(fade));
+        if (t >= 1) { d.openStart = -1; d.group.visible = false; setOpacity(d, 1); d.interior.position.z = SPEC.cardZ.rest; }
         renderer.shadowMap.needsUpdate = true;
         return;
       }

@@ -1,51 +1,87 @@
 # Cómo cazar un error
-resumen: La IA también se equivoca, y a veces con mucha seguridad. Aprende a pillarla en treinta segundos.
-datos: Facturas de prueba
+resumen: La IA se equivoca, y a veces con una seguridad que da miedo. Hoy entiendes por qué pasa, dónde falla más y las tres preguntas para pillarla en treinta segundos.
+datos: Las facturas de prueba
 
-## La cara b
+## La cara B
 
-Llevas cinco días viendo cosas que funcionan. Hoy toca lo contrario: la IA se equivoca, y a veces con mucha seguridad. Vas a aprender dónde suele fallar y cómo pillarla en treinta segundos.
+Llevas cinco días viendo cosas que funcionan. Hoy toca lo contrario, y es igual de importante: **Claude se equivoca**. No mucho, pero sí lo bastante como para que no te fíes a ciegas. Y lo peor no es que se equivoque, es que lo hace con el mismo tono seguro con el que acierta.
 
-## Pasos
+Saber pillarlo es lo que separa a quien usa IA con criterio de quien se la juega.
 
-1. Descarga las facturas de prueba.
-2. Pídele el total con el paso 1. Guarda la respuesta y no digas nada todavía.
-3. Pídele que se audite con el paso 2.
-4. Termina con la pregunta del paso 3. Es la que más enseña.
+## Por qué se equivoca
 
-## Las tres comprobaciones
+¿Te acuerdas del día 2? El modelo construye la respuesta prediciendo qué encaja mejor después. No consulta una base de datos ni "sabe" si algo es verdad. Genera lo que **suena** más probable.
 
-1. **¿De dónde sale este número?** Pídele que te enseñe el cálculo o las filas que ha usado.
-2. **¿Qué has dado por supuesto?** Aquí salen las decisiones que tomó sin preguntarte.
-3. **¿Qué puede estar mal en lo que me has dado?** Oblígala a buscarse los fallos.
+La mayoría de las veces, lo que suena probable y lo que es verdad coinciden. Cuando no coinciden, aparece lo que se llama una **alucinación**: un dato, una cita, una cifra o una fuente que se ha inventado sin darse cuenta. No miente a propósito. Simplemente no distingue entre "esto lo sé" y "esto suena bien".
+
+Hay tres situaciones que lo disparan:
+
+1. **Le falta información** y, en vez de preguntar, rellena el hueco con lo más probable.
+2. **La pregunta es sobre algo reciente.** Los modelos aprenden hasta una fecha (la *fecha de corte*). De lo que pasó después no saben nada, salvo que busquen en internet.
+3. **Hace cuentas "de cabeza".** Un modelo de lenguaje es buenísimo con palabras y regular con números. Cuando suma 300 filas sin usar ninguna herramienta, puede fallar. Cuando usa código para calcular (lo verás el día 15), acierta mucho más.
 
 ## Dónde falla más
 
-- Sumas y cuentas sobre muchos datos.
-- Fechas y plazos.
-- Datos que cambian con el tiempo.
-- Rellenar huecos: cuando le falta un dato, a veces lo completa en vez de preguntar.
-- Documentos largos: se queda con lo del principio y lo del final.
+- **Sumas, porcentajes y cuentas** con muchos datos.
+- **Fechas y plazos**: días de la semana, vencimientos, cuántos días hay entre dos fechas.
+- **Datos que cambian**: precios, normativa, quién ocupa un cargo.
+- **Citas y fuentes**: a veces te da un libro, un estudio o una ley que no existe, o que no dice eso.
+- **Documentos largos**: se queda con el principio y el final, y se salta lo del medio.
+- **Nombres parecidos**: mezcla dos clientes, dos personas o dos productos.
+
+## Las tres preguntas
+
+Apréndetelas. Te van a servir toda la vida:
+
+1. **¿De dónde sale esto?** Que te enseñe el cálculo, las filas o la parte del documento que ha usado.
+2. **¿Qué has dado por supuesto?** Aquí sale todo lo que decidió sin preguntarte. Suele ser donde está el error.
+3. **¿Qué puede estar mal en tu respuesta?** Oblígale a buscarse los fallos. Funciona sorprendentemente bien.
+
+## El reto
+
+Las facturas de prueba son de una empresa inventada y tienen trampas sembradas a propósito: duplicados, importes vacíos, clientes escritos de cuatro formas distintas, fechas en dos formatos. A ver si Claude las ve.
+
+1. Descarga las facturas de prueba.
+2. Abre un chat nuevo y pídele el total con el paso 1. **Apunta el número y no digas nada todavía.**
+3. Haz el paso 2: que se audite.
+4. Termina con el paso 3, la pregunta que más enseña.
+5. Compara el número del principio con lo que ha descubierto después. ¿Te habrías fiado del primero?
+
+## Cómo saber si ha salido bien
+
+- Ha encontrado al menos tres tipos de problema en los datos.
+- Te ha explicado qué supuso para dar el primer número.
+- Has entendido por qué el primer número no era fiable.
 
 ## La frase del día
 
-> La IA no es un oráculo ni una calculadora. Es una compañera rápida que a veces se equivoca con mucha seguridad. Tu trabajo no es creerla: es revisarla. Y eso es exactamente lo que te hace necesaria.
+> La IA no es un oráculo ni una calculadora. Es una compañera rapidísima que a veces se equivoca con mucha seguridad. Tu trabajo no es creerla: es revisarla.
+
+## Palabras del día
+
+- **Alucinación:** cuando la IA se inventa algo que suena verdad.
+- **Fecha de corte:** hasta cuándo aprendió el modelo. De lo posterior no sabe, salvo que busque.
+- **Verificar:** comprobar un dato en su origen. Es tu trabajo, no el suyo.
 
 ## Prompt · Paso 1. Pídele el total
 
-> Te paso las facturas de 2026. Dime cuánto hemos facturado en total y cuánto está pendiente de cobro.
+> Te paso las facturas de 2026 de una empresa. Dime cuánto se ha facturado en total y cuánto está pendiente de cobro.
 >
 > [adjunta facturas-2026.csv]
 
-Guarda la respuesta. No digas nada todavía.
+Apunta el número. No digas nada todavía.
 
-## Prompt · Paso 2. Audítala
+## Prompt · Paso 2. Que se audite
 
-> Ahora revisa tu propia respuesta. ¿Hay algo en este archivo que pueda hacer que el total no sea fiable? Mira duplicados, celdas vacías, clientes escritos de varias formas y tipos de IVA distintos.
+> Ahora revisa tu propia respuesta. ¿Hay algo en este archivo que haga que el total no sea fiable? Mira duplicados, celdas vacías, clientes escritos de varias formas, fechas en formatos distintos y tipos de IVA diferentes. Dime cuántos casos hay de cada cosa.
 
 ## Prompt · Paso 3. La pregunta que importa
 
-> ¿Qué has dado por supuesto para darme el primer número?
+> ¿Qué has dado por supuesto para darme el primer número? Y con lo que has visto, ¿cuál sería el total correcto y cómo lo has calculado?
+
+## Prompt · Para pegar al final de cualquier encargo importante
+
+> Cuando termines, dime qué partes de tu respuesta debería comprobar yo antes de usarla y por qué.
 
 ## Descarga · Facturas de prueba
 archivo: _datos-de-prueba/facturas-2026.csv

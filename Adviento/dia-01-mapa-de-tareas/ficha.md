@@ -1,60 +1,47 @@
-# Día 1 · Tu mapa de tareas
+# Día 1 · Empieza aquí: tu mapa con Claude
 
-**Tipo:** 🎯 Reto + 🎁 Regalo
+**Tipo:** 🎯🎁 Reto + regalo
 **Herramienta:** Claude
-**Tiempo:** 15 minutos
-**Datos:** no hace falta conectar nada ni usar datos reales
+**Tiempo:** 20 minutos
+**Datos:** ninguno, solo lo que cuente de su semana
+**Plan:** gratuito
 
 ## Objetivo
 
-Que en 15 minutos tenga un mapa de sus propias tareas y sepa por dónde empezar. Y que se lleve el kit de arranque.
+Que salga del día 1 con tres cosas: la cuenta hecha, la pantalla entendida y un resultado suyo y visible (el mapa). Es el día que decide si se queda, así que nada de conectar cosas ni de datos reales.
 
-## Por qué este día abre el calendario
+## Lo que aprende
 
-Es el día que decide si se quedan. No puede ser un deber: tiene que devolver algo suyo, visible y útil, sin pedir nada a cambio ni dar miedo con los datos.
+- Qué es Claude y qué no es (no es un buscador).
+- Las cinco zonas de la pantalla: barra lateral, caja de texto, botón +, selector de modelo y cuenta.
+- Qué es un prompt, un artefacto y el contexto.
+- Dónde se guardan las preferencias personales para no repetirse.
 
-## Lo que aprende sin que se lo digamos
+## Público
 
-- Dar contexto antes de pedir.
-- Describir una tarea con claridad.
-- Que puede exigirle a la IA que pregunte en vez de inventar.
+Cualquiera que no haya usado nunca IA: trabajo por cuenta ajena, autónomos, estudiantes, gente que lleva una casa. Los ejemplos del prompt están mezclados a propósito para que nadie sienta que el reto no va con él.
 
-## Pasos
+## Hilo con otros días
 
-1. Abre Claude (vale la versión gratuita).
-2. Copia el prompt de `prompt.md` y rellena los corchetes con tu semana real.
-3. Responde a sus preguntas. Aquí está el valor: cuanto más concreta seas, mejor sale el mapa.
-4. Guarda la página que te devuelve.
-5. Descarga el kit de arranque.
+- Las tres tareas del mapa se retoman el día 24.
+- La tarjeta de contexto se reutiliza el día 7 (instrucciones de proyecto) y se mejora el día 8.
 
-## Cómo saber si ha salido bien
+## Capturas que hacen falta
 
-- Las tres tareas son suyas de verdad, no genéricas.
-- Los tiempos salen de lo que ella dijo, no de cifras inventadas.
-- La cuarta tarea (la que no conviene delegar) tiene sentido para su puesto.
-
-Si el resultado suena a folleto, es que faltó contexto. Que lo repita contando más.
-
-## El regalo: kit de arranque
-
-Está en `00-kit-de-arranque/`:
-
-- El prompt del mapa de tareas
-- La tarjeta de contexto
-- El semáforo de datos
-- 10 prompts de oficina
-- El calendario imprimible de los 24 días *(pendiente de diseñar)*
-
-## Conexión con el final
-
-El mapa de hoy vuelve el día 24. El calendario abre y cierra con la misma pregunta, y ella puede comparar.
+| Archivo | Qué tiene que salir |
+|---|---|
+| `d01-01-registro.png` | Pantalla de entrada de claude.ai con «Continuar con Google» y el campo de correo |
+| `d01-02-pantalla-principal.png` | Pantalla principal con las cinco zonas numeradas (1 barra lateral, 2 caja, 3 botón +, 4 selector de modelo, 5 cuenta). Numerar encima con Canva o Preview |
+| `d01-03-artefacto-mapa.png` | El mapa de tareas abierto como artefacto, con los botones de copiar y descargar visibles |
+| `d01-04-preferencias.png` | Ajustes › General con el cuadro de preferencias personales |
 
 ## Para el vídeo
 
-Enseñar el antes y el después: la pantalla en blanco y la página con las tres tarjetas. El momento que engancha es cuando Claude hace la primera pregunta en vez de soltar una parrafada.
+El momento bueno es cuando Claude hace las preguntas antes de responder. Casi nadie espera que una IA pregunte. Enséñalo en directo.
 
 ## Por verificar antes de publicar
 
-- [ ] Que la página interactiva sale bien con la versión gratuita
-- [ ] Cuántos mensajes consume el reto en plan gratuito
-- [ ] Plan B si la página falla: pedirlo en tabla
+- [ ] Texto exacto del cuadro de preferencias en la interfaz en español
+- [ ] Que el registro siga pidiendo verificar la edad
+- [ ] Que el gratuito siga generando artefactos sin límite raro
+- [ ] Ruta de descarga de la app de escritorio

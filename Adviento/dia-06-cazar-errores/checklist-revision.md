@@ -20,7 +20,7 @@ Aquí aparece todo lo que rellenó sin preguntar. Suele ser donde está el error
 
 > Búscale los fallos a tu propia respuesta. ¿Qué revisarías tú si fueras yo?
 
-Obligarla a dudar de sí misma funciona sorprendentemente bien.
+Obligarle a dudar de su respuesta funciona sorprendentemente bien.
 
 ---
 
@@ -29,7 +29,7 @@ Obligarla a dudar de sí misma funciona sorprendentemente bien.
 - [ ] **Números.** Totales, porcentajes, cualquier cuenta.
 - [ ] **Fechas y plazos.** Se equivoca más de lo que parece.
 - [ ] **Nombres de personas o empresas.** Sobre todo si se parecen entre sí.
-- [ ] **Algo que vas a enviar fuera.** Un cliente, dirección, una administración.
+- [ ] **Algo que vas a enviar a otra persona.** Un cliente, tu jefa, un profe, la administración.
 - [ ] **Datos que cambian.** Precios, normativa, quién ocupa un puesto.
 - [ ] **Documentos largos.** Comprueba que no se ha saltado la parte del medio.
 
@@ -43,4 +43,4 @@ Obligarla a dudar de sí misma funciona sorprendentemente bien.
 
 ---
 
-**La regla de oro:** si vas a poner tu nombre debajo, revísalo tú. La IA no responde ante tu jefe. Tú sí.
+**La regla de oro:** si vas a poner tu nombre debajo, revísalo tú. La IA no da la cara por ti. Tú sí.

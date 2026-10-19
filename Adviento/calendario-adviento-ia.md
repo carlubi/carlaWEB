@@ -1,5 +1,7 @@
 # Calendario de adviento IA · carlaylz
 
+> **Ojo: borrador antiguo.** En octubre de 2026 se reordenaron y reescribieron los 24 días (público general, Claude como eje). El orden y los contenidos actuales están en `indice-contenidos.md`. Este documento se queda como histórico de las decisiones iniciales.
+
 Borrador de trabajo para discutir. Cada día es una propuesta, no una decisión.
 
 **Fechas:** 1 al 24 de diciembre de 2026. El 1 es martes, el 8 es festivo, el 24 es Nochebuena (jueves).

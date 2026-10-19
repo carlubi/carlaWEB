@@ -1,8 +1,8 @@
 # Las tres zonas
 
-Antes de automatizar cualquier cosa, pregúntate una sola cosa:
+Antes de automatizar cualquier cosa, hazte una sola pregunta:
 
-> **Si esto se hace mal, ¿qué pasa?**
+> **Si esto sale mal, ¿qué pasa?**
 
 La respuesta decide la zona.
 
@@ -14,7 +14,7 @@ La respuesta decide la zona.
 
 - Clasificar y ordenar información
 - Resumir para ti
-- Preparar listas y borradores de uso interno
+- Preparar listas de uso propio
 - Avisarte de plazos
 - Cruzar datos para que tú los mires
 
@@ -25,37 +25,54 @@ La respuesta decide la zona.
 **Si se equivoca, se nota antes de que salga.** Pero hay que mirarlo.
 
 - Borradores de correos que vas a enviar
-- Propuestas y presupuestos
-- Informes que van a otra persona
+- Eventos en el calendario
+- Propuestas, presupuestos e informes que van a otra persona
 - Clasificar cosas que luego tienen consecuencias
 - Cualquier cosa con números
 
 **La prueba:** ¿hay un momento en que tú le das al botón? Entonces es ámbar, y está bien.
 
-**Aquí va casi todo.** Si algo te parece verde, piénsalo otra vez: la mayoría de las cosas de una oficina son ámbar.
+**Aquí va casi todo.** Si algo te parece verde, piénsalo otra vez.
 
 ## 🔴 Rojo · ni se acerca
 
 **Si se equivoca, hay consecuencias de verdad.**
 
-- Enviar cualquier cosa fuera de la empresa sin que la hayas leído
+- Enviar cualquier cosa fuera sin que la hayas leído
 - Pagos, transferencias, cambios de datos bancarios
 - Aceptar condiciones, firmar, confirmar pedidos
-- Cualquier cosa sobre personas: nóminas, contratos, evaluaciones
-- Reclamaciones, plazos legales, administración pública
+- Cualquier decisión sobre personas
+- Trámites con plazos legales o con la administración
 - Borrar algo
 
 **La prueba:** ¿tendrías que dar explicaciones si sale mal? Rojo.
 
 ---
 
-## La frase que va en toda automatización
+## Cómo se configura cada zona en Claude
 
-Pase lo que pase, incluye esto:
+| Zona | Cómo |
+|---|---|
+| 🟢 Verde | Tareas que solo leen y dejan un resumen. Conectores para consultar |
+| 🟡 Ámbar | «Permitir una vez» en cada aviso. Borradores, no envíos. "Propón, no crees" |
+| 🔴 Rojo | Prohibido por escrito en las instrucciones. Nunca en Claude en Chrome |
+
+---
+
+## La frase que va en toda automatización
 
 > Si dudas de algo, no lo hagas: déjalo aparte y avísame. Prefiero revisar de más que que se te escape algo.
 
-Una automatización que pregunta cuando duda vale más que una que acierta el 90 % y falla el 10 sin decir nada.
+---
+
+## La revisión de diciembre (y de cada trimestre)
+
+- [ ] **Conectores:** Personalizar › Conectores. Desconecto lo que no uso.
+- [ ] **Google:** myaccount.google.com/connections. Quito lo que sobra.
+- [ ] **Permisos "para siempre":** los reviso. Si la acción es ámbar, vuelvo a "preguntar".
+- [ ] **Tareas programadas:** borro las que no leo, pauso las de vacaciones, compruebo que todas tienen la frase de la duda.
+- [ ] **Proyectos:** archivo los de prueba y quito documentos que ya no deberían estar.
+- [ ] **Uso:** Ajustes › Uso. Si las tareas me comen la semana, bajo de modelo o de frecuencia.
 
 ---
 
@@ -66,11 +83,9 @@ No es un fallo. Es información.
 | Lo que ha pasado | Lo que significa | Qué hacer |
 |---|---|---|
 | Clasificó algo donde no iba | El criterio no contemplaba ese caso | Añade la regla |
-| Se inventó un dato | Le faltaba información y no preguntó | Añade "pregunta si falta algo" |
+| Se inventó un dato | Le faltaba información y no preguntó | Añade la frase de la duda |
 | Hizo algo que no debía | Estaba en la zona equivocada | Súbelo a ámbar o a rojo |
-| Lo ignoras cada día | No resuelve un problema real | Cámbiala o bórrala |
-
-## Revísalo cada tanto
+| Lo ignoras cada día | No resuelve un problema real | Cámbialo o bórralo |
 
 Lo que hoy es ámbar puede ser verde dentro de tres meses, cuando lleves cien aciertos seguidos. Mover algo de ámbar a verde se gana con pruebas, no con confianza.
 

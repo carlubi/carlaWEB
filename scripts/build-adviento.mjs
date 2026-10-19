@@ -13,13 +13,17 @@ import { calendarDocument } from './adviento-calendario.mjs';
  * Genera el contenido del Adviento a partir de Adviento/:
  *  - dia-NN-…/web.md  → texto de la web (ver Adviento/LEEME.md, «Formato de web.md»)
  *  - dia-NN-…/ficha.md → solo herramienta y tiempo
- * Las descargas se publican en public/adviento/descargas/<huella>/ (PDF con marca o CSV),
+ * Las descargas se publican en public/adviento/descargas/<huella>/ (PDF con marca, CSV o .md tal cual),
  * con una huella del contenido en la ruta: no se pueden adivinar sin abrir el día.
+ * Las capturas (![texto](capturas/archivo.png) en web.md) salen de Adviento/_capturas/ y se publican
+ * en public/adviento/capturas/<huella>/. Si falta alguna, se avisa y la web muestra un hueco marcado.
  */
 const root = 'Adviento';
 const downloadsDir = 'public/adviento/descargas';
-const types = ['Reto + regalo','Tip','Reto','Tip','Sorpresa','Tip','Reto','Tip','Reto','Reto','Reto','Regalo','Sorpresa','Reto','Reto','Formación','Tip','Reto','Regalo','Sorpresa','Reto','Reto','Reto','Regalo'];
-const symbols = ['⌖','⚿','⟟','▣','✦','⌕','◷','◌','▰','▤','☷','✧','▹','▥','◈','✥','⑂','⚙','✧','⌁','◒','✉','◉','✶'];
+const capturesSource = join(root, '_capturas');
+const capturesDir = 'public/adviento/capturas';
+const types = ['Reto + regalo','Formación','Reto','Formación','Sorpresa','Tip','Reto','Reto','Tip','Reto','Reto','Regalo','Sorpresa','Reto','Reto','Formación','Reto','Reto','Regalo','Sorpresa','Reto','Reto','Reto','Regalo'];
+const symbols = ['⌖','◔','◌','#','✦','⌕','▣','◈','⚿','⟟','✉','✧','▰','✥','▥','◷','⑂','⚙','✧','⌁','◒','☷','◉','✶'];
 /* Nada de rutas ni nombres de archivo internos en lo que ve la usuaria. */
 const internalRef = /\b[\w-]+\.md\b|00-kit-de-arranque|_datos-de-prueba|_plantillas-base|\bdia-\d\d-|Notas para ti|Silvia/;
 
@@ -30,6 +34,8 @@ const fail = (where, message) => { throw new Error(`${where}: ${message}`); };
 
 const pdf = createPdfRenderer();
 rmSync(downloadsDir, { recursive:true, force:true });
+rmSync(capturesDir, { recursive:true, force:true });
+const missingCaptures = [];
 const published = new Map();
 
 function formatSize(bytes) {
@@ -60,22 +66,42 @@ function publishGenerated(where, file) {
   return { nombre:item.name, formato:'PDF', ...published.get(file) };
 }
 
-function publishDownload(where, file, copy) {
+/* «formato: md» publica el .md tal cual en vez de maquetarlo como PDF (días de markdown y de contexto). */
+function publishDownload(where, file, copy, rawMd) {
   if (file.startsWith('@')) return publishGenerated(where, file);
   const source = join(root, file);
   if (!existsSync(source)) fail(where, `no existe ${source}`);
   const content = readFileSync(source, 'utf8');
   const isCsv = extname(file) === '.csv';
-  if (!isCsv && extname(file) !== '.md') fail(where, `solo se publican .md (como PDF) o .csv: ${file}`);
-  const name = isCsv ? basename(file) : basename(file, '.md') + '.pdf';
-  if (!published.has(file)) {
-    const hash = createHash('sha256').update(content).update(isCsv ? '' : PDF_TEMPLATE_VERSION).digest('hex').slice(0, 12);
+  if (!isCsv && extname(file) !== '.md') fail(where, `solo se publican .md (como PDF o tal cual) o .csv: ${file}`);
+  const asIs = isCsv || rawMd;
+  const name = asIs ? basename(file) : basename(file, '.md') + '.pdf';
+  const key = rawMd ? `${file}#md` : file;
+  if (!published.has(key)) {
+    const hash = createHash('sha256').update(content).update(asIs ? (rawMd ? 'md' : '') : PDF_TEMPLATE_VERSION).digest('hex').slice(0, 12);
     const dir = join(downloadsDir, hash); mkdirSync(dir, { recursive:true });
     const out = join(dir, name);
-    if (isCsv) copyFileSync(source, out); else pdf.render(toHtml(content), out);
-    published.set(file, { url:`/adviento/descargas/${hash}/${name}`, peso:formatSize(statSync(out).size) });
+    if (asIs) copyFileSync(source, out); else pdf.render(toHtml(content), out);
+    published.set(key, { url:`/adviento/descargas/${hash}/${name}`, peso:formatSize(statSync(out).size) });
   }
-  return { nombre:name, formato:isCsv ? 'CSV' : 'PDF', ...published.get(file), ...(copy ? { copiar:templateText(content) } : {}) };
+  return { nombre:name, formato:isCsv ? 'CSV' : rawMd ? 'MD' : 'PDF', ...published.get(key), ...(copy ? { copiar:templateText(content) } : {}) };
+}
+
+/* Capturas de pantalla: cada <img src="capturas/…"> se publica con huella y se envuelve en una figura con pie. */
+function publishCaptures(where, html) {
+  const out = html.replace(/<p><img src="capturas\/([^"]+)" alt="([^"]*)"><\/p>/g, (_, file, alt) => {
+    const source = join(capturesSource, file);
+    if (!existsSync(source)) {
+      missingCaptures.push(`${where} → ${file}`);
+      return `<figure class="captura captura-pendiente"><div>Captura pendiente</div><figcaption>${alt}</figcaption></figure>`;
+    }
+    const hash = createHash('sha256').update(readFileSync(source)).digest('hex').slice(0, 12);
+    const dir = join(capturesDir, hash); mkdirSync(dir, { recursive:true });
+    copyFileSync(source, join(dir, file));
+    return `<figure class="captura"><img src="/adviento/capturas/${hash}/${file}" alt="${alt}" loading="lazy"><figcaption>${alt}</figcaption></figure>`;
+  });
+  if (out.includes('src="capturas/')) fail(where, 'cada captura tiene que ir sola en su párrafo, no dentro de una lista, una tabla o una frase');
+  return out;
 }
 
 function parsePrompt(where, title, body) {
@@ -105,8 +131,9 @@ function parseDownload(where, title, body) {
   const file = lines.find(line => line.startsWith('archivo:'))?.slice(8).trim();
   if (!file) fail(where, `«Descarga · ${title}» necesita una línea «archivo: carpeta/archivo»`);
   const copy = lines.some(line => /^copiar:\s*s[ií]/i.test(line));
-  const description = lines.filter(line => !/^(archivo|copiar):/.test(line)).join(' ').trim();
-  return { titulo:title, descripcion:description, ...publishDownload(where, file, copy) };
+  const rawMd = lines.some(line => /^formato:\s*md\s*$/i.test(line));
+  const description = lines.filter(line => !/^(archivo|copiar|formato):/.test(line)).join(' ').trim();
+  return { titulo:title, descripcion:description, ...publishDownload(where, file, copy, rawMd) };
 }
 
 function parseWeb(where, source) {
@@ -120,7 +147,7 @@ function parseWeb(where, source) {
     const kind = heading.match(/^(Prompt|Descarga) · (.+)$/);
     if (kind?.[1] === 'Prompt') content.prompts.push(parsePrompt(where, kind[2].trim(), body));
     else if (kind?.[1] === 'Descarga') content.descargas.push(parseDownload(where, kind[2].trim(), body));
-    else if (body) content.secciones.push({ titulo:heading.trim(), html:toHtml(body) });
+    else if (body) content.secciones.push({ titulo:heading.trim(), html:publishCaptures(where, toHtml(body)) });
   }
   const names = new Set(content.descargas.map(d => d.nombre));
   for (const name of content.prompts.flatMap(p => p.bloques.flatMap(b => b.adjuntos || [])))
@@ -169,4 +196,5 @@ writeFileSync('src/data/adviento-preview.json', JSON.stringify(days, null, 2) + 
 const quote = value => `'${String(value).replaceAll("'", "''")}'`;
 const sql = days.map(day => `insert into public.adviento_dias (dia,titulo,tipo,herramienta,minutos,datos,descripcion,simbolo,abre_el) values (${day.dia},${quote(day.titulo)},${quote(day.tipo)},${quote(day.herramienta)},${day.minutos},${quote(day.datos)},${quote(day.descripcion)},${quote(day.simbolo)},${quote(day.abre_el)}) on conflict (dia) do update set titulo=excluded.titulo,tipo=excluded.tipo,herramienta=excluded.herramienta,minutos=excluded.minutos,datos=excluded.datos,descripcion=excluded.descripcion,simbolo=excluded.simbolo,abre_el=excluded.abre_el;\ninsert into public.adviento_contenido (dia,contenido) values (${day.dia},${quote(JSON.stringify(day.contenido))}::jsonb) on conflict (dia) do update set contenido=excluded.contenido;`).join('\n');
 writeFileSync('supabase/adviento-seed.sql', '-- Generado desde Adviento/ con npm run build:adviento.\n' + sql + '\n');
+if (missingCaptures.length) console.warn(`Faltan ${missingCaptures.length} capturas (se ven como «Captura pendiente»):\n  ${missingCaptures.join('\n  ')}`);
 console.log(`Preparados ${days.length} días, ${days.reduce((n, d) => n + d.contenido.prompts.length, 0)} prompts y ${published.size} archivos descargables.`);

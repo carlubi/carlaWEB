@@ -1,8 +1,9 @@
-/* Página de cada día del Adviento. Tokens y reglas: DESIGN.md (cherry, amarillo de progreso, superficies planas). */
-.challenge-page{--cherry:#691b32;--cherry-active:#521326;--cherry-soft:#e9d4d9;--yellow:#f3c969;--surface:#f8f5ed;--ink:#3b252d;--muted:#6b5960;--hairline:rgba(59,37,45,.14);min-height:100dvh;background:#fff}
-.challenge-main{max-width:1120px;margin:auto;padding:24px 24px 64px;position:relative;z-index:2}
-.back-link{display:inline-flex;align-items:center;gap:8px;min-height:44px;margin:0 0 12px;color:var(--cherry);text-decoration:none;font-weight:600;font-size:14px}
-.back-link span{font-size:20px;line-height:1}
+/* Página de cada día del Adviento. Tokens y reglas: DESIGN.md (cherry para acciones, amarillo para avance, superficies planas).
+   Orden: cabecera del día → diapositivas con la explicación → prompts (izquierda) y descargas (derecha) → cierre. */
+.challenge-page{--cherry:#691b32;--cherry-active:#521326;--cherry-soft:#e9d4d9;--yellow:#f3c969;--yellow-edge:#e2b44f;--surface:#f8f5ed;--ink:#3b252d;--muted:#6b5960;--hairline:rgba(59,37,45,.14);--font:"Inter Tight",Arial,system-ui,sans-serif;min-height:100dvh;background:#fff}
+.challenge-main{max-width:1280px;margin:auto;padding:12px clamp(16px,3vw,32px) 64px;position:relative;z-index:2}
+.back-link{display:inline-flex;align-items:center;gap:8px;min-height:44px;margin:0 0 8px;color:var(--cherry);text-decoration:none;font-weight:600;font-size:14px}
+.back-link svg{width:18px;height:18px}
 .back-link:hover{text-decoration:underline;text-underline-offset:4px}
 .day-preview-banner{margin:0 0 16px}
 
@@ -10,55 +11,116 @@
 .challenge-loading,.challenge-error{min-height:55dvh;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center}
 .challenge-loading .loading-star{font-size:64px;color:#d6a65f;animation:loading-breathe 1.8s ease-in-out infinite}
 .challenge-loading p{color:var(--muted)}
-.challenge-error h1{font:600 clamp(28px,3vw,40px)/1.15 "Inter Tight",Arial,system-ui,sans-serif;color:var(--cherry);margin:0 0 12px}
+.challenge-error h1{font:600 clamp(28px,3vw,40px)/1.15 var(--font);color:var(--cherry);margin:0 0 12px}
 .challenge-error p{max-width:46ch;color:var(--muted);margin:0 0 24px}
 .challenge-error .main-button{max-width:240px}
 
-/* cabecera granate: título, datos del reto y la acción de completar */
-.challenge-hero{position:relative;display:grid;grid-template-columns:minmax(0,1fr) 260px;align-items:center;gap:32px;padding:48px clamp(24px,5vw,64px);overflow:hidden;border-radius:14px;background:radial-gradient(circle at 84% 40%,rgba(243,201,105,.22),transparent 34%),var(--cherry);color:#fff}
-.challenge-heading{position:relative;z-index:1;min-width:0}
-.day-count{margin:0 0 16px;font-size:14px;font-weight:600;line-height:1.3;color:#f6dfd0}
-.day-count span{margin:0 6px;color:var(--yellow)}
-.challenge-heading h1{max-width:20ch;margin:0 0 16px;font:600 clamp(36px,5vw,64px)/1.05 "Inter Tight",Arial,system-ui,sans-serif;letter-spacing:-.03em;text-wrap:balance}
-.challenge-lead{max-width:56ch;margin:0;font-size:17px;line-height:1.55;color:#fbeee9}
-.challenge-meta{display:flex;flex-wrap:wrap;gap:8px;margin:24px 0 0;padding:0;list-style:none}
-.challenge-meta li{display:flex;flex-direction:column;gap:2px;padding:8px 12px;border:1px solid rgba(255,255,255,.22);border-radius:8px;font-size:14px;line-height:1.3;color:#fff}
-.challenge-meta li span{font-size:12px;font-weight:600;color:#f3d9cc}
-.challenge-actions{display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px;margin-top:32px}
-.complete-button{display:inline-flex;align-items:center;gap:12px;min-height:48px;padding:14px 24px;border:0;border-radius:8px;background:var(--yellow);color:var(--cherry-active);font:600 16px/1.25 "Inter Tight",Arial,system-ui,sans-serif;cursor:pointer;transition:background-color .18s ease}
-.complete-button:hover{background:#f7d888}
-.complete-button:disabled{opacity:.6;cursor:progress}
-.complete-button span{font-size:18px}
-.complete-badge{display:inline-flex;align-items:center;gap:10px;min-height:48px;margin:0;padding:12px 20px;border:1px solid var(--yellow);border-radius:8px;background:rgba(243,201,105,.16);font-weight:600;color:#fff}
-.complete-badge span{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--yellow);color:var(--cherry-active);font-size:14px}
-.complete-badge[hidden],.jump-link[hidden]{display:none}
-.complete-status{min-height:1.4em;margin:12px 0 0;font-size:14px;color:#f6dfd0}
-.jump-link{display:none;min-height:44px;align-items:center;gap:6px;color:#fff;font-weight:600;font-size:14px;text-decoration:underline;text-underline-offset:4px}
-.challenge-hero :focus-visible{outline:3px solid #fff;outline-offset:3px}
+/* ---------- cabecera del día: número, título, herramienta y tiempo, y completar ---------- */
+.day-header{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:16px 24px;margin:0 0 24px}
+/* el número es un cajón del calendario: cherry mientras está abierto, amarillo con sello al completarlo */
+.day-badge{position:relative;display:grid;align-content:center;justify-items:center;gap:4px;width:76px;height:76px;border-radius:14px;background:var(--cherry);color:#fff;transition:background-color .3s ease,color .3s ease}
+.day-badge-number{font:600 30px/1 var(--font);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.day-badge-type{max-width:68px;overflow:hidden;font-size:11px;font-weight:600;line-height:1.2;color:#f3d9cc;text-align:center;text-overflow:ellipsis;white-space:nowrap}
+.day-badge-stamp{position:absolute;top:-8px;right:-8px;display:grid;place-items:center;width:28px;height:28px;border:2px solid #fff;border-radius:50%;background:var(--cherry);color:#fff;opacity:0;transform:scale(.3) rotate(-20deg)}
+.day-badge-stamp svg{width:18px;height:18px}
+.day-badge.is-done{background:var(--yellow);color:var(--cherry-active)}
+.day-badge.is-done .day-badge-type{color:var(--cherry)}
+.day-badge.is-done .day-badge-stamp{opacity:1;transform:none}
+.day-badge.is-stamping .day-badge-stamp{animation:stamp-in .5s .35s cubic-bezier(.2,1.5,.4,1) both}
+.day-heading{min-width:0}
+.day-heading h1{margin:0 0 10px;font:600 clamp(26px,2.6vw,36px)/1.15 var(--font);letter-spacing:-.02em;color:var(--cherry);text-wrap:balance}
+.day-meta{display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none}
+.day-meta li{display:inline-flex;align-items:center;gap:8px;min-height:34px;padding:6px 12px 6px 10px;border:1px solid var(--hairline);border-radius:8px;background:var(--surface);font-size:14px;font-weight:600;line-height:1.3;color:var(--ink)}
+.day-meta svg{width:18px;height:18px;flex:none;color:var(--cherry)}
 
-/* regalo decorativo */
-.challenge-present{position:relative;height:250px;display:grid;place-items:center;perspective:800px}
-.present-glow{position:absolute;width:250px;height:250px;border-radius:50%;background:radial-gradient(circle,rgba(246,215,142,.55) 0%,rgba(244,199,103,.18) 40%,transparent 68%)}
-.present-object{position:relative;z-index:1;width:160px;height:150px;transform:rotateX(-12deg) rotateY(-24deg);transform-style:preserve-3d;animation:present-float 6s ease-in-out infinite}
-.present-base{position:absolute;inset:30px 10px 0;background:linear-gradient(120deg,#d98a91,#9f3c62 65%,#78243e);border-radius:4px;box-shadow:18px 15px 0 #4d1427}
-.present-base::before{content:'';position:absolute;left:44%;top:0;width:20%;height:100%;background:linear-gradient(90deg,#d8a459,#ffe7a2,#bb7b39)}
-.present-lid{position:absolute;left:0;top:12px;z-index:2;width:170px;height:44px;border-radius:4px;background:linear-gradient(120deg,#eaa3a8,#ae506c 70%,#8e3651);box-shadow:17px 11px 0 #5e1d35;transform:translateY(-17px) rotate(-8deg);transform-origin:80% 80%}
-.present-lid::before{content:'';position:absolute;left:44%;width:20%;height:100%;background:#f6d899}
-.present-ribbon{position:absolute;top:-24px;left:66px;z-index:3;width:38px;height:38px;border:8px solid #edc37f;border-radius:50% 50% 3px 50%;transform:rotate(-36deg)}
-.present-symbol{position:absolute;z-index:3;top:10px;left:calc(50% - 24px);display:grid;place-items:center;width:48px;height:48px;border:2px solid #fff2cd;border-radius:50%;background:#fff8e6;color:var(--cherry);animation:symbol-float 6s ease-in-out infinite}
-.present-symbol svg{width:24px;height:24px}
-.present-ground{position:absolute;bottom:14px;width:200px;height:18px;border-radius:50%;background:rgba(25,4,15,.28);filter:blur(10px)}
+/* botón de completar: blanco mientras está pendiente, amarillo (avance) cuando se completa */
+.day-complete{display:flex;flex-direction:column;align-items:flex-end;gap:6px;min-width:0}
+.complete-button{display:inline-flex;align-items:center;gap:10px;min-height:48px;padding:12px 20px 12px 16px;border:1px solid rgba(105,27,50,.35);border-radius:8px;background:#fff;color:var(--cherry);font:600 16px/1.25 var(--font);white-space:nowrap;cursor:pointer;transition:background-color .25s ease,border-color .25s ease,color .25s ease}
+.complete-button:hover{background:#fbf4f5;border-color:var(--cherry)}
+.complete-button:active{transform:scale(.98)}
+.complete-button.is-saving{cursor:progress;opacity:.7}
+.complete-button.is-done,.complete-button.is-done:hover{border-color:var(--yellow-edge);background:var(--yellow);color:var(--cherry-active);cursor:default;transform:none}
+.complete-icon{position:relative;display:grid;place-items:center;width:24px;height:24px;flex:none}
+.complete-icon svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;overflow:visible}
+.complete-icon path{opacity:.35;stroke-dasharray:14;stroke-dashoffset:0}
+.is-done .complete-icon circle{fill:var(--cherry-active);stroke:var(--cherry-active)}
+.is-done .complete-icon path{opacity:1;stroke:#fff;stroke-width:2.2}
+.is-celebrating .complete-icon svg{animation:check-pop .45s cubic-bezier(.2,1.6,.4,1) both}
+.is-celebrating .complete-icon path{animation:check-draw .35s .18s ease-out both}
+/* seis destellos que salen del check al completar */
+.complete-icon i{position:absolute;top:50%;left:50%;width:5px;height:5px;margin:-2.5px;border-radius:50%;background:var(--cherry);opacity:0;pointer-events:none}
+.complete-icon i:nth-child(odd){background:#fff;box-shadow:0 0 0 1px var(--yellow-edge)}
+.complete-icon i:nth-child(2){--a:0deg}.complete-icon i:nth-child(3){--a:60deg}.complete-icon i:nth-child(4){--a:120deg}.complete-icon i:nth-child(5){--a:180deg}.complete-icon i:nth-child(6){--a:240deg}.complete-icon i:nth-child(7){--a:300deg}
+.is-celebrating .complete-icon i{animation:spark .7s .2s ease-out both}
+.complete-status{margin:0;font-size:13px;line-height:1.4;color:var(--muted);text-align:right}
+.complete-status:empty{display:none}
+.complete-status a{color:var(--cherry);font-weight:600;text-decoration:underline;text-underline-offset:3px}
 
-/* dos columnas: explicación a la izquierda, material para copiar o descargar a la derecha */
-.challenge-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(320px,400px);gap:48px;align-items:start;margin-top:48px}
-.challenge-layout.is-single{grid-template-columns:minmax(0,1fr)}
-.challenge-reading{min-width:0;max-width:68ch}
-.reading-section{padding:0 0 32px;margin:0 0 32px;border-bottom:1px solid var(--hairline)}
-.reading-section:last-child{border-bottom:0;margin-bottom:0}
-.reading-section h2{margin:0 0 16px;font:600 22px/1.2 "Inter Tight",Arial,system-ui,sans-serif;letter-spacing:-.015em;color:var(--ink)}
+/* ---------- diapositivas ---------- */
+.deck{position:relative;border:1px solid var(--hairline);border-radius:14px;background:#fff}
+.deck-bar{display:flex;align-items:center;gap:16px;padding:8px 20px 8px 8px;border-bottom:1px solid var(--hairline)}
+.deck-index{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:8px 12px;border:0;border-radius:8px;background:none;color:var(--cherry);font:600 14px/1.25 var(--font);cursor:pointer}
+.deck-index svg{width:20px;height:20px}
+.deck-index:hover:not(:disabled){background:var(--surface)}
+.deck-index:disabled{color:var(--muted);opacity:.55;cursor:default}
+/* progreso: lo visto en amarillo, la diapositiva actual en cherry */
+.deck-progress{flex:1;display:flex;gap:3px;min-width:0;height:6px}
+.deck-progress span{flex:1;min-width:2px;border-radius:3px;background:rgba(59,37,45,.1);transition:background-color .25s ease}
+.deck-progress .is-seen{background:var(--yellow)}
+.deck-progress .is-current{background:var(--cherry)}
+.deck-count{margin:0;font-size:14px;font-weight:600;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+
+.deck-viewport{position:relative;overflow:hidden;touch-action:pan-y;min-height:clamp(320px,46vh,500px)}
+.slide{padding:clamp(24px,3.5vw,44px) clamp(20px,4vw,56px) 40px}
+.slide.is-forward{animation:slide-forward .3s cubic-bezier(.2,.8,.2,1) both}
+.slide.is-back{animation:slide-back .3s cubic-bezier(.2,.8,.2,1) both}
+.slide.is-settling{transition:transform .2s ease}
+.slide-head{max-width:72ch;margin:0 0 24px}
+.slide-kicker{margin:0 0 6px;font-size:14px;font-weight:600;line-height:1.3;color:var(--muted)}
+.slide-head h2{margin:0;font:600 clamp(24px,2.4vw,32px)/1.2 var(--font);letter-spacing:-.015em;color:var(--ink);text-wrap:balance}
+.slide-head h2:focus{outline:0}
+.slide-body{font-size:17px}
+.slide-body>p,.slide-body>ul,.slide-body>ol,.slide-body>blockquote,.slide-body>h3,.slide-text>*{max-width:72ch}
+/* paso con captura: explicación a la izquierda, la pantalla a la derecha */
+.slide-body.has-media{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:40px;align-items:start}
+.slide-media .captura:last-child{margin-bottom:0}
+.captura-zoom{display:block;border-radius:12px;cursor:zoom-in}
+
+/* primera diapositiva: de qué va hoy e índice */
+.agenda-summary{font-size:clamp(18px,1.6vw,21px);line-height:1.5}
+.slide-body>.agenda-summary{max-width:60ch}
+.agenda-needs{font-size:15px;color:var(--muted)}
+.agenda-needs strong{color:var(--ink)}
+.reading-body .agenda-heading{margin:32px 0 4px;font-size:16px}
+.reading-body .agenda-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:40px;max-width:none}
+.reading-body .agenda-list li,.reading-body .agenda-list li:first-child{padding:4px 0 4px 44px}
+.reading-body .agenda-list li::before,.reading-body .agenda-list li:first-child::before{top:50%;transform:translateY(-50%)}
+.agenda-link{display:flex;align-items:center;width:100%;min-height:44px;padding:0;border:0;background:none;color:var(--cherry);font:600 16px/1.35 var(--font);text-align:left;cursor:pointer}
+.agenda-link:hover{text-decoration:underline;text-underline-offset:4px}
+.agenda-hint{margin-top:24px!important;font-size:14px;color:var(--muted)}
+
+/* la barra de pasar se queda pegada abajo mientras se lee una diapositiva larga */
+.deck-nav{position:sticky;bottom:0;z-index:3;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;border-top:1px solid var(--hairline);border-radius:0 0 14px 14px;background:rgba(255,255,255,.97)}
+.deck-button{display:inline-flex;align-items:center;gap:10px;min-height:48px;padding:10px 16px;border-radius:8px;font:600 16px/1.25 var(--font);cursor:pointer;transition:background-color .18s ease,border-color .18s ease}
+.deck-button svg{width:20px;height:20px;flex:none}
+.deck-button:active:not(:disabled){transform:scale(.98)}
+.deck-prev{border:1px solid rgba(105,27,50,.35);background:#fff;color:var(--cherry)}
+.deck-prev:hover:not(:disabled){background:#fbf4f5;border-color:var(--cherry)}
+.deck-prev:disabled{opacity:.4;cursor:default}
+.deck-next{min-width:0;max-width:min(480px,72%);margin-left:auto;padding-left:20px;border:1px solid var(--cherry);background:var(--cherry);color:#fff;text-align:left}
+.deck-next:hover{background:var(--cherry-active)}
+.deck-next-text{display:flex;flex-direction:column;min-width:0}
+.deck-next-text small{font-size:12px;font-weight:600;line-height:1.3;color:#f3d9cc}
+#deck-next-title{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.deck-next.is-final{border-color:var(--yellow-edge);background:var(--yellow);color:var(--cherry-active)}
+.deck-next.is-final:hover{background:#f7d888}
+.deck-next.is-final small{color:var(--cherry)}
+
+/* ---------- contenido de lectura (dentro de cada diapositiva) ---------- */
 .reading-body{font-size:16px;line-height:1.65;color:var(--ink)}
+.slide-body.reading-body{font-size:17px}
 .reading-body p{margin:0 0 16px}
-.reading-body>:last-child{margin-bottom:0}
+.reading-body>:last-child,.slide-text>:last-child{margin-bottom:0}
 .reading-body strong{font-weight:600}
 .reading-body a{color:var(--cherry);text-decoration:underline;text-underline-offset:3px}
 .reading-body ul{margin:0 0 16px;padding-left:22px;list-style:disc}
@@ -73,44 +135,37 @@
 .reading-body ol li:first-child::before{top:2px}
 .reading-body blockquote{margin:0 0 16px;padding:16px 20px;border-left:3px solid var(--yellow);border-radius:0 14px 14px 0;background:var(--surface)}
 .reading-body blockquote p{margin:0}
-.reading-body table{width:100%;margin:0 0 16px;border-collapse:collapse;font-size:14px;line-height:1.43}
+.reading-body table{width:100%;margin:0 0 16px;border-collapse:collapse;font-size:15px;line-height:1.45}
 .reading-body th{text-align:left;font-weight:600;background:var(--surface)}
 .reading-body th,.reading-body td{padding:10px 12px;border-bottom:1px solid var(--hairline);vertical-align:top}
+.reading-body code{padding:1px 6px;border-radius:6px;background:var(--surface);font:500 .875em/1.5 ui-monospace,SFMono-Regular,Menlo,monospace}
+.reading-body pre{margin:0 0 16px;padding:16px 18px;border-radius:14px;background:var(--surface);overflow-x:auto}
+.reading-body pre code{padding:0;background:none;font-size:13px;line-height:1.6;white-space:pre}
+.reading-body h3{margin:24px 0 8px;font-size:17px;font-weight:600;line-height:1.3;color:var(--ink)}
+/* capturas de la app (Adviento/_capturas) */
+.reading-body .captura{margin:4px 0 20px}
+.reading-body .captura img{display:block;width:100%;height:auto;border:1px solid var(--hairline);border-radius:12px;background:var(--surface)}
+.reading-body .captura figcaption{margin-top:8px;font-size:13px;line-height:1.45;color:var(--muted)}
+.reading-body .captura-pendiente>div{display:grid;place-items:center;min-height:180px;border:1.5px dashed var(--hairline);border-radius:12px;background:var(--surface);color:var(--muted);font-size:13px;font-weight:600;letter-spacing:.02em}
 
-.challenge-resources{min-width:0}
-.challenge-resources:focus,.challenge-prompts:focus{outline:0}
-.challenge-resources[hidden],.challenge-prompts[hidden]{display:none}
-.challenge-resources h2,.prompts-heading h2{margin:0;font:600 22px/1.2 "Inter Tight",Arial,system-ui,sans-serif;letter-spacing:-.015em;color:var(--ink)}
-.resource-hint{margin:8px 0 0;font-size:14px;line-height:1.43;color:var(--muted)}
+/* ---------- prompts (izquierda) y descargas (derecha) ---------- */
+.resources{display:grid;grid-template-columns:minmax(0,1fr);gap:48px;margin-top:48px}
+.resources.has-both{grid-template-columns:minmax(0,1fr) minmax(300px,380px);align-items:start}
+.resources.has-both .resource-downloads{position:sticky;top:24px}
+.resource-block:focus{outline:0}
+.resource-heading{margin:0 0 16px}
+.resource-heading h2{margin:0;font:600 22px/1.2 var(--font);letter-spacing:-.015em;color:var(--ink)}
+.resource-heading p{margin:6px 0 0;font-size:14px;line-height:1.43;color:var(--muted)}
 
-/* prompts: a todo el ancho, debajo de la explicación */
-.challenge-prompts{margin-top:64px;padding-top:48px;border-top:1px solid var(--hairline)}
-.prompts-heading{margin-bottom:24px}
-
-/* descargas */
-.download-list{display:flex;flex-direction:column;margin:16px 0 0;padding:0;list-style:none;border:1px solid var(--hairline);border-radius:14px}
-.download-item{display:grid;grid-template-columns:44px minmax(0,1fr);gap:12px 16px;padding:20px;border-bottom:1px solid var(--hairline)}
-.download-item:last-child{border-bottom:0}
-.file-badge{display:grid;place-items:center;width:44px;height:52px;border-radius:8px;background:var(--cherry-soft);color:var(--cherry);font-size:12px;font-weight:600;letter-spacing:.02em}
-.file-badge.file-csv{background:#e5eedd;color:#3d5a2e}
-.download-info{min-width:0}
-.download-info h3{margin:0 0 4px;font-size:16px;font-weight:600;line-height:1.3;color:var(--ink)}
-.download-info p{margin:0 0 6px;font-size:14px;line-height:1.43;color:var(--muted)}
-.download-meta{font-size:12px;font-weight:600;color:var(--muted)}
-.download-actions{grid-column:2;display:flex;flex-wrap:wrap;gap:8px}
-
-/* tarjetas de prompt */
-.prompt-card{display:grid;grid-template-columns:minmax(0,260px) minmax(0,1fr);gap:16px 48px;padding:24px;margin:0 0 16px;border:1px solid var(--hairline);border-radius:14px;background:#fff}
-.prompt-card:last-child{margin-bottom:0}
+.prompt-list{display:flex;flex-direction:column;gap:16px}
+.prompt-card{padding:24px;border:1px solid var(--hairline);border-radius:14px;background:#fff}
 .prompt-card h3{margin:0 0 8px;font-size:18px;font-weight:600;line-height:1.3;color:var(--ink)}
-.prompt-guide{min-width:0}
-.prompt-body{min-width:0;max-width:860px}
-.prompt-note{font-size:14px;line-height:1.5;color:var(--muted)}
+.prompt-note{max-width:72ch;font-size:14px;line-height:1.5;color:var(--muted)}
 .prompt-note p{margin:0 0 12px}
 .prompt-note strong{color:var(--ink)}
-.prompt-block{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;gap:12px;margin:0 0 12px}
-.prompt-block:last-child{margin-bottom:0}
-.prompt-text{padding:16px;border-radius:8px;background:var(--surface);font-size:15px;line-height:1.55;color:var(--ink);overflow-wrap:anywhere}
+.prompt-block{margin:12px 0 0}
+.prompt-text{position:relative;padding:16px;border-radius:8px;background:var(--surface);font-size:15px;line-height:1.55;color:var(--ink);overflow-wrap:anywhere}
+.prompt-text.is-folded{max-height:240px;overflow:hidden;-webkit-mask-image:linear-gradient(#000 65%,transparent);mask-image:linear-gradient(#000 65%,transparent)}
 .prompt-text p{margin:0 0 10px}
 .prompt-text>:last-child{margin-bottom:0}
 .prompt-text ul,.prompt-text ol{margin:0 0 10px;padding-left:20px}
@@ -118,12 +173,25 @@
 .prompt-text ol{list-style:decimal}
 .prompt-text li{margin:3px 0}
 .prompt-text strong{font-weight:600}
-.prompt-footer{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 12px}
-.prompt-footer .resource-button{margin-left:auto}
-.prompt-attach{grid-column:1;margin:0;font-size:14px;line-height:1.43;color:var(--muted)}
+.prompt-toggle{min-height:44px;padding:0;border:0;background:none;color:var(--cherry);font:600 14px/1.25 var(--font);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.prompt-footer{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:8px 16px;margin-top:12px}
+.prompt-attach{margin:0 auto 0 0;font-size:14px;line-height:1.43;color:var(--muted)}
 .prompt-attach a{color:var(--cherry);font-weight:600;text-decoration:underline;text-underline-offset:3px}
 
-.resource-button{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:10px 16px;border:1px solid rgba(105,27,50,.35);border-radius:8px;background:#fff;color:var(--cherry);font:600 14px/1.25 "Inter Tight",Arial,system-ui,sans-serif;text-decoration:none;cursor:pointer;transition:background-color .18s ease,border-color .18s ease}
+.download-list{display:flex;flex-direction:column;margin:0;padding:0;list-style:none;border:1px solid var(--hairline);border-radius:14px;background:#fff}
+.resources:not(.has-both) .download-list{max-width:760px}
+.download-item{display:grid;grid-template-columns:44px minmax(0,1fr);gap:12px 16px;padding:20px;border-bottom:1px solid var(--hairline)}
+.download-item:last-child{border-bottom:0}
+.file-badge{display:grid;place-items:center;width:44px;height:52px;border-radius:8px;background:var(--cherry-soft);color:var(--cherry);font-size:12px;font-weight:600;letter-spacing:.02em}
+.file-badge.file-csv{background:#e5eedd;color:#3d5a2e}
+.file-badge.file-md{background:#fbf0d4;color:#6b4e12}
+.download-info{min-width:0}
+.download-info h3{margin:0 0 4px;font-size:16px;font-weight:600;line-height:1.3;color:var(--ink)}
+.download-info p{margin:0 0 6px;font-size:14px;line-height:1.43;color:var(--muted)}
+.download-meta{font-size:12px;font-weight:600;color:var(--muted)}
+.download-actions{grid-column:2;display:flex;flex-wrap:wrap;gap:8px}
+
+.resource-button{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:10px 16px;border:1px solid rgba(105,27,50,.35);border-radius:8px;background:#fff;color:var(--cherry);font:600 14px/1.25 var(--font);text-decoration:none;cursor:pointer;transition:background-color .18s ease,border-color .18s ease}
 .resource-button:hover{background:#fbf4f5;border-color:var(--cherry)}
 .resource-button.is-primary{border-color:var(--cherry);background:var(--cherry);color:#fff}
 .resource-button.is-primary:hover{background:var(--cherry-active)}
@@ -137,53 +205,60 @@
 .copy-check circle{fill:var(--copied);stroke:none}
 .copy-check path{stroke:#fff;stroke-dasharray:16;stroke-dashoffset:16}
 .is-copied .copy-check{animation:check-pop .4s cubic-bezier(.2,1.6,.4,1) both}
-.is-copied .copy-check path{animation:check-draw .3s .15s ease-out forwards}
-@keyframes check-pop{from{transform:scale(.3);opacity:0}to{transform:scale(1);opacity:1}}
-@keyframes check-draw{to{stroke-dashoffset:0}}
+.is-copied .copy-check path{animation:copy-draw .3s .15s ease-out forwards}
+
+/* ---------- cierre: completar al acabar ---------- */
+.finish{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px 24px;margin-top:48px;padding:24px;border-radius:14px;background:var(--surface)}
+.finish h2{margin:0 0 4px;font:600 20px/1.2 var(--font);color:var(--ink)}
+.finish p{margin:0;font-size:14px;line-height:1.43;color:var(--muted)}
+.finish .complete-status{margin:0}
+
 .challenge-page :focus-visible{outline:3px solid var(--yellow);outline-offset:2px;box-shadow:0 0 0 5px var(--cherry)}
-.challenge-hero :focus-visible{box-shadow:none}
 
-/* diálogo de reto completado */
-.complete-dialog{width:min(90vw,440px);padding:32px;border:1px solid var(--hairline);border-radius:14px;background:#fff;box-shadow:0 24px 64px rgba(31,6,19,.24);text-align:center;color:var(--cherry)}
-.complete-dialog::backdrop{background:rgba(34,7,20,.55)}
-.complete-light{height:140px;position:relative;display:grid;place-items:center;background:radial-gradient(circle,rgba(243,201,105,.55),transparent 65%)}
-.complete-light span{position:absolute;color:#d9a24a}
-.complete-light span:first-child{font-size:80px;animation:complete-pop .7s cubic-bezier(.2,1.5,.3,1) both}
-.complete-light span:nth-child(2){font-size:28px;top:18px;left:60px;animation:complete-pop .6s .15s both}
-.complete-light span:nth-child(3){font-size:24px;bottom:18px;right:48px;animation:complete-pop .6s .25s both}
-.complete-dialog>p{margin:0 0 6px;font-size:14px;font-weight:600;color:var(--muted)}
-.complete-dialog h2{margin:0 0 12px;font:600 28px/1.15 "Inter Tight",Arial,system-ui,sans-serif;letter-spacing:-.02em}
-.complete-count{display:block;margin-bottom:24px;font-size:14px;color:var(--muted);font-variant-numeric:tabular-nums}
-.complete-dialog .main-button{max-width:280px;margin:auto}
-.complete-dialog .text-button{margin-top:12px;min-height:44px}
-
-@keyframes present-float{0%,100%{transform:translateY(0) rotateX(-12deg) rotateY(-24deg)}50%{transform:translateY(-7px) rotateX(-12deg) rotateY(-24deg)}}
-@keyframes symbol-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
-@keyframes complete-pop{from{transform:scale(.25) rotate(-30deg);opacity:0}to{transform:scale(1) rotate(0);opacity:1}}
+@keyframes slide-forward{from{opacity:0;transform:translateX(28px)}to{opacity:1;transform:none}}
+@keyframes slide-back{from{opacity:0;transform:translateX(-28px)}to{opacity:1;transform:none}}
+@keyframes check-pop{from{transform:scale(.3);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes check-draw{from{stroke-dashoffset:14}to{stroke-dashoffset:0}}
+@keyframes copy-draw{to{stroke-dashoffset:0}}
+@keyframes spark{0%{opacity:1;transform:rotate(var(--a)) translateY(0) scale(1)}100%{opacity:0;transform:rotate(var(--a)) translateY(-22px) scale(.4)}}
+@keyframes stamp-in{from{opacity:0;transform:scale(.3) rotate(-25deg)}to{opacity:1;transform:none}}
 @keyframes loading-breathe{0%,100%{opacity:.4;transform:scale(.8)}50%{opacity:1;transform:scale(1)}}
 
 @media(max-width:960px){
-  .challenge-hero{grid-template-columns:1fr}
-  .challenge-present{display:none}
-  .challenge-layout{grid-template-columns:1fr;gap:48px}
-  .challenge-reading{max-width:none}
-  .jump-link{display:inline-flex}
-  .prompt-card{grid-template-columns:1fr}
-  .prompt-body{max-width:none}
-  .prompt-block{grid-template-columns:minmax(0,1fr)}
-  .prompt-block .prompt-footer{order:1}
-  .challenge-prompts{margin-top:48px;padding-top:32px}
+  .slide-body.has-media{grid-template-columns:minmax(0,1fr);gap:8px}
+  .resources.has-both{grid-template-columns:minmax(0,1fr)}
+  .resources.has-both .resource-downloads{position:static}
 }
-@media(max-width:600px){
-  .challenge-main{padding:16px 16px 48px}
-  .challenge-hero{padding:32px 20px;gap:0}
-  .challenge-lead{font-size:16px}
-  .challenge-actions{margin-top:24px}
-  .complete-button,.complete-badge{width:100%;justify-content:center}
-  .challenge-layout{margin-top:32px}
-  .reading-section{padding-bottom:24px;margin-bottom:24px}
+@media(max-width:760px){
+  .day-header{grid-template-columns:auto minmax(0,1fr);align-items:start;gap:16px}
+  .day-badge{width:60px;height:60px;border-radius:12px}
+  .day-badge-number{font-size:24px}
+  .day-badge-type{font-size:10px;max-width:54px}
+  .day-heading h1{font-size:24px;margin-bottom:8px}
+  .day-meta li{font-size:13px;padding:5px 10px 5px 8px}
+  .day-header>.day-complete{grid-column:1/-1;align-items:stretch}
+  .day-complete .complete-button{justify-content:center;width:100%}
+  .complete-status{text-align:left}
+  .deck-bar{gap:12px;padding:6px 16px 6px 6px}
+  .deck-viewport{min-height:300px}
+  .slide{padding:24px 20px 32px}
+  .slide-head{margin-bottom:20px}
+  .slide-head h2{font-size:22px}
+  .slide-body.reading-body{font-size:16px}
+  .reading-body .agenda-list{grid-template-columns:minmax(0,1fr)}
+  .deck-nav{padding:10px 12px;gap:8px}
+  .deck-prev{width:48px;padding:0;justify-content:center}
+  .deck-prev span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  .deck-next{flex:1;max-width:none}
+  .reading-body table{display:block;overflow-x:auto}
+  .resources{gap:40px;margin-top:40px}
   .prompt-card{padding:20px 16px}
   .download-item{padding:16px}
-  .reading-body table{display:block;overflow-x:auto}
+  .finish{flex-direction:column;align-items:stretch;padding:20px}
+  .finish .day-complete{align-items:stretch}
 }
-@media(prefers-reduced-motion:reduce){.copy-check,.copy-check path,.copy-state{animation:none!important;transition:none!important;stroke-dashoffset:0}.present-object,.present-symbol,.complete-light span,.challenge-loading .loading-star{animation:none!important}.complete-button,.resource-button{transition:none}}
+@media(prefers-reduced-motion:reduce){
+  .slide,.slide.is-forward,.slide.is-back,.complete-icon svg,.complete-icon path,.complete-icon i,.day-badge-stamp,.copy-check,.copy-check path,.challenge-loading .loading-star{animation:none!important}
+  .slide.is-settling,.complete-button,.deck-button,.resource-button,.day-badge,.deck-progress span,.copy-state{transition:none!important}
+  .complete-button:active,.deck-button:active{transform:none}
+}

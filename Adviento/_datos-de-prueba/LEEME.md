@@ -8,9 +8,10 @@ Sirve para que nadie tenga que usar datos de su empresa para practicar. Eso quit
 
 | Archivo | Qué contiene | Días que lo usan |
 |---|---|---|
-| `facturas-2026.csv` | **367 facturas** de todo 2026: cliente, concepto, importe, IVA, estado, vencimiento y forma de pago | 7, 14, 21, 22 |
-| `ventas-2026.csv` | **182 filas** de ventas semanales de 5 comerciales en 4 zonas, 9 meses, con objetivos | 9, 14, 16 |
-| `bandeja-entrada.csv` | **120 correos** de una semana de diciembre: remitente, asunto, extracto, adjuntos | 3, 11, 22, 23 |
+| `facturas-2026.csv` | **367 facturas** de todo 2026: cliente, concepto, importe, IVA, estado, vencimiento y forma de pago | 2, 6, 15 |
+| `ventas-2026.csv` | **182 filas** de ventas semanales de 5 comerciales en 4 zonas, 9 meses, con objetivos | 13, 15 |
+| `bandeja-entrada.csv` | **120 correos** de una semana de diciembre: remitente, asunto, extracto, adjuntos | 11, 17, 21 |
+| `agenda-semana.csv` | **30 eventos** de una semana (14-18 de diciembre) de una persona con trabajo, críos y Navidad. Tres «Reunión» sin descripción, un solape el miércoles | 10, 21 |
 | `_solucion-bandeja.csv` | La categoría real de cada correo. **Solo para ti**, para comprobar si la IA acierta. No se publica. | — |
 
 El tamaño es deliberado. Con 12 filas, cualquiera diría "esto lo hago yo a mano en diez minutos". Con 367 facturas y 120 correos, el contraste es evidente: a mano son horas, y ahí se ve para qué sirve la IA.
@@ -30,7 +31,7 @@ En `facturas-2026.csv` hay sembrados a propósito:
 
 En `ventas-2026.csv`: filas duplicadas, facturaciones vacías, nombres en minúscula y algún importe con coma.
 
-**Por qué:** el reto no es "pídeselo a la IA", es **ver si la IA se da cuenta**. Si Silvia le pide un total y la IA se lo da sin mencionar el duplicado ni el importe vacío, ahí está la lección del calendario: revisar siempre. Y si se da cuenta, Silvia ve lo que se habría comido a mano.
+**Por qué:** el reto no es "pídeselo a la IA", es **ver si la IA se da cuenta**. Si alguien le pide un total y la IA se lo da sin mencionar el duplicado ni el importe vacío, ahí está la lección del calendario: revisar siempre. Y si se da cuenta, se ve lo que se habría comido a mano.
 
 ## El archivo de la bandeja
 

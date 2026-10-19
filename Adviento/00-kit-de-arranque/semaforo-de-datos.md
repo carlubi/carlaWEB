@@ -12,16 +12,16 @@ Una hoja para decidir, en dos segundos, qué puedes pegar en una IA y qué no.
 - Nóminas y salarios con nombre y apellidos.
 - Contraseñas, claves de acceso, códigos.
 - Contratos y acuerdos con cláusula de confidencialidad.
-- Datos personales de clientes o compañeros que no te pertenecen a ti.
+- Datos personales de otras personas (clientes, compañeros, alumnos, familia) que no te pertenecen.
 
 **Si lo que tienes delante lleva el nombre de una persona junto a algo privado, es rojo.**
 
 ## 🟡 Ámbar · solo si lo anonimizas o si tu empresa lo permite
 
-- Correos de clientes: quita nombres, empresa y cualquier referencia que identifique.
-- Hojas de cálculo internas: sustituye nombres por "Cliente A", "Cliente B".
+- Correos y mensajes de otras personas: quita nombres, empresa y cualquier referencia que identifique.
+- Hojas de cálculo con nombres: sustituye por "Cliente A", "Alumno B", "Persona C".
 - Informes de ventas: cambia las cifras por proporciones o inventa importes parecidos.
-- Documentación interna de procesos.
+- Documentación interna del trabajo, si tu empresa no lo prohíbe.
 
 **Regla práctica:** si lo pudieras leer en voz alta en un bar sin que nadie supiera de quién hablas, ya es ámbar aceptable.
 
@@ -39,7 +39,7 @@ Una hoja para decidir, en dos segundos, qué puedes pegar en una IA y qué no.
 
 Conectar el correo o el calendario es distinto de pegar un texto: le das acceso continuado. Antes de hacerlo:
 
-- [ ] ¿Mi empresa tiene una política sobre esto? Si no lo sé, pregunto.
+- [ ] Si es una cuenta del trabajo o del centro de estudios, ¿hay alguna norma? Si no lo sé, pregunto.
 - [ ] ¿Qué puede ver exactamente, y qué no?
 - [ ] ¿Puede solo leer, o también escribir y enviar?
 - [ ] ¿Sé dónde se revoca el acceso?

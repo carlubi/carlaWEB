@@ -1,55 +1,53 @@
-# Día 20 · Claude trabaja en tu navegador
+# Día 20 · Claude en tu navegador
 
-**Tipo:** ✨ Sorpresa (domingo)
+**Tipo:** ✨ Sorpresa
 **Herramienta:** Claude en Chrome
-**Tiempo:** 15 minutos
-**Datos:** ninguno sensible
+**Tiempo:** 20 minutos
+**Datos:** nada sensible, webs públicas
+**Plan:** de pago (Pro, Max, Team, Enterprise); alternativa manual en el gratuito
 
 ## Objetivo
 
-Que vea a la IA **haciendo** algo, no diciéndolo. Mover el ratón, leer una página, rellenar. Es el día más espectacular del calendario.
+Ver un agente actuar en el navegador. Que sepa conseguirlo e instalarlo bien (desde la ficha de Anthropic), controlarlo (modo de preguntar, detener), entender el riesgo (inyección de instrucciones) y hacer un caso práctico útil.
 
-## Por qué sorpresa y no reto
+## Lo que aprende
 
-Porque depende de que tenga Chrome, instale una extensión y le dé permisos. Como reto obligatorio dejaría fuera a demasiada gente un domingo. Como sorpresa, quien pueda lo disfruta y quien no, no se siente excluida.
+- Qué es Claude en Chrome y en qué se diferencia de un conector.
+- Requisitos: plan de pago, Chrome de escritorio, Enterprise lo activa un admin.
+- Instalar: Web Store › comprobar que es de Anthropic › Añadir a Chrome › iniciar sesión › puzle › chincheta › panel lateral.
+- Modo de aprobación: preguntar antes de actuar vs aprobar automáticamente (viene en automático por defecto).
+- Inyección de instrucciones explicada en sencillo.
+- Dónde no usarlo.
+- Caso práctico: comparar tres opciones en webs públicas.
 
-**Hay que decirlo en la web:** "este es opcional, si no puedes hacerlo no pasa nada, mañana seguimos".
+## Datos de la documentación oficial (octubre 2026)
 
-## Pasos
+- Disponible en todos los planes de pago.
+- Solo Chrome; no otros navegadores Chromium ni móvil.
+- Instalación: Chrome Web Store › «Add to Chrome» › iniciar sesión › puzle › chincheta › permisos › icono abre el panel lateral.
+- El panel lateral empieza en «Automatically approve»: Claude trabaja seguido, revisa cada acción y se para cuando necesita aprobación. El modo elegido se recuerda.
+- En Max y Team el panel funciona como sesión de Cowork (llegando a Pro).
+- Team: activado por defecto. Enterprise: desactivado hasta que un admin lo active.
+- También se puede usar desde Claude Desktop: Ajustes › Conectores › Claude in Chrome › Configurar.
 
-1. Instala la extensión en Chrome.
-2. Dale permiso a **una sola web**, y que sea inofensiva.
-3. Pídele algo pequeño: consultar algo, comparar dos páginas, sacar datos de una tabla.
-4. **Míralo mientras lo hace.** Esa es la experiencia.
-5. Quítale el permiso cuando termines.
+## Notas para ti
 
-## Tareas que funcionan bien
+- Antes era solo "prueba con criterio". Ahora tiene cómo conseguirlo paso a paso y un caso práctico concreto, como pediste.
+- El caso de comparar tres opciones funciona para cualquier perfil y queda muy bien en vídeo.
+- Insistir en comprobar que la extensión es de Anthropic: hay clones.
 
-- Sacar los datos de una tabla de una web pública a un listado ordenado
-- Comparar la misma información en dos páginas oficiales
-- Revisar una web larga y resumir lo que afecta a su sector
-- Rellenar un formulario de prueba con datos inventados
+## Capturas que hacen falta
 
-## Dónde NO usarlo
-
-Esto hay que decirlo igual de claro que lo demás:
-
-- **Nada de banca, pagos ni trámites con la administración.**
-- Nada que implique aceptar condiciones o enviar algo en su nombre.
-- Nada en el entorno de la empresa sin permiso de IT.
-- Nada donde esté logueada con datos sensibles.
-
-## Por qué tanto aviso
-
-Un conector lee. Esto **actúa**. La diferencia es importante y es el aprendizaje real del día: cuanto más puede hacer una herramienta por ti, más despacio hay que ir al principio.
-
-## La idea que debe quedarse
-
-Ver a la IA haciendo clic cambia lo que crees que es posible. Y justo por eso conviene empezar con algo que no importe si sale mal.
+| Archivo | Qué tiene que salir |
+|---|---|
+| `d20-01-chrome-web-store.png` | Ficha oficial en la Chrome Web Store con «Anthropic» visible y el botón de añadir |
+| `d20-02-fijar-extension.png` | Menú del puzle con la chincheta junto a Claude |
+| `d20-03-panel-lateral.png` | El panel lateral abierto junto a una web |
+| `d20-04-modo-aprobacion.png` | El selector de modo con la opción de preguntar antes de actuar |
 
 ## Por verificar antes de publicar
 
-- [ ] Cómo se instala hoy y en qué planes está
-- [ ] Cómo se dan y se quitan permisos por web, con capturas
-- [ ] Probar la tarea de ejemplo entera
-- [ ] **Si al final resulta demasiado difícil de instalar, cambiar el día por otra cosa.** Un domingo nadie pelea con una extensión
+- [ ] Nombre exacto de los modos en español y si sigue existiendo "preguntar antes de actuar" en el panel nuevo (si solo queda el automático, cambiar el apartado)
+- [ ] Si ya está en Pro como sesión de Cowork
+- [ ] Botón de detener en el panel
+- [ ] Hacer el caso práctico con tres productos reales para el vídeo
