@@ -253,7 +253,7 @@ if (root) {
       const state = item?.completado_en ? 'completed' : item ? 'opened' : available(day) ? 'available' : 'future';
       const button = document.createElement('button'); button.type = 'button'; button.dataset.day = String(day.dia);
       /* diagonal colour ribbons, shared with the 3D house (adviento-house3d.ts · frontStyle) */
-      const tone = day.dia === 24 ? 'eve' : day.tipo === 'Sorpresa' ? 'pine' : ((index % 6 - Math.floor(index / 6)) % 3 + 3) % 3;
+      const tone = day.dia === 24 ? 'eve' : day.dia === 15 ? 'halfway' : day.tipo === 'Sorpresa' ? 'pine' : ((index % 6 - Math.floor(index / 6)) % 3 + 3) % 3;
       button.className = `calendar-door tone-${tone}${day.tipo === 'Regalo' ? ' is-gift' : ''} ${state}`;
       button.disabled = state === 'future';
       button.setAttribute('aria-label',state==='future' ? `Día ${day.dia}, todavía cerrado` : `Día ${day.dia}: ${day.titulo}${state==='completed'?', completado':''}`);
@@ -318,7 +318,15 @@ if (root) {
   $('gift-close').addEventListener('click', () => gift.close());
   $('gift-later').addEventListener('click', () => gift.close());
   const caganerDialog = $<HTMLDialogElement>('caganer-dialog');
-  board.addEventListener('caganer-found', () => { if (!caganerDialog.open) { caganerDialog.showModal(); $('caganer-ok').focus(); } });
+  board.addEventListener('caganer-found', event => {
+    if (caganerDialog.open) return;
+    /* the 3D house sends a portrait of the very figure that was found; without it, a gift icon stands in */
+    const portrait = (event as CustomEvent<{ portrait?:string|null }>).detail?.portrait;
+    const img = $<HTMLImageElement>('caganer-portrait');
+    if (portrait) { img.src = portrait; img.alt = 'El caganer que has encontrado, con su barretina roja'; }
+    img.hidden = !portrait; $('caganer-fallback').toggleAttribute('hidden', Boolean(portrait));
+    caganerDialog.showModal(); $('caganer-ok').focus();
+  });
   for (const id of ['caganer-close','caganer-ok']) $(id).addEventListener('click', () => caganerDialog.close());
   caganerDialog.addEventListener('click', event => { if (event.target === caganerDialog) caganerDialog.close(); });
   gift.addEventListener('click', event => { if (event.target === gift) gift.close(); });

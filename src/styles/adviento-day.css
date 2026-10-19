@@ -1,6 +1,6 @@
 /* Página de cada día del Adviento. Tokens y reglas: DESIGN.md (cherry para acciones, amarillo para avance, superficies planas).
    Orden: cabecera del día → diapositivas con la explicación → prompts (izquierda) y descargas (derecha) → cierre. */
-.challenge-page{--cherry:#691b32;--cherry-active:#521326;--cherry-soft:#e9d4d9;--yellow:#f3c969;--yellow-edge:#e2b44f;--surface:#f8f5ed;--ink:#3b252d;--muted:#6b5960;--hairline:rgba(59,37,45,.14);--font:"Inter Tight",Arial,system-ui,sans-serif;min-height:100dvh;background:#fff}
+.challenge-page{--cherry:#691b32;--cherry-active:#521326;--cherry-soft:#e9d4d9;--yellow:#f3c969;--yellow-edge:#e2b44f;--holly:#2f6b47;--holly-active:#24563a;--holly-soft:#e9f1e6;--surface:#f8f5ed;--ink:#3b252d;--muted:#6b5960;--hairline:rgba(59,37,45,.14);--font:"Inter Tight",Arial,system-ui,sans-serif;min-height:100dvh;background:#fff}
 .challenge-main{max-width:1280px;margin:auto;padding:12px clamp(16px,3vw,32px) 64px;position:relative;z-index:2}
 .back-link{display:inline-flex;align-items:center;gap:8px;min-height:44px;margin:0 0 8px;color:var(--cherry);text-decoration:none;font-weight:600;font-size:14px}
 .back-link svg{width:18px;height:18px}
@@ -17,14 +17,14 @@
 
 /* ---------- cabecera del día: número, título, herramienta y tiempo, y completar ---------- */
 .day-header{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:16px 24px;margin:0 0 24px}
-/* el número es un cajón del calendario: cherry mientras está abierto, amarillo con sello al completarlo */
+/* el número es un cajón del calendario: cherry mientras está abierto, verde navideño con sello al completarlo */
 .day-badge{position:relative;display:grid;align-content:center;justify-items:center;gap:4px;width:76px;height:76px;border-radius:14px;background:var(--cherry);color:#fff;transition:background-color .3s ease,color .3s ease}
 .day-badge-number{font:600 30px/1 var(--font);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
 .day-badge-type{max-width:68px;overflow:hidden;font-size:11px;font-weight:600;line-height:1.2;color:#f3d9cc;text-align:center;text-overflow:ellipsis;white-space:nowrap}
-.day-badge-stamp{position:absolute;top:-8px;right:-8px;display:grid;place-items:center;width:28px;height:28px;border:2px solid #fff;border-radius:50%;background:var(--cherry);color:#fff;opacity:0;transform:scale(.3) rotate(-20deg)}
+.day-badge-stamp{position:absolute;top:-8px;right:-8px;display:grid;place-items:center;width:28px;height:28px;border:2px solid #fff;border-radius:50%;background:var(--yellow);color:var(--holly-active);opacity:0;transform:scale(.3) rotate(-20deg)}
 .day-badge-stamp svg{width:18px;height:18px}
-.day-badge.is-done{background:var(--yellow);color:var(--cherry-active)}
-.day-badge.is-done .day-badge-type{color:var(--cherry)}
+.day-badge.is-done{background:var(--holly);color:#fff9ec}
+.day-badge.is-done .day-badge-type{color:#d6e7d4}
 .day-badge.is-done .day-badge-stamp{opacity:1;transform:none}
 .day-badge.is-stamping .day-badge-stamp{animation:stamp-in .5s .35s cubic-bezier(.2,1.5,.4,1) both}
 .day-heading{min-width:0}
@@ -33,23 +33,23 @@
 .day-meta li{display:inline-flex;align-items:center;gap:8px;min-height:34px;padding:6px 12px 6px 10px;border:1px solid var(--hairline);border-radius:8px;background:var(--surface);font-size:14px;font-weight:600;line-height:1.3;color:var(--ink)}
 .day-meta svg{width:18px;height:18px;flex:none;color:var(--cherry)}
 
-/* botón de completar: blanco mientras está pendiente, amarillo (avance) cuando se completa */
+/* botón de completar: blanco mientras está pendiente, verde navideño cuando se completa («hecho») */
 .day-complete{display:flex;flex-direction:column;align-items:flex-end;gap:6px;min-width:0}
 .complete-button{display:inline-flex;align-items:center;gap:10px;min-height:48px;padding:12px 20px 12px 16px;border:1px solid rgba(105,27,50,.35);border-radius:8px;background:#fff;color:var(--cherry);font:600 16px/1.25 var(--font);white-space:nowrap;cursor:pointer;transition:background-color .25s ease,border-color .25s ease,color .25s ease}
 .complete-button:hover{background:#fbf4f5;border-color:var(--cherry)}
 .complete-button:active{transform:scale(.98)}
 .complete-button.is-saving{cursor:progress;opacity:.7}
-.complete-button.is-done,.complete-button.is-done:hover{border-color:var(--yellow-edge);background:var(--yellow);color:var(--cherry-active);cursor:default;transform:none}
+.complete-button.is-done,.complete-button.is-done:hover{border-color:var(--holly);background:var(--holly);color:#fff9ec;cursor:default;transform:none}
 .complete-icon{position:relative;display:grid;place-items:center;width:24px;height:24px;flex:none}
 .complete-icon svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;overflow:visible}
 .complete-icon path{opacity:.35;stroke-dasharray:14;stroke-dashoffset:0}
-.is-done .complete-icon circle{fill:var(--cherry-active);stroke:var(--cherry-active)}
-.is-done .complete-icon path{opacity:1;stroke:#fff;stroke-width:2.2}
+.is-done .complete-icon circle{fill:#fff9ec;stroke:#fff9ec}
+.is-done .complete-icon path{opacity:1;stroke:var(--holly);stroke-width:2.2}
 .is-celebrating .complete-icon svg{animation:check-pop .45s cubic-bezier(.2,1.6,.4,1) both}
 .is-celebrating .complete-icon path{animation:check-draw .35s .18s ease-out both}
 /* seis destellos que salen del check al completar */
-.complete-icon i{position:absolute;top:50%;left:50%;width:5px;height:5px;margin:-2.5px;border-radius:50%;background:var(--cherry);opacity:0;pointer-events:none}
-.complete-icon i:nth-child(odd){background:#fff;box-shadow:0 0 0 1px var(--yellow-edge)}
+.complete-icon i{position:absolute;top:50%;left:50%;width:5px;height:5px;margin:-2.5px;border-radius:50%;background:var(--yellow);opacity:0;pointer-events:none}
+.complete-icon i:nth-child(odd){background:#fff;box-shadow:0 0 0 1px var(--holly)}
 .complete-icon i:nth-child(2){--a:0deg}.complete-icon i:nth-child(3){--a:60deg}.complete-icon i:nth-child(4){--a:120deg}.complete-icon i:nth-child(5){--a:180deg}.complete-icon i:nth-child(6){--a:240deg}.complete-icon i:nth-child(7){--a:300deg}
 .is-celebrating .complete-icon i{animation:spark .7s .2s ease-out both}
 .complete-status{margin:0;font-size:13px;line-height:1.4;color:var(--muted);text-align:right}

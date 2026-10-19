@@ -12,7 +12,8 @@ import { createCaganerModel, createSmokePuff } from './adviento-caganer';
 
 type DayInfo = { dia:number; titulo:string; abre_el?:string; tipo?:string };
 type DoorState = 'future'|'available'|'opened'|'completed';
-type FrontStyle = { bg:string; ink:string; tile:string; tileBorder:string; ribbon?:boolean; bow?:boolean };
+type Track = <T extends { dispose():void }>(item:T) => T;
+type FrontStyle = { bg:string; ink:string; tile:string; tileBorder:string; ribbon?:boolean; bow?:boolean; snow?:boolean };
 type Layout = ReturnType<typeof layoutFor>;
 type Drawer = {
   day:DayInfo; x:number; y:number; state:DoorState;
@@ -26,7 +27,7 @@ type Drawer = {
 const SPEC = {
   color: {
     facade:'#78233f', side:'#5e1d37', liner:'#2a0c1b', roof:'#5a1a33', roofUnder:'#3d1124',
-    icing:'#fff9ec', gold:'#f3c969', rimMuted:'#9a5468', tray:'#b4687e',
+    icing:'#fff9ec', gold:'#f3c969', holly:'#2f6b47', hollySoft:'#e9f1e6', rimMuted:'#9a5468', tray:'#b4687e',
     pine:'#5f755d', pineDark:'#4f6550', trunk:'#b98f63', snow:'#fffdf8', chimney:'#6e2440', shadow:'#3b1225'
   },
   fronts: {
@@ -37,7 +38,9 @@ const SPEC = {
     /* surprise days: the fir green of the trees beside the house */
     pine:{ bg:'#5f755d', ink:'#fff9ec', tile:'rgba(255,249,236,.14)', tileBorder:'rgba(255,249,236,.3)' },
     /* Christmas Eve: the big present, deep pine wrapped in a gold ribbon with a bow */
-    eve:{ bg:'#34503f', ink:'#fff9ec', tile:'rgba(255,249,236,.14)', tileBorder:'rgba(243,201,105,.45)', ribbon:true, bow:true }
+    eve:{ bg:'#34503f', ink:'#fff9ec', tile:'rgba(255,249,236,.14)', tileBorder:'rgba(243,201,105,.45)', ribbon:true, bow:true },
+    /* day 15, halfway: Christmas-jumper red with snowflakes, a milestone worth reaching */
+    halfway:{ bg:'#b3293f', ink:'#fff9ec', tile:'rgba(255,249,236,.16)', tileBorder:'rgba(255,249,236,.38)', snow:true }
   } satisfies Record<string,FrontStyle>,
   camera: { fov:30, yaw:-.34, pitch:.13, yawRange:[-.62, .3], pitchRange:[.04, .21], dragSpeed:.0055 },
   openMs: 900,
@@ -53,8 +56,9 @@ const SPEC = {
  */
 const ribbons = [SPEC.fronts.cream, SPEC.fronts.pink, SPEC.fronts.wine];
 function frontStyle(index:number, cols:number, state:DoorState, day:DayInfo):FrontStyle {
-  /* day 24 keeps its wrapping even when it can be opened; its «Ábrelo» says so in yellow */
+  /* days 24 and 15 keep their look even when they can be opened; their «Ábrelo» says so in yellow */
   if (day.dia === 24) return SPEC.fronts.eve;
+  if (day.dia === 15) return SPEC.fronts.halfway;
   if (state === 'available') return SPEC.fronts.gold;
   if (day.tipo === 'Sorpresa') return SPEC.fronts.pine;
   const r = Math.floor(index / cols), c = index % cols;
@@ -300,6 +304,24 @@ export async function mountHouse3D(scene:HTMLElement, grid:HTMLElement, days:Day
       }
     }
 
+    if (style.snow) {
+      /* snowflakes: three crossed strokes with little branches, like a knitted jumper */
+      ctx.strokeStyle = 'rgba(255,249,236,.4)'; ctx.lineCap = 'round';
+      for (const [fx, fy, fr] of [[.17, .2, .07], [.84, .2, .08], [.66, .1, .045], [.9, .52, .05], [.38, .14, .04]]) {
+        const x = w * fx, y = h * fy, r = u * fr;
+        ctx.lineWidth = Math.max(1, r * .16);
+        for (let k = 0; k < 3; k++) {
+          const a = k * Math.PI / 3, dx = Math.cos(a) * r, dy = Math.sin(a) * r;
+          ctx.beginPath(); ctx.moveTo(x - dx, y - dy); ctx.lineTo(x + dx, y + dy); ctx.stroke();
+          for (const sgn of [1, -1]) {
+            const bx = x + sgn * dx * .6, by = y + sgn * dy * .6, b = r * .3;
+            ctx.beginPath(); ctx.moveTo(bx, by); ctx.lineTo(bx + Math.cos(a + sgn * 2.4) * b, by + Math.sin(a + sgn * 2.4) * b);
+            ctx.moveTo(bx, by); ctx.lineTo(bx + Math.cos(a - sgn * 2.4) * b, by + Math.sin(a - sgn * 2.4) * b); ctx.stroke();
+          }
+        }
+      }
+    }
+
     /* number and icon share a baseline at the bottom of the panel */
     const numSize = u * (L.compact ? .38 : .36);
     const base = h - pad;
@@ -321,7 +343,8 @@ export async function mountHouse3D(scene:HTMLElement, grid:HTMLElement, days:Day
     ctx.textBaseline = 'middle'; ctx.textAlign = 'left';
     ctx.font = `600 ${labelSize}px ${FONT}`;
     if (d.state === 'future') {
-      const date = d.day.dia === 24 && !L.compact ? 'Nochebuena' : shortDate(d.day.abre_el);
+      const milestone = d.day.dia === 24 ? 'Nochebuena' : d.day.dia === 15 ? '¡Mitad!' : '';
+      const date = milestone && !L.compact ? milestone : shortDate(d.day.abre_el);
       const lw = labelSize * .72, lh = labelSize * .6, lx = pad, ly = mid - lh * .3;
       const textW = ctx.measureText(date).width, plateW = lw + labelSize * .4 + textW + labelSize * .7;
       if (style.ribbon) {
@@ -338,8 +361,9 @@ export async function mountHouse3D(scene:HTMLElement, grid:HTMLElement, days:Day
     } else if (d.state === 'available') {
       const label = 'Ábrelo', tw = ctx.measureText(label).width, ph = labelSize * 1.5, px = labelSize * .6;
       roundRect(ctx, pad - px * .5, mid - ph / 2, tw + px * 2, ph, ph / 2);
-      ctx.fillStyle = d.day.dia === 24 ? SPEC.color.gold : 'rgba(105,27,50,.12)'; ctx.fill();
-      ctx.fillStyle = d.day.dia === 24 ? '#691b32' : style.ink;
+      const special = d.day.dia === 24 || d.day.dia === 15;
+      ctx.fillStyle = special ? SPEC.color.gold : 'rgba(105,27,50,.12)'; ctx.fill();
+      ctx.fillStyle = special ? '#691b32' : style.ink;
       ctx.fillText(label, pad - px * .5 + px, mid + labelSize * .04);
     }
   }
@@ -368,7 +392,8 @@ export async function mountHouse3D(scene:HTMLElement, grid:HTMLElement, days:Day
     const u = Math.min(w, h);
     const cherry = '#691b32';
     const padX = w * .12, padTop = h * .11, padBottom = h * .1;
-    ctx.fillStyle = completed ? '#fff3d2' : '#fffaf1'; ctx.fillRect(0, 0, w, h);
+    /* done is Christmas green: a holly-green stamp on a faint green card */
+    ctx.fillStyle = completed ? SPEC.color.hollySoft : '#fffaf1'; ctx.fillRect(0, 0, w, h);
     /* soft light from above, like the drawer's own shadow falling on the card */
     const top = ctx.createLinearGradient(0, 0, 0, h * .3);
     top.addColorStop(0, 'rgba(59,37,45,.16)'); top.addColorStop(1, 'rgba(59,37,45,0)');
@@ -383,13 +408,13 @@ export async function mountHouse3D(scene:HTMLElement, grid:HTMLElement, days:Day
     /* a drawn check, not a glyph: same stroke language as the icon set */
     const check = (cx:number, cy:number, s:number) => {
       ctx.beginPath(); ctx.moveTo(cx - s, cy); ctx.lineTo(cx - s * .25, cy + s * .75); ctx.lineTo(cx + s * 1.1, cy - s * .8);
-      ctx.lineWidth = Math.max(1.5, u * .016); ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.strokeStyle = cherry; ctx.stroke();
+      ctx.lineWidth = Math.max(1.5, u * .018); ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.strokeStyle = SPEC.color.icing; ctx.stroke();
     };
     if (L.compact) {
       /* on phones a word this small can't be read: the state becomes a shape, and the title gets the room */
       if (completed) {
         const sr = u * .1, sx = w - padX - sr, sy = rowY;
-        ctx.beginPath(); ctx.arc(sx, sy, sr, 0, Math.PI * 2); ctx.fillStyle = SPEC.color.gold; ctx.fill();
+        ctx.beginPath(); ctx.arc(sx, sy, sr, 0, Math.PI * 2); ctx.fillStyle = SPEC.color.holly; ctx.fill();
         check(sx, sy, sr * .42);
       }
     } else {
@@ -400,8 +425,8 @@ export async function mountHouse3D(scene:HTMLElement, grid:HTMLElement, days:Day
       const pillW = labelW + pillPad * 2 + stamp * .55;
       const pillX = w - padX - pillW, pillY = rowY - pillH / 2;
       roundRect(ctx, pillX, pillY, pillW, pillH, pillH / 2);
-      ctx.fillStyle = completed ? SPEC.color.gold : 'rgba(105,27,50,.08)'; ctx.fill();
-      ctx.fillStyle = cherry; ctx.textAlign = 'left';
+      ctx.fillStyle = completed ? SPEC.color.holly : 'rgba(105,27,50,.08)'; ctx.fill();
+      ctx.fillStyle = completed ? SPEC.color.icing : cherry; ctx.textAlign = 'left';
       ctx.fillText(label, pillX + pillPad + stamp * .55, rowY + u * .004);
       if (completed) check(pillX + pillPad + stamp * .2, rowY, stamp * .2);
     }
@@ -409,7 +434,7 @@ export async function mountHouse3D(scene:HTMLElement, grid:HTMLElement, days:Day
     /* the day's icon */
     const r = u * .14, cx = w / 2, cy = h * .42;
     ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2);
-    ctx.fillStyle = completed ? SPEC.color.gold : '#e9d4d9'; ctx.fill();
+    ctx.fillStyle = completed ? SPEC.color.holly : '#e9d4d9'; ctx.fill();
     if (icon) ctx.drawImage(icon, cx - r * .58, cy - r * .58, r * 1.16, r * 1.16);
 
     /* the title: as large as fits in three lines, shrinking before it would ever be cut */
@@ -755,7 +780,7 @@ export async function mountHouse3D(scene:HTMLElement, grid:HTMLElement, days:Day
     const tex = canvasTexture(w, h, (ctx, cw, ch) => drawInterior(ctx, cw, ch, d.day, completed, null));
     d.interiorMat.map = tex; d.interiorMat.emissiveMap = tex; d.interiorMat.needsUpdate = true;
     if (old) { old.dispose(); disposables.delete(old); }
-    icons.get(dayIcon(d.day.dia), '#691b32').then(img => {
+    icons.get(dayIcon(d.day.dia), completed ? SPEC.color.icing : '#691b32').then(img => {
       if (!img || d.interiorMat.map !== tex) return;
       drawInterior((tex.image as HTMLCanvasElement).getContext('2d')!, tex.image.width, tex.image.height, d.day, completed, img);
       tex.needsUpdate = true;
@@ -859,6 +884,38 @@ export async function mountHouse3D(scene:HTMLElement, grid:HTMLElement, days:Day
     scene.classList.remove('is-pointing');
     vanish();
   });
+  /* a studio portrait of the figure just found, for the dialog: same model, own little scene */
+  let portrait:string|null|undefined;
+  function caganerPortrait() {
+    if (portrait !== undefined) return portrait;
+    portrait = null;
+    const owned:{ dispose():void }[] = [];
+    const keep:Track = item => { owned.push(item); return item; };
+    try {
+      const size = 360;
+      const shot = new THREE.WebGLRenderer({ antialias:true, alpha:true, preserveDrawingBuffer:true });
+      owned.push(shot);
+      shot.setPixelRatio(1); shot.setSize(size, size, false);
+      shot.outputColorSpace = THREE.SRGBColorSpace; shot.toneMapping = renderer.toneMapping; shot.toneMappingExposure = renderer.toneMappingExposure;
+      const stage = new THREE.Scene();
+      const env = new THREE.PMREMGenerator(shot); const envMap = env.fromScene(new RoomEnvironment(), .04).texture; stage.environment = envMap; owned.push(envMap); env.dispose();
+      stage.environmentIntensity = .55;
+      const key = new THREE.DirectionalLight('#fff4e6', 2.4); key.position.set(1.5, 2.2, 2.5); stage.add(key);
+      stage.add(new THREE.HemisphereLight('#fff6ec', '#3d5a45', 1.1));
+      const figure = createCaganerModel(keep); figure.rotation.y = .55; stage.add(figure);
+      const box = new THREE.Box3().setFromObject(figure), center = box.getCenter(new THREE.Vector3()), dims = box.getSize(new THREE.Vector3());
+      const cam = new THREE.PerspectiveCamera(26, 1, .01, 50);
+      const dist = Math.max(dims.x, dims.y, dims.z) / (2 * Math.tan(THREE.MathUtils.degToRad(13))) * 1.08;
+      cam.position.set(center.x, center.y + dims.y * .18, center.z + dist); cam.lookAt(center.x, center.y - dims.y * .02, center.z);
+      shot.render(stage, cam);
+      portrait = shot.domElement.toDataURL('image/png');
+      shot.forceContextLoss();
+    } catch { portrait = null; }
+    owned.forEach(item => item.dispose());
+    return portrait;
+  }
+  const announceFound = () => scene.dispatchEvent(new CustomEvent('caganer-found', { bubbles:true, detail:{ portrait:caganerPortrait() } }));
+
   function vanish() {
     if (!caganer || poof) return;
     const box = new THREE.Box3().setFromObject(caganer), center = box.getCenter(new THREE.Vector3()), size = box.getSize(new THREE.Vector3());
@@ -868,12 +925,14 @@ export async function mountHouse3D(scene:HTMLElement, grid:HTMLElement, days:Day
     if (reduceMotion.matches) finishVanish();
     requestRender();
   }
+  /* local development only: find the caganer from the console with __adviento.findCaganer() */
+  if (import.meta.env.DEV) (window as unknown as { __adviento:object }).__adviento = { findCaganer:vanish };
   function finishVanish() {
     if (!poof) return;
     world.remove(poof.group);
     if (caganer) { caganer.removeFromParent(); caganer = null; }
     caganerGone = true; renderer.shadowMap.needsUpdate = true;
-    if (!poof.told) scene.dispatchEvent(new CustomEvent('caganer-found', { bubbles:true }));
+    if (!poof.told) announceFound();
     poof = null;
   }
 
@@ -935,7 +994,7 @@ export async function mountHouse3D(scene:HTMLElement, grid:HTMLElement, days:Day
         caganer.scale.setScalar(poof.scale * (1 + .12 * Math.sin(t * Math.PI) - t * t));
         caganer.visible = t < 1; renderer.shadowMap.needsUpdate = true;
       }
-      if (!poof.told && elapsed > 850) { poof.told = true; scene.dispatchEvent(new CustomEvent('caganer-found', { bubbles:true })); }
+      if (!poof.told && elapsed > 850) { poof.told = true; announceFound(); }
       if (!poof.update(Math.max(0, elapsed))) finishVanish();
     }
 

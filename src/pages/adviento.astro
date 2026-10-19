@@ -64,7 +64,29 @@ const localPreview = import.meta.env.DEV;
     </main>
     <noscript><style>.house-scene:not(.is-3d){padding:76px clamp(28px,8vw,100px) 72px;min-height:400px;aspect-ratio:auto;perspective:1350px}.house-scene:not(.is-3d)>*{visibility:visible}.house-scene:not(.is-3d) .house-object{position:relative;inset:auto;overflow:visible}</style></noscript>
     <footer class="advent-footer"><span>Un reto nuevo cada día</span><div><a href="/privacidad">Privacidad</a><a href="/terminos">Términos</a></div></footer>
-    <dialog id="caganer-dialog" class="gift-dialog caganer-dialog" aria-labelledby="caganer-title"><button class="gift-close" id="caganer-close" type="button" aria-label="Cerrar mensaje"><svg viewBox="0 0 24 24" focusable="false" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button><p class="gift-day">¡Lo has encontrado!</p><h2 id="caganer-title">El caganer</h2><p>Es la figura más querida del pesebre catalán: un payés con barretina roja que, escondido en un rincón, hace sus necesidades. Lejos de ser una broma de mal gusto, simboliza la fertilidad de la tierra y la buena suerte para el año que empieza, y recuerda que todos, sin excepción, somos iguales. Por eso la tradición es buscarlo cada Navidad, como acabas de hacer tú.</p><p class="caganer-ai"><strong>Y flipa:</strong> esta casa en 3D, el caganer y hasta la bomba de humo se han hecho con un prompt a una IA. En concreto, con Claude (modelo Opus 5.5, esfuerzo <em>high</em>).</p><button class="main-button" id="caganer-ok" type="button">Seguir con el calendario</button></dialog>
+    <dialog id="caganer-dialog" class="gift-dialog caganer-dialog" aria-labelledby="caganer-title" aria-describedby="caganer-lead">
+      <div class="caganer-hero" aria-hidden="true">
+        <span class="caganer-spark s1">✦</span><span class="caganer-spark s2">✧</span><span class="caganer-spark s3">✦</span>
+        <img id="caganer-portrait" class="caganer-portrait" alt="" width="180" height="180" hidden />
+        <svg id="caganer-fallback" class="caganer-fallback" viewBox="0 0 24 24"><use href={iconHref('gift')} /></svg>
+        <span class="caganer-ground"></span>
+      </div>
+      <button class="gift-close" id="caganer-close" type="button" aria-label="Cerrar"><svg viewBox="0 0 24 24" focusable="false" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+      <div class="caganer-body">
+        <h2 id="caganer-title">¡Has encontrado al caganer!</h2>
+        <p class="caganer-lead" id="caganer-lead">La figura escondida del belén catalán: un payés con barretina roja haciendo sus necesidades en un rincón.</p>
+        <ul class="caganer-facts">
+          <li><strong>Trae suerte.</strong> Abona la tierra: simboliza la fertilidad y un buen año.</li>
+          <li><strong>Nos iguala.</strong> Recuerda que todos, sin excepción, somos iguales.</li>
+          <li><strong>Hay que buscarlo.</strong> La tradición es encontrarlo cada Navidad, como acabas de hacer.</li>
+        </ul>
+        <div class="caganer-ai">
+          <span class="caganer-ai-label">Hecho con IA</span>
+          <p>Esta casa en 3D, el caganer y hasta la nube de humo salen de un prompt a Claude (Opus 5.5, esfuerzo alto).</p>
+        </div>
+        <button class="main-button" id="caganer-ok" type="button">Seguir con el calendario</button>
+      </div>
+    </dialog>
     <dialog id="gift-dialog" class="gift-dialog day-dialog" aria-labelledby="gift-title" aria-describedby="gift-description"><button class="gift-close" id="gift-close" type="button" aria-label="Cerrar"><svg viewBox="0 0 24 24" focusable="false" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button><div class="day-badge" aria-hidden="true"><span class="day-badge-halo"></span><span class="day-badge-icon"><svg viewBox="0 0 24 24" focusable="false"><use id="gift-icon-use" href={iconHref('gift')} /></svg></span><span class="sparkle s1">✦</span><span class="sparkle s2">✧</span><span class="sparkle s3">✦</span></div><p class="gift-day" id="gift-day"></p><h2 id="gift-title"></h2><p class="gift-description" id="gift-description"></p><ul class="gift-meta" aria-label="Detalles del día"><li id="gift-tool"></li><li id="gift-time"></li></ul><a id="gift-link" class="main-button" href="/adviento"><span id="gift-cta">Empezar el reto</span> <span aria-hidden="true">→</span></a><button id="gift-later" class="gift-later" type="button">Más tarde</button><p class="gift-note">El día queda abierto en tu calendario. Puedes volver cuando quieras.</p></dialog>
   </div>
 </Layout>

@@ -157,14 +157,33 @@
 .house-canvas{animation:house-in .45s ease-out both}
 @keyframes house-in{from{opacity:0}to{opacity:1}}
 @media(prefers-reduced-motion:reduce){.house-canvas{animation:none}}
-/* caganer easter egg */
-.house-scene.is-3d.is-pointing{cursor:pointer}
-.caganer-dialog{width:min(calc(100vw - 32px),460px);text-align:left}
-.caganer-dialog h2{margin-bottom:12px}
-.caganer-dialog>p{font-size:15px;line-height:1.55;color:#6b5960;margin:0 0 12px}
-.caganer-dialog>p.gift-day{font-size:14px;margin-bottom:8px}
-.caganer-dialog>p.caganer-ai{padding:12px 16px;border-left:3px solid #f3c969;border-radius:0 8px 8px 0;background:#f8f5ed;color:#3b252d;margin:16px 0 24px}
+/* caganer easter egg. DESIGN.md: white card, radius 14, one soft shadow; the pine hero is the calendar's festive exception */
+.caganer-dialog{width:min(calc(100vw - 32px),440px);padding:0;overflow:hidden auto;text-align:left}
+.caganer-hero{position:relative;display:grid;place-items:center;height:188px;overflow:hidden;background:radial-gradient(circle at 50% 78%,rgba(243,201,105,.28),transparent 46%),radial-gradient(circle,rgba(255,249,236,.55) 1.2px,transparent 1.6px) 0 0/22px 22px,radial-gradient(circle,rgba(255,249,236,.35) 1px,transparent 1.4px) 11px 9px/22px 22px,#34503f}
+.caganer-portrait{position:relative;z-index:1;width:172px;height:172px;object-fit:contain;filter:drop-shadow(0 10px 10px rgba(16,30,22,.35));animation:caganer-in .55s .08s cubic-bezier(.2,1.45,.4,1) both}
+.caganer-fallback{position:relative;z-index:1;width:72px;height:72px;padding:20px;border-radius:50%;background:#fff9ec;color:#691b32;animation:caganer-in .55s .08s cubic-bezier(.2,1.45,.4,1) both}
+.caganer-fallback[hidden]{display:none}
+.caganer-ground{position:absolute;bottom:22px;left:50%;width:150px;height:18px;border-radius:50%;background:rgba(12,26,18,.32);filter:blur(6px);transform:translateX(-50%)}
+.caganer-spark{position:absolute;z-index:1;color:#f3c969;line-height:1;animation:sparkle .7s cubic-bezier(.2,1.4,.4,1) both}
+.caganer-spark.s1{top:34px;left:24%;font-size:20px;animation-delay:.35s}
+.caganer-spark.s2{top:58px;right:22%;font-size:16px;animation-delay:.45s}
+.caganer-spark.s3{bottom:46px;right:30%;font-size:11px;animation-delay:.55s}
+.caganer-dialog .gift-close{color:#fff9ec}
+.caganer-dialog .gift-close:hover{background:rgba(255,249,236,.14);color:#fff}
+.caganer-body{padding:24px 24px 24px}
+.caganer-dialog h2{margin:0 0 8px;text-align:left}
+.caganer-lead{margin:0 0 16px;font-size:16px;line-height:1.5;color:#3b252d}
+.caganer-facts{display:grid;gap:10px;margin:0 0 20px;padding:0;list-style:none}
+.caganer-facts li{position:relative;padding-left:24px;font-size:15px;line-height:1.45;color:#6b5960}
+.caganer-facts li::before{content:'✦';position:absolute;left:2px;top:1px;color:#d9a441;font-size:13px}
+.caganer-facts strong{color:#3b252d;font-weight:600}
+.caganer-ai{margin:0 0 24px;padding:14px 16px;border:1px solid rgba(59,37,45,.14);border-radius:8px;background:#f8f5ed}
+.caganer-ai-label{display:inline-block;margin-bottom:6px;padding:3px 10px;border-radius:999px;background:#e9d4d9;color:#691b32;font-size:12px;font-weight:600;line-height:1.3}
+.caganer-ai p{margin:0;font-size:14px;line-height:1.43;color:#3b252d}
 .caganer-dialog .main-button{width:100%;max-width:none}
+@keyframes caganer-in{from{opacity:0;transform:translateY(16px) scale(.7)}to{opacity:1;transform:none}}
+@media(max-width:600px){.caganer-hero{height:164px}.caganer-portrait{width:148px;height:148px}.caganer-body{padding:20px}}
+@media(prefers-reduced-motion:reduce){.caganer-portrait,.caganer-fallback,.caganer-spark{animation:none!important}}
 
 /* fallback fronts: brass pull instead of a dark notch, no corner glyph, and future days dimmed with words in the label */
 .drawer-notch{top:clamp(6px,.9vw,10px);width:clamp(22px,2.6vw,32px);height:clamp(5px,.55vw,7px);border-radius:999px;background:linear-gradient(#f7dc95,#c99a3c);box-shadow:0 1px 2px rgba(53,16,32,.35)}
@@ -174,3 +193,8 @@
 .calendar-door.tone-eve .door-front,.calendar-door.tone-eve.available .door-front{background:#34503f;color:#fff9ec}
 .calendar-door.is-gift .door-front{background-image:linear-gradient(90deg,transparent calc(50% - 4px),#f3c969 calc(50% - 4px) calc(50% + 4px),transparent calc(50% + 4px)),linear-gradient(transparent calc(40% - 4px),#f3c969 calc(40% - 4px) calc(40% + 4px),transparent calc(40% + 4px))}
 .calendar-door.tone-pine .door-illustration,.calendar-door.tone-eve .door-illustration{border-color:rgba(255,249,236,.25);background:rgba(255,249,236,.12)}
+.calendar-door.completed .door-prize{background:#2f6b47;border-color:#2f6b47;color:#fff9ec}
+.calendar-door.completed .door-content{background:#e9f1e6}
+.door-stamp{background:#2f6b47;color:#fff9ec;border-color:#fff9ec}
+.calendar-door.tone-halfway .door-front,.calendar-door.tone-halfway.available .door-front{background:#b3293f;color:#fff9ec}
+.calendar-door.tone-halfway .door-illustration{border-color:rgba(255,249,236,.3);background:rgba(255,249,236,.14)}
