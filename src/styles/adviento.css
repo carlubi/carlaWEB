@@ -20,6 +20,10 @@
 .advent-main { max-width: 1280px; }
 .intro h1 { font-size: clamp(36px,5vw,64px); font-weight: 600; letter-spacing: -.03em; line-height: 1.05; }
 .intro p { color: #6b5960; }
+.calendar-waiting { display: flex; align-items: center; gap: 14px; margin: 0 0 20px; padding: 16px 20px; border: 1px solid rgba(105,27,50,.14); border-radius: 14px; background: #f8f5ed; color: #3b252d; }
+.calendar-waiting svg { width: 28px; height: 28px; flex: none; color: #691b32; }
+.calendar-waiting p { margin: 0; font-size: 16px; line-height: 1.5; }
+.calendar-waiting strong { font-weight: 600; color: #691b32; }
 .calendar-stage { border-radius: 20px; box-shadow: 0 2px 6px rgba(59,37,45,.04),0 4px 8px rgba(59,37,45,.08); }
 .calendar-board,.access-gate { border-radius: 20px; }
 .main-button { min-height: 48px; border-radius: 8px; box-shadow: none; font-size: 16px; font-weight: 600; transition: background-color .18s ease; }
@@ -126,7 +130,7 @@
 .code-field{position:relative;margin:0}
 .access-card input.code-input{position:absolute;inset:0;width:100%;height:100%;min-height:0;padding:0;border:0;background:transparent;color:transparent;caret-color:transparent;font-size:16px;letter-spacing:0;opacity:0;z-index:1;cursor:text}
 .access-card input.code-input:focus{padding:0;border:0}
-.code-cells{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:8px}
+.code-cells{display:grid;grid-template-columns:repeat(var(--otp-length),minmax(0,1fr));gap:8px}
 .code-cells span{display:grid;place-items:center;height:60px;border:1px solid rgba(59,37,45,.28);border-radius:8px;background:#fff;font:600 26px/1 "Inter Tight",Arial,system-ui,sans-serif;color:#3b252d;font-variant-numeric:tabular-nums;transition:border-color .15s ease,background-color .15s ease}
 .code-cells span.is-filled{border-color:rgba(105,27,50,.45);background:#fbf7f8}
 .code-cells span.is-active{border:2px solid #691b32;position:relative}

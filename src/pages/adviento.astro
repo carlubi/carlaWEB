@@ -6,6 +6,7 @@ import { doorClass } from '../data/adviento-tones';
 import '../styles/adviento.css';
 import '../styles/adviento-house.css';
 const localPreview = import.meta.env.DEV;
+const otpLength = 8;
 ---
 <Layout title="Calendario de Adviento IA · carlaylz" description="Abre 24 pequeñas sorpresas para trabajar mejor con IA. Un nuevo reto cada día de diciembre.">
   <div class="advent-world" id="advent-app" data-days={JSON.stringify(days)} data-preview={localPreview ? 'true' : 'false'}>
@@ -21,6 +22,10 @@ const localPreview = import.meta.env.DEV;
       <div class="intro">
         <div><h1>Calendario de Adviento</h1><p>Un reto al día para descubrir nuevas formas de trabajar con IA.</p><span class="calendar-status-visually-hidden" id="calendar-status" role="status">El primer regalo llega el 1 de diciembre.</span></div>
         <div class="progress-cluster"><div class="progress-copy"><strong id="welcome-name">Tu calendario</strong><span id="progress-caption">Entra para guardar tus avances</span><ul class="progress-legend" id="progress-legend" hidden><li><i class="legend-key is-done" aria-hidden="true"></i><span id="legend-done"></span></li><li><i class="legend-key is-open" aria-hidden="true"></i><span id="legend-open"></span></li></ul></div><div class="progress-ring"><svg id="progress-ring" viewBox="0 0 96 96" role="img" aria-label="Progreso: 0 de 24 retos completados" shape-rendering="geometricPrecision"></svg><div class="ring-center" aria-hidden="true"><strong id="completed-count">0</strong><span>de 24</span></div></div></div>
+      </div>
+      <div class="calendar-waiting" id="calendar-waiting" role="status" hidden>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><use href={iconHref('calendar-link')} /></svg>
+        <p><strong>El calendario aún no se puede abrir.</strong> Vuelve el <time datetime="2026-12-01">1 de diciembre de 2026</time> para descubrir el primer reto.</p>
       </div>
       <section class="calendar-stage is-locked" id="calendar-stage" aria-label="Calendario de Adviento">
           <div class="house-scene" id="calendar-board" inert>
@@ -50,13 +55,13 @@ const localPreview = import.meta.env.DEV;
             <p class="access-step" id="access-eyebrow">Paso 1 de 3 · Tu correo</p>
             <h2 id="access-title">Tu diciembre empieza aquí</h2>
             <p class="access-description" id="access-description">24 retos para aprender IA, uno al día. Entra con tu correo y guardamos tus avances.</p>
-            <form id="email-form" novalidate><label for="email">Correo electrónico</label><input id="email" type="email" autocomplete="email" inputmode="email" maxlength="254" placeholder="tu@correo.com" required aria-describedby="email-help" /><button class="main-button" type="submit"><span class="button-label">Recibir mi código</span></button><p class="form-help" id="email-help">Te mandamos un código de 8 cifras. Sin contraseñas.</p></form>
+            <form id="email-form" novalidate><label for="email">Correo electrónico</label><input id="email" type="email" autocomplete="email" inputmode="email" maxlength="254" placeholder="tu@correo.com" required aria-describedby="email-help" /><button class="main-button" type="submit"><span class="button-label">Recibir mi código</span></button><p class="form-help" id="email-help">Te mandamos un código de {otpLength} cifras. Sin contraseñas.</p></form>
             <div id="verify-step" hidden>
               <form id="code-form" novalidate>
-                <label for="code">Código de 8 cifras</label>
+                <label for="code">Código de {otpLength} cifras</label>
                 <div class="code-field" id="code-field">
-                  <input id="code" class="code-input" type="text" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]*" maxlength="8" aria-describedby="code-help" />
-                  <div class="code-cells" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+                  <input id="code" class="code-input" type="text" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]*" maxlength={otpLength} aria-describedby="code-help" />
+                  <div class="code-cells" style={`--otp-length: ${otpLength}`} aria-hidden="true">{Array.from({ length: otpLength }, () => <span></span>)}</div>
                 </div>
                 <button class="main-button" type="submit"><span class="button-label">Entrar al calendario</span></button>
               </form>

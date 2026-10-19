@@ -117,6 +117,14 @@ if (root) {
   }
   async function start() {
     if (previewMode) { unlockPreview(); return; }
+    const madridParts = new Intl.DateTimeFormat('en-GB', { timeZone:'Europe/Madrid', year:'numeric', month:'2-digit', day:'2-digit' }).formatToParts(new Date());
+    const madridDate = (part: 'year' | 'month' | 'day') => madridParts.find(item => item.type === part)?.value || '';
+    const beforeOpening = `${madridDate('year')}-${madridDate('month')}-${madridDate('day')}` < '2026-12-01';
+    $('calendar-waiting').hidden = !beforeOpening;
+    if (!beforeOpening) {
+      $('calendar-status').textContent = 'Ya puedes abrir los días disponibles.';
+      $('calendar-hint').textContent = 'Entra con tu correo para abrir los días disponibles.';
+    }
     const hash = new URLSearchParams(location.hash.slice(1));
     if (hash.has('access_token') && hash.has('refresh_token')) {
       saveSession({ access_token:hash.get('access_token'), refresh_token:hash.get('refresh_token'), expires_in:Number(hash.get('expires_in') || 3600) });
@@ -230,6 +238,7 @@ if (root) {
     const opened = progress.length;
     const completed = progress.filter(item => item.completado_en).length;
     const released = days.filter(available).length;
+    if (!previewMode) $('calendar-waiting').hidden = released > 0;
     if (previewMode) {
       $('calendar-status').textContent = 'Todos los cajones están disponibles para explorar.';
       $('calendar-hint').textContent = 'Abre cualquier día, descarga sus materiales y prueba la animación de completado.';
