@@ -1,6 +1,7 @@
 import { auth, db, saveSession, savedSession, verifiedSession, signOut, subscribeNewsletter } from './adviento-api';
-import { openPreview, previewAchievements, readPreview, resetPreview } from './adviento-preview';
+import { findCaganerPreview, openPreview, previewAchievements, readPreview, resetPreview } from './adviento-preview';
 import { achievementIcon, dayIcon, iconHref } from '../data/adviento-icons';
+import { doorClass } from '../data/adviento-tones';
 
 type Day = { dia:number; titulo:string; tipo:string; herramienta:string; minutos:number; datos:string; descripcion:string; simbolo:string; abre_el:string };
 type Progress = { dia:number; abierto_en:string; completado_en:string|null };
@@ -27,10 +28,10 @@ if (root) {
   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
   const achievements = [
     ['primera','El primer cajón','Abre el día 1'],['tres','Tres seguidos','Completa 3 retos'],
-    ['conectada','Conectada','Completa el día 3'],['critica','Ojo crítico','Completa el día 6'],
+    ['caganer','Caganer encontrado','Encuentra al caganer escondido'],['critica','Ojo crítico','Completa el día 6'],
     ['sola','Trabaja sola','Completa el día 7'],['mitad','A mitad de camino','Completa 12 retos'],
     ['datos','Sin miedo a los datos','Completa el día 14'],['vigilante','La que automatiza','Completa el día 22'],
-    ['todas','Las 24','Completa todos']
+    ['todas','Las 24','Completa todos los días']
   ];
   let profile:Profile|null = null;
   let progress:Progress[] = [];
@@ -58,10 +59,11 @@ if (root) {
   /* Supabase envía un código de 6 cifras (plantillas con {{ .Token }}); si cambias «Email OTP Length», cambia esto. */
   const otpLength = 6;
   const accessCopy = {
-    email: ['Calendario de Adviento IA · Diciembre 2026', 'Tu diciembre empieza aquí', 'Un reto al día, de 5 a 25 minutos, para trabajar mejor con IA. Entra con tu correo y guardaremos tus avances.'],
-    verify: ['Código enviado', 'Revisa tu correo', ''],
-    register: ['Correo verificado', 'Un último paso', 'Ponle nombre a tu calendario para guardar tus avances.']
+    email: ['Paso 1 de 3 · Tu correo', 'Tu diciembre empieza aquí', '24 retos para aprender IA, uno al día. Entra con tu correo y guardamos tus avances.'],
+    verify: ['Paso 2 de 3 · Tu código', 'Revisa tu correo', ''],
+    register: ['Paso 3 de 3 · Tu nombre', 'Un último paso', 'Ponle nombre a tu calendario para guardar tus avances.']
   } as const;
+  const stepIndex = { email:0, verify:1, register:2 } as const;
   function step(which:'email'|'verify'|'register') {
     emailForm.hidden = which !== 'email';
     $('verify-step').hidden = which !== 'verify';
@@ -71,10 +73,18 @@ if (root) {
     (which === 'email' ? emailForm : which === 'verify' ? codeForm : registerForm).append(message);
     const [eyebrow, title, description] = accessCopy[which];
     $('access-eyebrow').textContent = eyebrow; $('access-title').textContent = title;
+    /* the step bar: steps done in yellow (progress), the current one in cherry */
+    document.querySelectorAll('.access-steps span').forEach((bar, i) => {
+      bar.classList.toggle('is-done', i < stepIndex[which]); bar.classList.toggle('is-current', i === stepIndex[which]);
+    });
     const desc = $('access-description');
     if (which === 'verify') {
       const strong = document.createElement('strong'); strong.textContent = sessionStorage.getItem('adviento_email') || 'tu correo';
-      desc.replaceChildren(`Te hemos enviado un código de ${otpLength} cifras a `, strong, '. Escríbelo aquí para entrar.');
+      /* «Cambiar» sits next to the address, where you look when you typed it wrong */
+      const change = document.createElement('button'); change.type = 'button'; change.className = 'link-button inline-link'; change.textContent = 'Cambiar';
+      change.addEventListener('click', () => { sessionStorage.removeItem('adviento_email'); clearInterval(resendTimer); step('email'); });
+      desc.replaceChildren(`Te hemos enviado un código de ${otpLength} cifras a `, strong, ' ', change);
+      paintCode();
     } else desc.textContent = description;
     (which === 'register' ? nameInput : which === 'verify' ? codeInput : emailInput).focus();
   }
@@ -131,18 +141,30 @@ if (root) {
     catch (error) { setMessage('No hemos podido enviar el código. ' + errorText(error)); }
     finally { busy(button, null); }
   });
+  /* six visual cells over one real input: paste, autofill and screen readers keep working */
+  const codeField = $('code-field');
+  const cells = [...codeField.querySelectorAll<HTMLElement>('.code-cells span')];
+  function paintCode() {
+    const value = codeInput.value; const active = document.activeElement === codeInput;
+    cells.forEach((cell, i) => {
+      cell.textContent = value[i] || '';
+      cell.classList.toggle('is-filled', i < value.length);
+      cell.classList.toggle('is-active', active && i === Math.min(value.length, otpLength - 1));
+    });
+  }
   codeInput.addEventListener('input', () => {
-    const digits = codeInput.value.replace(/\D/g, '').slice(0, 10);
+    const digits = codeInput.value.replace(/\D/g, '').slice(0, otpLength);
     if (digits !== codeInput.value) codeInput.value = digits;
-    setMessage('');
+    codeField.classList.remove('is-wrong'); setMessage(''); paintCode();
     if (digits.length === otpLength) codeForm.requestSubmit();
   });
+  for (const type of ['focus', 'blur', 'keyup', 'click']) codeInput.addEventListener(type, paintCode);
   codeForm.addEventListener('submit', async event => {
     event.preventDefault();
     const email = sessionStorage.getItem('adviento_email');
     const token = codeInput.value.trim();
     if (!email) { step('email'); return; }
-    if (!/^\d{6,10}$/.test(token)) { setMessage(`Escribe las ${otpLength} cifras del código que te hemos enviado.`); codeInput.focus(); return; }
+    if (!new RegExp(`^\\d{${otpLength}}$`).test(token)) { setMessage(`Escribe las ${otpLength} cifras del código que te hemos enviado.`); codeInput.focus(); return; }
     const button = codeForm.querySelector<HTMLButtonElement>('button')!;
     if (button.disabled) return;
     busy(button, 'Comprobando…');
@@ -150,7 +172,7 @@ if (root) {
     catch (error) {
       const text = error instanceof Error ? error.message : '';
       setMessage(/rate limit|429|too many/i.test(text) ? errorText(error) : 'Ese código no es correcto o ha caducado. Revísalo o pide uno nuevo.');
-      codeInput.select();
+      codeField.classList.add('is-wrong'); codeInput.select(); paintCode();
     }
     finally { busy(button, null); }
   });
@@ -158,10 +180,9 @@ if (root) {
     const email = sessionStorage.getItem('adviento_email');
     if (!email) { step('email'); return; }
     resendButton.disabled = true; resendButton.textContent = 'Enviando…';
-    try { await sendCode(email); setMessage(''); $('code-help').textContent = 'Te hemos enviado un código nuevo. Usa el último que recibas.'; codeInput.value = ''; codeInput.focus(); }
+    try { await sendCode(email); setMessage(''); $('code-help').textContent = 'Te hemos enviado un código nuevo. Usa el último que recibas.'; codeInput.value = ''; codeField.classList.remove('is-wrong'); codeInput.focus(); paintCode(); }
     catch (error) { setMessage('No hemos podido reenviar el código. ' + errorText(error)); startResendCooldown(0); }
   });
-  $('change-email').addEventListener('click', () => { sessionStorage.removeItem('adviento_email'); clearInterval(resendTimer); step('email'); });
   function registrationReady() { registerButton.disabled = !nameInput.value.trim() || !privacyInput.checked; }
   nameInput.addEventListener('input', registrationReady); privacyInput.addEventListener('change', registrationReady);
   registerForm.addEventListener('submit', async event => {
@@ -178,7 +199,7 @@ if (root) {
     finally { busy(registerButton, null); registrationReady(); }
   });
   $('signout').addEventListener('click', async () => { await signOut(); location.reload(); });
-  document.getElementById('preview-reset')?.addEventListener('click', () => { resetPreview(); progress = []; earned.clear(); render(); });
+  document.getElementById('preview-reset')?.addEventListener('click', () => { resetPreview(); location.reload(); });
 
   function unlockPreview() {
     /* local preview: everything is open, or the date in ?hoy=2026-12-10 to see future drawers */
@@ -252,9 +273,8 @@ if (root) {
       const item = progress.find(row => row.dia === day.dia);
       const state = item?.completado_en ? 'completed' : item ? 'opened' : available(day) ? 'available' : 'future';
       const button = document.createElement('button'); button.type = 'button'; button.dataset.day = String(day.dia);
-      /* diagonal colour ribbons, shared with the 3D house (adviento-house3d.ts · frontStyle) */
-      const tone = day.dia === 24 ? 'eve' : day.dia === 15 ? 'halfway' : day.tipo === 'Sorpresa' ? 'pine' : ((index % 6 - Math.floor(index / 6)) % 3 + 3) % 3;
-      button.className = `calendar-door tone-${tone}${day.tipo === 'Regalo' ? ' is-gift' : ''} ${state}`;
+      /* colour of the front: src/data/adviento-tones.ts, shared with the 3D house */
+      button.className = `${doorClass(day.dia, day.tipo, index)} ${state}`;
       button.disabled = state === 'future';
       button.setAttribute('aria-label',state==='future' ? `Día ${day.dia}, todavía cerrado` : `Día ${day.dia}: ${day.titulo}${state==='completed'?', completado':''}`);
       const inside = document.createElement('span'); inside.className = 'door-content';
@@ -313,19 +333,31 @@ if (root) {
       const mark = document.createElement('span'); mark.className = 'achievement-mark'; mark.append(makeIcon(achievementIcon(key))); mark.setAttribute('aria-hidden','true');
       const text = document.createElement('span'); const strong = document.createElement('strong'); strong.textContent = title; const small = document.createElement('small'); small.textContent = description; text.append(strong,small); item.append(mark,text); grid.append(item);
     }
-    $('achievement-status').textContent = `${earned.size} de 9 conseguidas`;
+    $('achievement-status').textContent = `${achievements.filter(([key]) => earned.has(key)).length} de ${achievements.length} conseguidas`;
   }
   $('gift-close').addEventListener('click', () => gift.close());
   $('gift-later').addEventListener('click', () => gift.close());
   const caganerDialog = $<HTMLDialogElement>('caganer-dialog');
   board.addEventListener('caganer-found', event => {
     if (caganerDialog.open) return;
+    const achievementStatus = $('caganer-achievement-status');
     /* the 3D house sends a portrait of the very figure that was found; without it, a gift icon stands in */
     const portrait = (event as CustomEvent<{ portrait?:string|null }>).detail?.portrait;
     const img = $<HTMLImageElement>('caganer-portrait');
     if (portrait) { img.src = portrait; img.alt = 'El caganer que has encontrado, con su barretina roja'; }
     img.hidden = !portrait; $('caganer-fallback').toggleAttribute('hidden', Boolean(portrait));
     caganerDialog.showModal(); $('caganer-ok').focus();
+    if (previewMode) {
+      findCaganerPreview();
+      earned.add('caganer');
+      renderAchievements();
+      achievementStatus.textContent = 'Logro desbloqueado: Caganer encontrado.';
+    } else if (profile && !earned.has('caganer')) {
+      achievementStatus.textContent = 'Guardando el logro…';
+      void db('adviento_logros?on_conflict=user_id,logro', 'POST', { user_id:profile.user_id, logro:'caganer' })
+        .then(() => { earned.add('caganer'); renderAchievements(); achievementStatus.textContent = 'Logro desbloqueado: Caganer encontrado.'; })
+        .catch(() => { achievementStatus.textContent = 'No se ha podido guardar el logro. Recarga la página y vuelve a encontrarlo.'; });
+    } else achievementStatus.textContent = 'Logro desbloqueado: Caganer encontrado.';
   });
   for (const id of ['caganer-close','caganer-ok']) $(id).addEventListener('click', () => caganerDialog.close());
   caganerDialog.addEventListener('click', event => { if (event.target === caganerDialog) caganerDialog.close(); });

@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry.js';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
 import { dayIcon, iconHref } from '../data/adviento-icons';
+import { SNOW_DAYS, keepsLook } from '../data/adviento-tones';
 import { createCaganerModel, createSmokePuff } from './adviento-caganer';
 
 /*
@@ -13,7 +14,7 @@ import { createCaganerModel, createSmokePuff } from './adviento-caganer';
 type DayInfo = { dia:number; titulo:string; abre_el?:string; tipo?:string };
 type DoorState = 'future'|'available'|'opened'|'completed';
 type Track = <T extends { dispose():void }>(item:T) => T;
-type FrontStyle = { bg:string; ink:string; tile:string; tileBorder:string; ribbon?:boolean; bow?:boolean; snow?:boolean };
+type FrontStyle = { bg:string; ink:string; tile:string; tileBorder:string; ribbon?:boolean; bow?:boolean; snow?:boolean; cane?:boolean; drift?:boolean };
 type Layout = ReturnType<typeof layoutFor>;
 type Drawer = {
   day:DayInfo; x:number; y:number; state:DoorState;
@@ -40,7 +41,11 @@ const SPEC = {
     /* Christmas Eve: the big present, deep pine wrapped in a gold ribbon with a bow */
     eve:{ bg:'#34503f', ink:'#fff9ec', tile:'rgba(255,249,236,.14)', tileBorder:'rgba(243,201,105,.45)', ribbon:true, bow:true },
     /* day 15, halfway: Christmas-jumper red with snowflakes, a milestone worth reaching */
-    halfway:{ bg:'#b3293f', ink:'#fff9ec', tile:'rgba(255,249,236,.16)', tileBorder:'rgba(255,249,236,.38)', snow:true }
+    halfway:{ bg:'#b3293f', ink:'#fff9ec', tile:'rgba(255,249,236,.16)', tileBorder:'rgba(255,249,236,.38)', snow:true },
+    /* day 1, the start: a candy cane, red and white stripes with a cream tag for the number */
+    cane:{ bg:'#fff9ec', ink:'#691b32', tile:'rgba(105,27,50,.07)', tileBorder:'rgba(105,27,50,.2)', cane:true },
+    /* a few loose days dressed as snow: cold white, a drift piled on the top edge, ice-blue glints */
+    snow:{ bg:'#d9e7f2', ink:'#691b32', tile:'rgba(255,255,255,.6)', tileBorder:'rgba(70,104,138,.3)', drift:true }
   } satisfies Record<string,FrontStyle>,
   camera: { fov:30, yaw:-.34, pitch:.13, yawRange:[-.62, .3], pitchRange:[.04, .21], dragSpeed:.0055 },
   openMs: 900,
@@ -55,10 +60,13 @@ const SPEC = {
  * ribbons through the tone-* classes set in adviento.astro.
  */
 const ribbons = [SPEC.fronts.cream, SPEC.fronts.pink, SPEC.fronts.wine];
+/* which day gets which landmark look: src/data/adviento-tones.ts (shared with the CSS fallback) */
 function frontStyle(index:number, cols:number, state:DoorState, day:DayInfo):FrontStyle {
-  /* days 24 and 15 keep their look even when they can be opened; their «Ábrelo» says so in yellow */
+  /* landmark days (1, 15, 24 and the snowy ones) keep their look when they can be opened */
   if (day.dia === 24) return SPEC.fronts.eve;
   if (day.dia === 15) return SPEC.fronts.halfway;
+  if (day.dia === 1) return SPEC.fronts.cane;
+  if (SNOW_DAYS.includes(day.dia)) return SPEC.fronts.snow;
   if (state === 'available') return SPEC.fronts.gold;
   if (day.tipo === 'Sorpresa') return SPEC.fronts.pine;
   const r = Math.floor(index / cols), c = index % cols;
@@ -304,6 +312,29 @@ export async function mountHouse3D(scene:HTMLElement, grid:HTMLElement, days:Day
       }
     }
 
+    if (style.drift) {
+      /* cold light: white at the top fading to a hint of ice blue */
+      const cold = ctx.createLinearGradient(0, 0, 0, h);
+      cold.addColorStop(0, 'rgba(255,255,255,.35)'); cold.addColorStop(1, 'rgba(150,186,216,.25)');
+      ctx.fillStyle = cold; ctx.fillRect(0, 0, w, h);
+      /* the drift: soft bumps of snow sitting on the top edge, with a blue shadow underneath */
+      const bumps = L.compact ? 4 : 5, edge = h * .15;
+      ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(w, 0); ctx.lineTo(w, edge * .8);
+      for (let i = bumps; i >= 0; i--) {
+        const x = w * i / bumps, depth = edge * (i % 2 ? 1.35 : .9) + edge * .25 * Math.sin(i * 2.1 + d.day.dia);
+        ctx.quadraticCurveTo(x + w / bumps / 2, depth + edge * .55, x, depth);
+      }
+      ctx.closePath();
+      ctx.save();
+      ctx.shadowColor = 'rgba(80,116,150,.35)'; ctx.shadowBlur = u * .03; ctx.shadowOffsetY = u * .014;
+      ctx.fillStyle = '#ffffff'; ctx.fill();
+      ctx.restore();
+      /* falling snow: white flakes and a few glints on the frost */
+      ctx.fillStyle = '#ffffff';
+      for (const [gx, gy, gr] of [[.12, .36, .018], [.3, .3, .012], [.5, .4, .015], [.72, .32, .02], [.9, .42, .013], [.84, .62, .011], [.2, .52, .01], [.62, .5, .009]]) { ctx.beginPath(); ctx.arc(w * gx, h * gy, u * gr, 0, Math.PI * 2); ctx.fill(); }
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.font = `600 ${u * .07}px ${FONT}`;
+      for (const [gx, gy] of [[.4, .3], [.88, .3]]) ctx.fillText('✦', w * gx, h * gy);
+    }
     if (style.snow) {
       /* snowflakes: three crossed strokes with little branches, like a knitted jumper */
       ctx.strokeStyle = 'rgba(255,249,236,.4)'; ctx.lineCap = 'round';
@@ -325,6 +356,20 @@ export async function mountHouse3D(scene:HTMLElement, grid:HTMLElement, days:Day
     /* number and icon share a baseline at the bottom of the panel */
     const numSize = u * (L.compact ? .38 : .36);
     const base = h - pad;
+    if (style.cane) {
+      /* candy-cane stripes, then a cream tag under the label, number and icon so they stay legible */
+      ctx.save(); ctx.beginPath(); ctx.rect(0, 0, w, h); ctx.clip();
+      ctx.fillStyle = '#c8323f'; const stripe = u * .09;
+      for (let x = -h; x < w + h; x += stripe * 2.4) {
+        ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x + stripe, 0); ctx.lineTo(x + stripe - h * .8, h); ctx.lineTo(x - h * .8, h); ctx.closePath(); ctx.fill();
+      }
+      ctx.restore();
+      const tagLabel = u * (L.compact ? .13 : .115);
+      const tagTop = base - numSize * .78 - tagLabel * 1.6, tagX = pad - u * .06;
+      roundRect(ctx, tagX, tagTop, w - tagX * 2, base + u * .05 - tagTop, u * .06);
+      ctx.fillStyle = style.bg; ctx.fill();
+      ctx.lineWidth = Math.max(1, u * .008); ctx.strokeStyle = style.tileBorder; ctx.stroke();
+    }
     ctx.fillStyle = style.ink; ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic';
     ctx.font = `600 ${numSize}px ${FONT}`;
     if ('letterSpacing' in ctx) (ctx as CanvasRenderingContext2D & { letterSpacing:string }).letterSpacing = `${(-numSize * .02).toFixed(1)}px`;
@@ -343,7 +388,7 @@ export async function mountHouse3D(scene:HTMLElement, grid:HTMLElement, days:Day
     ctx.textBaseline = 'middle'; ctx.textAlign = 'left';
     ctx.font = `600 ${labelSize}px ${FONT}`;
     if (d.state === 'future') {
-      const milestone = d.day.dia === 24 ? 'Nochebuena' : d.day.dia === 15 ? '¡Mitad!' : '';
+      const milestone = d.day.dia === 24 ? 'Nochebuena' : d.day.dia === 15 ? '¡Mitad!' : d.day.dia === 1 ? '¡Empieza!' : '';
       const date = milestone && !L.compact ? milestone : shortDate(d.day.abre_el);
       const lw = labelSize * .72, lh = labelSize * .6, lx = pad, ly = mid - lh * .3;
       const textW = ctx.measureText(date).width, plateW = lw + labelSize * .4 + textW + labelSize * .7;
@@ -361,7 +406,7 @@ export async function mountHouse3D(scene:HTMLElement, grid:HTMLElement, days:Day
     } else if (d.state === 'available') {
       const label = 'Ábrelo', tw = ctx.measureText(label).width, ph = labelSize * 1.5, px = labelSize * .6;
       roundRect(ctx, pad - px * .5, mid - ph / 2, tw + px * 2, ph, ph / 2);
-      const special = d.day.dia === 24 || d.day.dia === 15;
+      const special = keepsLook(d.day.dia);
       ctx.fillStyle = special ? SPEC.color.gold : 'rgba(105,27,50,.12)'; ctx.fill();
       ctx.fillStyle = special ? '#691b32' : style.ink;
       ctx.fillText(label, pad - px * .5 + px, mid + labelSize * .04);

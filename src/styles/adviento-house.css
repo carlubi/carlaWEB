@@ -173,6 +173,7 @@
 .caganer-body{padding:24px 24px 24px}
 .caganer-dialog h2{margin:0 0 8px;text-align:left}
 .caganer-lead{margin:0 0 16px;font-size:16px;line-height:1.5;color:#3b252d}
+.caganer-achievement-status{margin:0 0 16px;font-size:14px;font-weight:600;line-height:1.4;color:#691b32}
 .caganer-facts{display:grid;gap:10px;margin:0 0 20px;padding:0;list-style:none}
 .caganer-facts li{position:relative;padding-left:24px;font-size:15px;line-height:1.45;color:#6b5960}
 .caganer-facts li::before{content:'✦';position:absolute;left:2px;top:1px;color:#d9a441;font-size:13px}
@@ -198,3 +199,6 @@
 .door-stamp{background:#2f6b47;color:#fff9ec;border-color:#fff9ec}
 .calendar-door.tone-halfway .door-front,.calendar-door.tone-halfway.available .door-front{background:#b3293f;color:#fff9ec}
 .calendar-door.tone-halfway .door-illustration{border-color:rgba(255,249,236,.3);background:rgba(255,249,236,.14)}
+.calendar-door.tone-cane .door-front,.calendar-door.tone-cane.available .door-front{background:repeating-linear-gradient(-55deg,#fff9ec 0 9px,#c8323f 9px 16px);color:#691b32}
+.calendar-door.tone-cane .door-number{padding:0 6px;border-radius:6px;background:#fff9ec}
+.calendar-door.tone-snow .door-front,.calendar-door.tone-snow.available .door-front{background:radial-gradient(ellipse 30% 22% at 15% 0,#fff 98%,transparent),radial-gradient(ellipse 30% 26% at 50% 0,#fff 98%,transparent),radial-gradient(ellipse 30% 20% at 85% 0,#fff 98%,transparent),linear-gradient(#e6eff6,#d3e3ef);color:#691b32;box-shadow:inset 0 10px 8px -8px rgba(80,116,150,.3)}

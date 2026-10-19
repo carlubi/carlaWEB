@@ -13,7 +13,7 @@ const dayIcons = [
 const achievementIcons: Record<string, string> = {
   primera: 'door-open',
   tres: 'triple-check',
-  conectada: 'plug-shield',
+  caganer: 'caganer',
   critica: 'error-search',
   sola: 'timer',
   mitad: 'halfway',

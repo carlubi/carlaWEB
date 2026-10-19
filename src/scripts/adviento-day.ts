@@ -30,11 +30,6 @@ if (app) {
   function html(tag:keyof HTMLElementTagNameMap, className:string, markup:string) {
     const node = el(tag, className); node.innerHTML = markup; return node;
   }
-  const storage = {
-    get(key:string) { try { return localStorage.getItem(key); } catch { return null; } },
-    set(key:string, value:string) { try { localStorage.setItem(key, value); } catch { /* private mode: the deck just starts at the beginning */ } }
-  };
-
   /* ---------- copy buttons: the three labels share one grid cell, so the width never jumps ---------- */
   const copyStatus = $('copy-status');
   function copyButton(label:string, text:string, source?:HTMLElement) {
@@ -89,7 +84,6 @@ if (app) {
   const nextSmall = next.querySelector('small')!;
   const nextIcon = $('deck-next-icon').querySelector('use')!;
   const deckStatus = $('deck-status');
-  const slideKey = `carlaylz_adviento_slide_${day}`;
   let slideEls:HTMLElement[] = [];
   let titles:string[] = [];
   let current = 0;
@@ -147,11 +141,7 @@ if (app) {
     slideEls = all.map((slide, i) => slideElement(slide, i, all.length));
     viewport.replaceChildren(...slideEls);
     progress.replaceChildren(...all.map(() => el('span')));
-    /* a link like #diapositiva-5 wins; otherwise pick up where the reader left it */
-    const linked = Number(location.hash.match(/^#diapositiva-(\d+)$/)?.[1]) - 1;
-    const saved = Number(storage.get(slideKey));
-    const start = [linked, saved].find(n => Number.isInteger(n) && n > 0 && n < all.length) ?? 0;
-    goTo(start, { initial:true });
+    goTo(0, { initial:true });
   }
 
   function updateNav() {
@@ -182,8 +172,8 @@ if (app) {
     slide.hidden = false; slide.style.transform = '';
     slide.classList.remove('is-forward', 'is-back');
     if (!initial && !reduceMotion.matches) { void slide.offsetWidth; slide.classList.add(direction); }
+    viewport.scrollTop = 0;
     updateNav();
-    storage.set(slideKey, String(current));
     history.replaceState(null, '', current ? `#diapositiva-${current + 1}` : location.pathname + location.search);
     if (initial) return;
     deckStatus.textContent = `Diapositiva ${current + 1} de ${slideEls.length}: ${titles[current]}`;
@@ -201,6 +191,9 @@ if (app) {
   prev.addEventListener('click', () => goTo(current - 1));
   next.addEventListener('click', () => current === slideEls.length - 1 ? finishDeck() : goTo(current + 1));
   $('deck-index').addEventListener('click', () => goTo(0));
+  window.addEventListener('pageshow', event => {
+    if (event.persisted && slideEls.length) goTo(0, { initial:true });
+  });
 
   /* keyboard: arrows move the deck while it is on screen and the reader is not typing */
   document.addEventListener('keydown', event => {

@@ -41,7 +41,7 @@ create table if not exists public.adviento_contenido (
 
 create table if not exists public.adviento_logros (
   user_id uuid not null references public.adviento_perfiles(user_id) on delete cascade,
-  logro text not null check (logro in ('primera','tres','conectada','critica','sola','mitad','datos','vigilante','todas')),
+  logro text not null check (logro in ('primera','tres','caganer','critica','sola','mitad','datos','vigilante','todas')),
   conseguido_en timestamptz not null default now(),
   primary key (user_id, logro)
 );
@@ -83,6 +83,7 @@ grant select, insert on public.adviento_perfiles to authenticated;
 grant select on public.adviento_dias to authenticated;
 grant select, insert, update (completado_en) on public.adviento_progreso to authenticated;
 grant select on public.adviento_contenido, public.adviento_logros to authenticated;
+grant insert (user_id, logro) on public.adviento_logros to authenticated;
 
 create policy "perfil propio leer" on public.adviento_perfiles for select to authenticated
   using ((select auth.uid()) = user_id);
@@ -108,6 +109,8 @@ create policy "contenido solo tras abrir" on public.adviento_contenido for selec
   ));
 create policy "logros propios leer" on public.adviento_logros for select to authenticated
   using ((select auth.uid()) = user_id);
+create policy "caganer propio guardar" on public.adviento_logros for insert to authenticated
+  with check ((select auth.uid()) = user_id and logro = 'caganer');
 
 create or replace function private.adviento_sellar_progreso()
 returns trigger language plpgsql set search_path = '' as $$
@@ -137,7 +140,6 @@ begin
   if v_completados >= 3 then insert into public.adviento_logros values (new.user_id, 'tres', now()) on conflict do nothing; end if;
   if v_completados >= 12 then insert into public.adviento_logros values (new.user_id, 'mitad', now()) on conflict do nothing; end if;
   if v_completados >= 24 then insert into public.adviento_logros values (new.user_id, 'todas', now()) on conflict do nothing; end if;
-  if new.dia = 3 then insert into public.adviento_logros values (new.user_id, 'conectada', now()) on conflict do nothing; end if;
   if new.dia = 6 then insert into public.adviento_logros values (new.user_id, 'critica', now()) on conflict do nothing; end if;
   if new.dia = 7 then insert into public.adviento_logros values (new.user_id, 'sola', now()) on conflict do nothing; end if;
   if new.dia = 14 then insert into public.adviento_logros values (new.user_id, 'datos', now()) on conflict do nothing; end if;

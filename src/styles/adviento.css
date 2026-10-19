@@ -25,6 +25,10 @@
 .main-button { min-height: 48px; border-radius: 8px; box-shadow: none; font-size: 16px; font-weight: 600; transition: background-color .18s ease; }
 .main-button:hover { background: #521326; transform: none; box-shadow: none; }
 .achievement { border-radius: 14px; background: #fff; }
+.achievement-reward { display: flex; align-items: center; gap: 12px; margin-top: 24px; padding: 20px 4px 0; border-top: 1px solid rgba(59,37,45,.14); color: #3b252d; }
+.achievement-reward svg { width: 24px; height: 24px; flex: none; color: #691b32; }
+.achievement-reward p { margin: 0; font-size: 15px; line-height: 1.5; }
+.achievement-reward strong { font-weight: 600; }
 .preview-banner { border-radius: 8px; box-shadow: none; }
 .advent-footer { border-color: rgba(59,37,45,.14); }
 @media (max-width: 600px) {
@@ -104,7 +108,12 @@
 /* Acceso al calendario. DESIGN.md: tarjeta blanca plana, campos de 56px con etiqueta visible, botón cherry de 48px. */
 .access-gate{background:rgba(255,255,255,.38);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
 .access-card{width:min(100%,420px);padding:32px;border:1px solid rgba(59,37,45,.14);border-radius:14px;background:#fff;box-shadow:0 16px 48px rgba(59,37,45,.16);color:#3b252d}
-.access-eyebrow{margin:0 0 12px;font-size:12px;font-weight:600;line-height:1.3;letter-spacing:.04em;text-transform:uppercase;color:#6b5960}
+/* step bar: three segments, done in yellow (progress), current in cherry; the label says it in words */
+.access-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin:0 0 12px}
+.access-steps span{height:4px;border-radius:2px;background:rgba(59,37,45,.12);transition:background-color .25s ease}
+.access-steps span.is-done{background:#f3c969}
+.access-steps span.is-current{background:#691b32}
+.access-step{margin:0 0 16px;font-size:13px;font-weight:600;line-height:1.3;color:#6b5960;font-variant-numeric:tabular-nums}
 .access-card h2{margin:0 0 8px;font:600 clamp(26px,3vw,32px)/1.15 "Inter Tight",Arial,system-ui,sans-serif;letter-spacing:-.02em;color:#691b32;text-wrap:balance}
 .access-description{margin:0 0 24px;font-size:16px;line-height:1.5;color:#6b5960}
 .access-description strong{color:#3b252d;font-weight:600;overflow-wrap:anywhere}
@@ -113,8 +122,20 @@
 .access-card input::placeholder{color:#9a8a90}
 .access-card input:hover{border-color:rgba(59,37,45,.45)}
 .access-card input:focus,.access-card input:focus-visible{border:2px solid #691b32;padding:13px 15px}
-.access-card input.code-input{text-align:center;font-size:28px;font-weight:600;letter-spacing:.35em;font-variant-numeric:tabular-nums;padding-left:calc(16px + .35em)}
-.access-card input.code-input:focus{padding-left:calc(15px + .35em)}
+/* the code: one real input (paste, autofill, screen readers) laid over six visual cells */
+.code-field{position:relative;margin:0}
+.access-card input.code-input{position:absolute;inset:0;width:100%;height:100%;min-height:0;padding:0;border:0;background:transparent;color:transparent;caret-color:transparent;font-size:16px;letter-spacing:0;opacity:0;z-index:1;cursor:text}
+.access-card input.code-input:focus{padding:0;border:0}
+.code-cells{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
+.code-cells span{display:grid;place-items:center;height:60px;border:1px solid rgba(59,37,45,.28);border-radius:8px;background:#fff;font:600 26px/1 "Inter Tight",Arial,system-ui,sans-serif;color:#3b252d;font-variant-numeric:tabular-nums;transition:border-color .15s ease,background-color .15s ease}
+.code-cells span.is-filled{border-color:rgba(105,27,50,.45);background:#fbf7f8}
+.code-cells span.is-active{border:2px solid #691b32;position:relative}
+.code-cells span.is-active:empty::after{content:'';width:2px;height:26px;background:#691b32;animation:caret 1s steps(1) infinite}
+.code-field.is-wrong .code-cells span{border-color:#b3293f;background:#fdf3f4}
+.code-field:has(input:focus-visible){outline:3px solid #f3c969;outline-offset:3px;border-radius:10px}
+@keyframes caret{50%{opacity:0}}
+.inline-link{min-height:0;display:inline;font-size:inherit;vertical-align:baseline}
+#resend-code{margin-top:4px}
 .access-card .main-button{margin-top:16px}
 .access-card .main-button .button-label{margin:0;font-size:16px;font-weight:600;line-height:1.25}
 .access-card .main-button:disabled{opacity:.55;cursor:not-allowed}
@@ -131,7 +152,8 @@
 #register-form .main-button{margin-top:24px}
 .access-card :focus-visible{outline:3px solid #f3c969;outline-offset:2px}
 .access-card input:focus-visible{outline:0}
-@media(max-width:600px){.access-card{padding:24px 20px}.access-card input.code-input{font-size:24px}}
+@media(max-width:600px){.access-card{padding:24px 20px}.code-cells{gap:6px}.code-cells span{height:54px;font-size:24px}}
+@media(prefers-reduced-motion:reduce){.code-cells span.is-active:empty::after{animation:none}}
 @media(prefers-reduced-transparency:reduce){.access-gate{backdrop-filter:none;-webkit-backdrop-filter:none;background:rgba(255,255,255,.85)}}
 
 /* Progreso: 24 arcos nítidos (uno por día) y leyenda con número y color. DESIGN.md: cifras tabulares, estados distinguidos por texto además de color. */

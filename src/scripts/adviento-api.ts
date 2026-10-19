@@ -77,7 +77,8 @@ export async function db<T>(path: string, method = 'GET', body?: unknown): Promi
       Authorization: `Bearer ${session.access_token}`,
       'Content-Type': 'application/json',
       Accept: 'application/json',
-      ...(method === 'POST' && path.startsWith('adviento_perfiles') ? { Prefer: 'return=representation' } : {})
+      ...(method === 'POST' && path.startsWith('adviento_perfiles') ? { Prefer: 'return=representation' } : {}),
+      ...(method === 'POST' && path.startsWith('adviento_logros') ? { Prefer: 'resolution=ignore-duplicates' } : {})
     },
     body: body === undefined ? undefined : JSON.stringify(body)
   });
