@@ -18,7 +18,17 @@ Referencia de dirección: la claridad, densidad contenida y componentes funciona
 | `holly` | `#2F6B47` | Verde navideño: solo para «hecho» (reto completado) en el Adviento |
 | `holly-soft` | `#E9F1E6` | Fondo de la tarjeta de un reto completado |
 
-El blanco domina. El cherry identifica las acciones y el amarillo señala momentos de avance. **La página de inicio conserva su fondo degradado original** en rosa y amarillo como excepción de marca; el calendario usa degradados por su carácter navideño. Las demás páginas de lectura y captación usan superficies planas. Las imágenes propias de Carla y las portadas de sus guías siguen siendo las protagonistas visuales.
+El blanco domina. El cherry identifica las acciones y el amarillo señala momentos de avance. Todas las páginas, también la de inicio, usan fondo blanco y superficies planas; solo el calendario usa degradados por su carácter navideño. Las imágenes propias de Carla y las portadas de sus guías siguen siendo las protagonistas visuales.
+
+## Logo
+
+El logo de **carlaylz** es un símbolo de dos círculos que se solapan, negro `#1D1D1F` y `cherry`, con la intersección en forma de lente en `yellow`, seguido de la palabra «carlaylz» en Inter Tight de peso 500, con tracking ajustado, en `#1D1D1F`. Ese negro es propio del logo y no se usa en la interfaz, donde el texto va en `ink`.
+
+- Símbolo suelto: `public/assets/logo-mark.svg`. Favicon: `public/assets/favicon.svg`, el símbolo sobre una baldosa blanca con borde fino.
+- En la web, el logo va en la cabecera, a la izquierda, con el símbolo a unos 30px de alto y el nombre en HTML para que use la fuente de la web. Enlaza a la página de inicio. Lo pinta el componente `src/components/SiteLogo.astro`.
+- El nombre junto al símbolo es «carla lópez» en todas las páginas.
+- Sobre fondos oscuros, el círculo negro pasa a blanco.
+- No se recolorea, no se deforma y no se le añaden sombras ni contornos.
 
 ## Tipografía
 
@@ -49,7 +59,7 @@ La jerarquía nace de tamaño, peso y espacio; no de titulares negros gigantes o
 
 ### Navegación
 
-Cabecera blanca de aproximadamente 80px, nombre de marca a la izquierda y contexto o acción a la derecha. Línea inferior fina. En páginas de lectura, enlace claro para volver.
+Cabecera blanca de aproximadamente 80px, logo a la izquierda y contexto o acción a la derecha. Línea inferior fina. En páginas de lectura, enlace claro para volver.
 
 ### Botón principal
 

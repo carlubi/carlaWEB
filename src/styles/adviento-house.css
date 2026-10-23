@@ -21,7 +21,7 @@
 .roof-icing{position:absolute;inset:0;width:100%;height:100%;overflow:visible;fill:none;stroke:#691b32;stroke-width:18;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 3px 2px rgba(50,12,28,.15));z-index:2}
 .roof-icing path:last-child{stroke-width:7}
 .roof-insignia{position:absolute;inset:31% 0 27%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:2px;color:#691b32;text-align:center;z-index:2}
-.roof-star{font-size:clamp(28px,3.4vw,39px);line-height:1;color:#c68f9f}
+.roof-star{display:block;width:clamp(28px,3.4vw,39px);height:clamp(28px,3.4vw,39px);fill:#c68f9f;flex:none}
 .roof-insignia>span:nth-child(2){font-size:clamp(11px,1.35vw,18px);font-weight:600;letter-spacing:.015em}
 .roof-year{font-size:clamp(8px,.85vw,11px);letter-spacing:.14em;opacity:.86}
 .house-chimney{position:absolute;top:8px;left:19%;width:clamp(30px,4.5vw,56px);height:clamp(53px,7vw,85px);background:linear-gradient(90deg,#521326 0 23%,#691b32 23% 85%,#7a2440 85%);box-shadow:8px 6px 0 rgba(46,15,28,.35);transform:rotate(-3deg)}
@@ -106,7 +106,7 @@
   .house-chimney{top:10px;left:19%;width:30px;height:49px}
   .roof-icing{stroke-width:23}
   .roof-insignia{inset:29% 0 25%;gap:0}
-  .roof-star{font-size:25px}.roof-insignia>span:nth-child(2){font-size:10px}.roof-year{font-size:7px}
+  .roof-star{width:25px;height:25px}.roof-insignia>span:nth-child(2){font-size:10px}.roof-year{font-size:7px}
   .house-body{padding:0 6px 8px;border-width:5px;border-top:0}
   .house-eave{height:20px;margin:0 -6px 8px;border-top-width:4px;border-bottom-width:2px;font-size:10px}
   .house-eave span:nth-child(even){display:none}

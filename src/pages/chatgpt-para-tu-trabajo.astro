@@ -1,4 +1,5 @@
 ---
+import SiteLogo from '../components/SiteLogo.astro';
 import Layout from '../layouts/Layout.astro';
 import NewsletterForm from '../components/NewsletterForm.astro';
 import LegalFooter from '../components/LegalFooter.astro';
@@ -21,7 +22,7 @@ const tools = [
   description="Descarga gratis la guía ChatGPT para tu trabajo. Empieza desde cero y practica con 9 herramientas de la app, ejemplos, trucos y una tarea para cada una."
 >
   <header class="site-header mx-auto flex w-[min(1120px,calc(100%-32px))] items-center justify-between py-7 sm:w-[min(1120px,calc(100%-40px))]">
-    <a class="font-sans text-xl font-bold tracking-[-.04em] text-burgundy hover:underline" href="/">carla lópez</a>
+    <SiteLogo />
     <span class="hidden text-sm text-muted sm:block">IA práctica para trabajar mejor</span>
   </header>
 

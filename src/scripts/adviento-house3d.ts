@@ -82,6 +82,18 @@ function shortDate(iso?:string) {
   return m ? `${Number(m[2])} ${months[Number(m[1]) - 1]}` : '';
 }
 
+function drawRosetteStar(ctx:CanvasRenderingContext2D, cx:number, cy:number, radius:number, color:string) {
+  ctx.save();
+  ctx.beginPath();
+  for (let i = 0; i < 16; i++) {
+    const angle = -Math.PI / 2 + i * Math.PI / 8;
+    const r = i % 2 ? radius * .38 : radius;
+    const x = cx + Math.cos(angle) * r, y = cy + Math.sin(angle) * r;
+    i ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
+  }
+  ctx.closePath(); ctx.fillStyle = color; ctx.fill(); ctx.restore();
+}
+
 function layoutFor(compact:boolean) {
   const cols = compact ? 4 : 6, rows = 24 / cols;
   const cellW = 1, cellH = compact ? .96 : .8, gap = compact ? .1 : .13, padX = compact ? .24 : .34;
@@ -611,7 +623,7 @@ export async function mountHouse3D(scene:HTMLElement, grid:HTMLElement, days:Day
     const insW = bodyW * (L.compact ? .66 : .44), insH = insW * .4;
     const insignia = new THREE.Mesh(geo(new THREE.PlaneGeometry(insW, insH)), mat({ transparent:true, roughness:.5, map:canvasTexture(insW * ppu, insH * ppu, (ctx, w, h) => {
       ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-      ctx.fillStyle = SPEC.color.facadeAccent; ctx.font = `600 ${h * .3}px ${FONT}`; ctx.fillText('✳', w / 2, h * .2);
+      drawRosetteStar(ctx, w / 2, h * .2, h * .15, SPEC.color.facadeAccent);
       ctx.fillStyle = SPEC.color.onFacade; ctx.font = `600 ${h * .17}px ${FONT}`; ctx.fillText('24 pequeñas sorpresas', w / 2, h * .55);
       ctx.globalAlpha = .86; ctx.font = `400 ${h * .085}px ${FONT}`; spacedText(ctx, 'DICIEMBRE · 2026', w / 2, h * .78, h * .016);
     }) }));

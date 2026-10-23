@@ -1,0 +1,9 @@
+---
+/* Logo de la cabecera (DESIGN.md · Logo): el símbolo y el nombre en HTML, enlazando al inicio. */
+interface Props { name?: string; }
+const { name = 'carla lópez' } = Astro.props;
+---
+<a class="inline-flex shrink-0 items-center gap-3 rounded-lg text-[#1D1D1F] focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-4 focus-visible:outline-[#F3C969]" href="/" aria-label={`${name}, ir al inicio`}>
+  <img src="/assets/logo-mark.svg" alt="" width="44" height="30" />
+  <span class="whitespace-nowrap font-sans text-[1.6rem] font-medium leading-none tracking-[-0.035em]">{name}</span>
+</a>

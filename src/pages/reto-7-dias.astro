@@ -1,4 +1,5 @@
 ---
+import SiteLogo from '../components/SiteLogo.astro';
 import Layout from '../layouts/Layout.astro';
 import NewsletterForm from '../components/NewsletterForm.astro';
 import LegalFooter from '../components/LegalFooter.astro';
@@ -13,8 +14,8 @@ const confetti = [
 ---
 <Layout title="Reto de 7 días con Claude | Carla López" description="Descarga gratis el reto de 7 días con Claude: aprende a usar la IA en tu trabajo, paso a paso y aunque no seas técnica.">
   <header class="site-header mx-auto flex w-[min(1120px,calc(100%-32px))] items-center justify-between py-7 sm:w-[min(1120px,calc(100%-40px))]">
-    <a class="font-sans text-xl font-semibold tracking-[-.03em] text-burgundy hover:underline" href="/">carla lópez</a>
-    <span class="text-sm text-muted">IA práctica para trabajar mejor</span>
+    <SiteLogo />
+    <span class="hidden text-sm text-muted sm:block">IA práctica para trabajar mejor</span>
   </header>
   <main>
     <section class="mx-auto grid w-[min(1120px,calc(100%-32px))] items-center gap-12 py-12 sm:w-[min(1120px,calc(100%-40px))] sm:py-16 lg:grid-cols-[.95fr_.8fr] lg:gap-24 lg:pb-16" aria-labelledby="reto-titulo">

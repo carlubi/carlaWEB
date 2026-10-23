@@ -1,4 +1,5 @@
 ---
+import SiteLogo from '../components/SiteLogo.astro';
 import Layout from '../layouts/Layout.astro';
 import days from '../data/adviento-meta.json';
 import { dayIcon, iconHref } from '../data/adviento-icons';
@@ -13,7 +14,7 @@ const otpLength = 8;
     <div class="winter-glow" aria-hidden="true"></div>
     <canvas id="snow" class="snow" aria-hidden="true"></canvas>
     <header class="advent-topbar">
-      <a class="font-sans text-xl font-semibold tracking-[-.03em] text-burgundy hover:underline" href="/" aria-label="carla lópez, ir al inicio">carla lópez</a>
+      <SiteLogo />
       <span class="topbar-year">Calendario de Adviento 2026</span>
       <button id="signout" class="quiet-button" type="button" hidden>Cerrar sesión</button>
     </header>
@@ -38,7 +39,7 @@ const otpLength = 8;
               <div class="house-roof-plane" aria-hidden="true"></div>
               <div class="house-roof" aria-hidden="true">
                 <svg class="roof-icing" viewBox="0 0 1000 250" preserveAspectRatio="none"><path d="M15 204 500 17 985 204"/><path d="M18 221Q45 235 72 221T126 221T180 221T234 221T288 221T342 221T396 221T450 221T504 221T558 221T612 221T666 221T720 221T774 221T828 221T882 221T936 221T990 221"/></svg>
-                <div class="roof-insignia"><span class="roof-star">✳</span><span>24 pequeñas sorpresas</span><span class="roof-year">DICIEMBRE · 2026</span></div>
+                <div class="roof-insignia"><svg class="roof-star" viewBox="0 0 100 100" aria-hidden="true"><path d="M50 2 58 37 86 14 63 42 98 50 63 58 86 86 58 63 50 98 42 63 14 86 37 58 2 50 37 42 14 14 42 37Z"/></svg><span>24 pequeñas sorpresas</span><span class="roof-year">DICIEMBRE · 2026</span></div>
               </div>
               <div class="house-side" aria-hidden="true"></div>
               <div class="house-body">
