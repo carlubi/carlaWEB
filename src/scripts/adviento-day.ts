@@ -1,5 +1,6 @@
 import { db, verifiedSession, type AdventContent, type AdventDownload } from './adviento-api';
 import { completePreview, openPreview, readPreview } from './adviento-preview';
+import { makeLearningIllustration, slidesForIllustration } from './adviento-illustrations';
 
 type Slide = { kicker:string; title:string; nodes:Node[]; sectionStart:boolean };
 
@@ -7,6 +8,7 @@ const app = document.querySelector<HTMLElement>('#day-app');
 if (app) {
   const day = Number(app.dataset.day);
   const previewMode = import.meta.env.DEV && app.dataset.preview === 'true';
+  if (previewMode) void import('./adviento-editor');
   const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
   const $ = <T extends HTMLElement = HTMLElement>(id:string) => document.getElementById(id) as T;
   const loading = $('challenge-loading');
@@ -89,7 +91,7 @@ if (app) {
   let current = 0;
   let resourcesTarget:HTMLElement|null = null;
 
-  function slideElement(slide:Slide, index:number, total:number) {
+  function slideElement(slide:Slide, index:number, total:number, illustrate = false) {
     const article = el('article', 'slide');
     article.setAttribute('aria-roledescription', 'diapositiva');
     article.setAttribute('aria-label', `${index + 1} de ${total}: ${slide.title}`);
@@ -107,6 +109,47 @@ if (app) {
       const mediaCol = el('div', 'slide-media'); mediaCol.append(...figures);
       body.append(textCol, mediaCol);
     } else body.append(...slide.nodes);
+    if (slide.title.toLocaleLowerCase('es') === 'palabras del día'.toLocaleLowerCase('es')) {
+      /* same layout every day: one card per word, filling the slide (DESIGN.md · Tarjeta) */
+      article.classList.add('glossary-slide');
+      body.classList.add('glossary-body');
+      const list = [...body.children].find(node => node instanceof HTMLUListElement) as HTMLUListElement|undefined;
+      if (list) {
+        const glossary = el('dl', 'glossary-grid');
+        [...list.children].filter((node):node is HTMLLIElement => node instanceof HTMLLIElement).forEach(item => {
+          const sourceTerm = item.querySelector(':scope > strong');
+          const group = el('div', 'glossary-term');
+          const term = el('dt', 'glossary-word', sourceTerm?.textContent?.trim().replace(/:\s*$/, '') || 'Término');
+          /* the big initial behind the card, like a dictionary entry */
+          group.dataset.initial = (term.textContent || '').trim().charAt(0).toLocaleUpperCase('es');
+          const definition = el('dd', 'glossary-definition');
+          if (sourceTerm) {
+            let sibling = sourceTerm.nextSibling;
+            let firstText = true;
+            while (sibling) {
+              const next = sibling.nextSibling;
+              if (firstText && sibling.nodeType === Node.TEXT_NODE) sibling.textContent = sibling.textContent?.trimStart() || '';
+              definition.append(sibling);
+              firstText = false;
+              sibling = next;
+            }
+          } else {
+            definition.append(...item.childNodes);
+          }
+          group.append(term, definition);
+          glossary.append(group);
+        });
+        glossary.dataset.count = String(glossary.children.length);
+        list.replaceWith(glossary);
+      }
+    }
+    const illustration = illustrate ? makeLearningIllustration(day, slide.title) : null;
+    if (illustration) {
+      body.classList.add('has-illustration');
+      const textCol = el('div', 'slide-text');
+      textCol.append(...[...body.childNodes]);
+      body.append(textCol, illustration);
+    }
     for (const img of body.querySelectorAll<HTMLImageElement>('figure.captura img')) {
       const link = el('a', 'captura-zoom'); link.href = img.src; link.target = '_blank'; link.rel = 'noopener';
       link.setAttribute('aria-label', `Ver la captura a tamaño completo: ${img.alt}`);
@@ -137,8 +180,9 @@ if (app) {
   function buildDeck(content:AdventContent) {
     const slides = splitSections(content);
     const all = [agendaSlide(slides), ...slides];
+    const illustrated = slidesForIllustration(day, slides);
     titles = all.map(slide => slide.title);
-    slideEls = all.map((slide, i) => slideElement(slide, i, all.length));
+    slideEls = all.map((slide, i) => slideElement(slide, i, all.length, i > 0 && illustrated.has(i - 1)));
     viewport.replaceChildren(...slideEls);
     progress.replaceChildren(...all.map(() => el('span')));
     goTo(0, { initial:true });

@@ -22,7 +22,7 @@ Es un **agente** (como la tarea programada del día 16), pero trabajando delante
 
 En Chrome, entra en la tienda de extensiones de Chrome (Chrome Web Store) y busca **Claude**. Asegúrate de que el desarrollador es **Anthropic**. Hay copias falsas: si no pone Anthropic, no la instales.
 
-![La ficha de la extensión Claude en la Chrome Web Store, con Anthropic como desarrollador y el botón de añadir a Chrome](capturas/d20-01-chrome-web-store.png)
+![La ficha de Claude en la Chrome Web Store en catalán, con la extensión ya instalada y el botón «Suprimeix de Chrome»](capturas/d20-01-chrome-web-store.png)
 
 ### Paso 2 · Añádela
 
@@ -36,7 +36,7 @@ Te pedirá que entres con tu cuenta de Claude. La misma de siempre.
 
 Pulsa el icono del **puzle** (arriba a la derecha de Chrome) y luego la **chincheta** junto a Claude. Así el icono se queda siempre visible.
 
-![El menú de extensiones de Chrome con la chincheta junto a Claude](capturas/d20-02-fijar-extension.png)
+![El icono de Claude visible en la barra de Chrome, junto al icono de extensiones, después de fijarlo](capturas/d20-02-fijar-extension.png)
 
 ### Paso 5 · Abre el panel lateral
 
@@ -57,7 +57,7 @@ En el panel puedes elegir cuánta libertad le das:
 
 El panel suele venir con la aprobación automática. **Para estrenarte, cámbialo a que te pregunte.** Cuando lo conozcas, decides.
 
-![El selector de modo del panel de Claude en Chrome, con la opción de preguntar antes de actuar](capturas/d20-04-modo-aprobacion.png)
+![El selector de modo del panel de Claude: aprobación automática marcada y la opción «Manually approve» disponible para elegir](capturas/d20-04-modo-aprobacion.png)
 
 ### Míralo trabajar
 

@@ -1,6 +1,9 @@
 # Conecta tu calendario
 resumen: Tu primer conector, paso a paso: conectar Google Calendar, autorizarlo, encenderlo en un chat, usarlo para entender tu semana, crear un evento con tu permiso, apagarlo y desconectarlo. Si no puedes conectar nada, hay agenda de prueba.
 datos: Tu Google Calendar, o la agenda de prueba si no puedes conectar
+tipo: Reto
+herramienta: Claude (conectores)
+minutos: 20
 
 ## Por qué empezamos por el calendario
 
@@ -12,13 +15,13 @@ Ayer viste la teoría. Hoy, con las manos.
 
 ### Paso 1 · Ve a los conectores
 
-En la barra lateral entra en **Personalizar** › **Conectores**. O ve directo a **claude.ai/customize/connectors**.
+En la barra lateral entra en **Personalizar** › **Conectores**.
 
 ### Paso 2 · Busca Google Calendar
 
 Pulsa el **+** junto a «Conectores» para abrir el directorio. Busca **Google Calendar** (está en las categorías de productividad, o escríbelo en el buscador). Púlsalo y lee qué puede hacer.
 
-![El directorio de conectores con Google Calendar seleccionado y su descripción](capturas/d10-01-directorio-calendar.png)
+![La ficha de Google Calendar en Conectores, con su descripción y las herramientas disponibles](capturas/d10-01-directorio-calendar.png)
 
 ### Paso 3 · Pulsa Conectar
 
@@ -28,7 +31,9 @@ Te lleva a una pantalla de Google. Esto se llama **OAuth**: es la forma estánda
 2. **Lee los permisos.** Google te dice qué va a poder hacer Claude: ver y editar eventos de tus calendarios.
 3. **Pulsa Permitir** (o Continuar).
 
-![La pantalla de Google para autorizar a Claude, con la lista de permisos y el botón de permitir](capturas/d10-02-google-oauth.png)
+La captura muestra el inicio de la autorización. Después de pulsar **Continuar**, revisa los permisos antes de aceptarlos.
+
+![La pantalla de Google para continuar el inicio de sesión en Claude con la cuenta elegida](capturas/d10-02-google-oauth.png)
 
 Si te sale **"Acceso bloqueado"**, es una cuenta de empresa o de centro de estudios y tu administrador tiene que autorizar a Claude (lo vimos ayer). Usa tu cuenta personal o salta a la parte de "Si no puedes conectar".
 

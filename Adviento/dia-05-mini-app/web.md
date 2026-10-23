@@ -1,6 +1,9 @@
 # Tu mini-app en 5 minutos
 resumen: Es sábado y toca jugar. Le pides a Claude una herramienta hecha a tu medida (una calculadora, un planificador, un juego para los críos), la usas, la retocas y la compartes con un enlace. Sin saber programar.
 datos: Ninguno
+tipo: Sorpresa
+herramienta: Claude (artefactos)
+minutos: 30
 
 ## Lo que vas a descubrir hoy
 
@@ -18,7 +21,7 @@ Cuando Claude crea algo que tiene sentido por sí solo (un documento, una págin
 - **Copiar y descargar.**
 - **Publicar y compartir**: genera un enlace para que otra persona la use sin tener cuenta.
 
-![Un artefacto abierto en el panel derecho: la app funcionando, las pestañas de vista previa y código, y los botones de versiones, copiar y publicar](capturas/d05-01-panel-artefacto.png)
+![Una lista de la compra interactiva abierta como artefacto en el panel derecho de Claude, junto al chat donde se creó](capturas/d05-01-panel-artefacto.png)
 
 Por detrás, lo que pasa es que Claude escribe una pequeña página web con HTML y JavaScript (los lenguajes con los que están hechas las webs) y tu navegador la ejecuta. Por eso no tienes que instalar nada.
 
@@ -43,11 +46,13 @@ Escríbele en el mismo chat lo que cambiarías, con el prompt «El cambio». Mir
 ### Paso 5 · Guárdala o compártela
 
 - Para tenerla tú: vuelve a este chat cuando la necesites. Está en tu lista de chats. Ponle un nombre que encuentres luego (pasa el ratón por el chat en la barra lateral, pulsa los tres puntos y renómbralo).
-- Para compartirla: pulsa **Publicar** en el panel del artefacto. Te da un enlace que puedes mandar por WhatsApp o correo. Quien lo abra puede usar la app sin cuenta de Claude.
+- Para compartirla: pulsa **Compartir** en el panel del artefacto. Comprueba quién tiene acceso: en la captura aparece **Solo tú**, así que primero tendrás que cambiar ese ajuste si quieres que otra persona pueda abrirla. Después copia el enlace y pruébalo antes de enviarlo.
 
-![El botón de publicar del artefacto y la ventana con el enlace para compartir](capturas/d05-02-publicar.png)
+![El menú Compartir del artefacto, con la opción de copiar un enlace privado](capturas/d05-02-publicar.png)
 
-Si compartes el enlace, lo que hay en la app lo ve cualquiera que tenga el enlace. No publiques nada con datos personales.
+Si permites acceso a otras personas, podrán ver el contenido del artefacto. No compartas datos personales.
+
+¡SOBRETODO! Quiero ver tu creación -> envíame el enlace por mensaje privado de Instagram y te doy tips de mejora. 
 
 ## Ideas por si no se te ocurre nada
 

@@ -74,6 +74,13 @@ Pega la plantilla rellena al principio de un chat. Funciona igual, solo que tien
 
 Un buen asistente no se configura cada vez: se configura una vez y se usa cien. Y se revisa cada pocos meses, porque tu vida cambia y un contexto viejo responde a quien ya no eres.
 
+## Palabras del día
+
+- **Instrucciones del proyecto:** reglas que guían cómo responde Claude en todos los chats del proyecto.
+- **Conocimiento del proyecto:** archivos que Claude puede consultar como referencia habitual.
+- **Plantilla de contexto:** ficha para reunir la información que Claude necesita sobre tu trabajo.
+- **Palabra clave:** frase corta que activa una tarea concreta dentro del proyecto.
+
 ## Prompt · Que me la rellene contigo
 
 > Te paso una plantilla de contexto para un proyecto de Claude. Ayúdame a rellenarla: hazme preguntas de una en una para completar cada apartado. Si respondo algo vago, pídeme que lo concrete. Al final, dame la plantilla completa en markdown como archivo .md descargable.

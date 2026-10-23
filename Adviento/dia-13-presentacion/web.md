@@ -1,6 +1,9 @@
-# Tu presentación sin abrir PowerPoint
-resumen: Domingo de sorpresa: Claude te fabrica una presentación de verdad, en un archivo que abres en PowerPoint, Keynote o Google Slides. Con un truco que cambia el resultado: pedir primero la estructura. Y una regla: cada cifra se comprueba.
+# Crea una presentación sin abrir PowerPoint
+resumen: Claude te fabrica una presentación de verdad, en un archivo que abres en PowerPoint, Keynote o Google Slides. Con un truco que cambia el resultado: pedir primero la estructura. Y una regla: cada cifra se comprueba.
 datos: Las ventas de prueba, o un tema tuyo
+tipo: Sorpresa
+herramienta: Claude (creación de archivos)
+minutos: 20
 
 ## Lo que vas a ver hoy
 

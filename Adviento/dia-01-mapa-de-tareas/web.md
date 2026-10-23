@@ -1,21 +1,26 @@
-# Empieza aquí: tu mapa con Claude
-resumen: Te haces la cuenta, das una vuelta por la pantalla para saber qué es cada cosa y sacas tu primer resultado: un mapa con las tareas donde la IA te va a ahorrar más tiempo. Hoy además te llevas el kit de arranque.
-datos: Nada. Solo lo que tú le cuentes de tu semana
+# Empieza por el principio: Tour por Claude
+resumen: El objetivo de este primer reto, es investigar la app de Claude. Para ello, deberás descargarte la aplicación de escritorio y te darás una vuelta por la pantalla para saber qué es cada cosa y vas a realizar tu primera acción: pedirle que te genere un mapa identificando qué tareas puede la IA ahorrarte más tiempo. Hoy además te llevas el kit de arranque.
+datos: Descargar Claude para escritorios
+tipo: Reto + regalo
+herramienta: Claude
+minutos: 20
 
 ## Antes de nada: qué es Claude
 
-Claude es un asistente de inteligencia artificial hecho por Anthropic, una empresa que investiga y desarrolla IA. Por dentro es lo que se llama un **modelo de lenguaje** (en inglés, *LLM*, de *Large Language Model*): un programa que ha aprendido de muchísimo texto y que es buenísimo entendiendo lo que le pides y escribiendo una respuesta.
+Claude es un asistente de inteligencia artificial hecho por *Anthropic*, una empresa que investiga y desarrolla IA. Por dentro es lo que se llama un **modelo de lenguaje** (en inglés, *LLM*, de *Large Language Model*): imagina que tienes un asistente que ha leído una cantidad gigantesca de libros, artículos y webs, y que con eso ha aprendido a conversar, escribir y razonar. Eso es una inteligencia artificial.
 
-Lo importante para hoy: **no es un buscador**. Google te da enlaces y tú lees. Claude te contesta, te redacta, te ordena las ideas, te analiza un archivo o te monta una herramienta. Es más parecido a tener al lado a alguien muy listo y muy rápido que no conoce tu vida. Por eso, lo que tú le cuentes cambia por completo lo que te devuelve. Ese es el hilo de todo el calendario.
+Algo importante a entender: **no es un buscador**. Google te da enlaces y tú te pones a leer. Claude, en cambio, te da directamente lo que necesitas: te contesta, te redacta, te ordena las ideas, te analiza un archivo o incluso te monta una herramienta.
 
-Mañana te explico cómo funciona por dentro y por qué a veces se acaba "el saldo". Hoy toca abrirlo y estrenarlo.
+Piensa en tener al lado a alguien muy listo y muy rápido... que no te conoce de nada. Por eso, cuanto más le cuentas (quién eres, qué quieres, para qué), mejor te responde. 
+
+Mañana te explico cómo funciona por dentro y por qué a veces se acaba "el saldo". 
 
 ## Paso 1 · Hazte la cuenta
 
-### Desde el ordenador (te lo recomiendo para este calendario)
+### Descarga la versión para ordenador (te lo recomiendo)
 
-1. Entra en **claude.ai**.
-2. Elige **Continuar con Google** si usas Gmail, o escribe tu correo y pulsa continuar.
+1. Entra en **https://claude.com/es/download**.
+2. Crea una cuenta y elige **Continuar con Google** si usas Gmail, o escribe tu correo y pulsa continuar.
 3. Si has puesto el correo, te llega un código: cópialo en la pantalla.
 4. Pon tu nombre y confirma que eres mayor de edad.
 5. Te enseñará los planes. **Quédate con el gratuito**: para los primeros días sobra. El día 2 te cuento qué cambia con el de pago y qué retos lo necesitan.
@@ -26,54 +31,82 @@ Mañana te explico cómo funciona por dentro y por qué a veces se acaba "el sal
 
 Claude también tiene app de escritorio (Mac y Windows, en **claude.com/download**) y app para móvil (iPhone y Android). Es la misma cuenta y ves las mismas conversaciones en todas partes.
 
-Mi consejo: durante el calendario trabaja en el ordenador, en el navegador o en la app de escritorio. Hay cosas que vamos a montar más adelante, como las tareas programadas, que se configuran mucho mejor ahí. El móvil, para consultar.
+Mi consejo: durante los retos de este calendario de adviento trabaja en la app de escritorio. Hay cosas que vamos a montar más adelante, como las tareas programadas, que se configuran mucho mejor ahí. La app de móvil, también puede ser interesante para consultar el estado algunas acciones que tarden en ejecutarse (ya hablaremos más adelante).
 
 ## Paso 2 · Un paseo por la pantalla
 
-Antes de escribir nada, ubícate. Son cinco zonas y vas a usarlas todos los días.
+Antes de escribir nada, vamos a conocer las funcionalidades que nos ofrece Claude. Son cinco herramientas principales y vas a usarlas todas durante estos días de retos.
 
-![La pantalla principal de Claude con las cinco zonas numeradas: barra lateral, caja de texto, botón +, selector de modelo y tu cuenta](capturas/d01-02-pantalla-principal.png)
+![La pantalla principal de Claude con la barra lateral, la caja de texto, el botón +, el selector de modelo y la cuenta](capturas/d01-02-pantalla-principal.png)
 
-### 1 · La barra lateral (izquierda)
+### 1 · Las 5 herramientas de Claude
 
-- **Nuevo chat**: abre una conversación en blanco. Lo vas a pulsar mucho, y está bien: cada tema, su chat.
-- **Chats**: tus conversaciones anteriores. Puedes buscarlas, renombrarlas o borrarlas.
-- **Proyectos**: carpetas con memoria propia. Les dedicamos el día 7.
-- Si la barra está plegada, pasa el ratón por el borde izquierdo o pulsa el icono de panel.
+- **+ Crear:** abre una conversación en blanco. Lo vas a pulsar muchísimo, y está bien: un tema, un chat. Mezclar cosas en la misma conversación es lo que más despista a Claude.
 
-### 2 · La caja de texto
+- **Proyectos:** carpetas donde guardas instrucciones y archivos de un tema, para no tener que explicárselo todo de cero cada vez. Lo trabajaremos el día 7.
 
-Donde escribes lo que quieres. Se llama **prompt** a lo que le escribes a una IA. Un truco desde ya: con **Mayúsculas + Intro** haces un salto de línea sin enviar.
+- **Artefactos:** lo que Claude te deja hecho en vez de contártelo: un documento, una presentación, una calculadora o una página web. Lo abres, lo retocas y lo compartes sin copiar y pegar.
 
-### 3 · El botón +
+- **Programadas:** tareas que Claude hace solo a la hora que tú le digas. Por ejemplo, “cada lunes a las 8, resúmeme lo pendiente”. Lo configuras una vez y se acuerda él.
 
-Abajo a la izquierda de la caja. Desde aquí adjuntas archivos y fotos, activas herramientas como la búsqueda web y, más adelante, los conectores con tu correo o tu calendario.
+- **Diseño:** para lo que se mira: un cartel, una portada, un flyer o el boceto de una pantalla. Lo ves en un lienzo, pides cambios (“título más grande”, “otros colores”) y lo descargas.
 
-### 4 · El selector de modelo
+### 2 · Hoy hablamos de '+ Crear' y los famosos 'PROMPTS'
 
-Abajo a la derecha de la caja verás un nombre, tipo "Sonnet". Es el "cerebro" que está contestando. Hoy no lo toques: mañana te explico qué es cada uno y cuánto gasta.
+Si clicas esa sección, te aparece una caja de texto: Es dónde escribes lo que quieres que te realice. Comúnmente se le llama **prompt** a las instrucciones que le das a una IA. 
 
-### 5 · Tu cuenta
+Un prompt es simplemente lo que le escribes a la IA: tu pregunta, tu petición o tus instrucciones. Es lo mismo que cuando le explicas una tarea a alguien nuevo en tu equipo, y se nota enseguida si lo explicas bien o a medias.
 
-Abajo a la izquierda, con tu nombre o tus iniciales. Ahí están los **Ajustes**, donde vamos a entrar en el paso 5.
+Lo que lo hace de calidad es darle contexto, no usar palabras raras. Compara:
+
+- Flojo:
+
+"Escríbeme un correo para un cliente."
+
+- De calidad:
+
+"Trabajo en una tienda online de cerámica artesanal. Un cliente lleva 10 días esperando su pedido y está enfadado. Escríbele un correo en tono cercano y tranquilo, que pida disculpas sin exagerar, explique que hubo un retraso con el transportista y le ofrezca un 10 % de descuento en su próxima compra. Máximo 120 palabras."
+
+El segundo funciona porque responde a cinco cosas:
+
+1. **Quién eres** y en qué contexto estás.
+2. **Qué quieres** exactamente.
+3. **Para quién es** (quién lo va a leer).
+4. **Cómo lo quieres:** tono, formato, longitud.
+5. **Qué datos reales** debe usar, para que no se los invente.
+
+**Un truco** que le va bien a quien empieza: si no sabes qué falta, termina el prompt con “Antes de responder, hazme las preguntas que necesites”. Así es la propia IA quien te pide el contexto que le falta.
+
+Ah! y cuando escribas: cuando quieres dar un **salto de línea** sin enviar la respuesta, en el teclado haz: **Mayúsculas + Intro**.
+
+### 3 · ¿Qué es el botón '+' al lado de la caja de texto? 
+
+Un botón que se ubica a la izquierda de la caja de escribir texto. 
+
+Desde aquí adjuntas archivos y fotos, activas herramientas como la búsqueda web y, más adelante lo comentaremos, los conectores para conectar (valga la redundancia) tu correo o tu calendario.
+
+![El menú + abierto junto a la caja de texto, con las opciones de archivos, conectores e investigación](capturas/d01-02b-boton-mas.png)
+
+### 4 · Seleccionar un modelo ¿qué es eso?
+
+Un modelo es el **“cerebro”** de Claude. Anthropic tiene varios, y cada uno es como un compañero de equipo distinto: unos son más rápidos y ligeros, otros más profundos pero más lentos. Los nombres que verás son Haiku, Sonnet, Opus y Fable, de más ligero a más potente. 
+
+Para el día a día, uno intermedio como Sonnet va sobrado: redactar, resumir, ordenar ideas. Los grandes se guardan para lo difícil: análisis largos, problemas complejos, trabajos donde un fallo sale caro.
+
+Por hoy no lo toques: mañana te explico qué es cada uno y cuánto gasta.
+
+### 5 · Por último, hablemos de tu cuenta
+
+Abajo a la izquierda, con tu nombre o tus iniciales. Ahí están los **Ajustes**, donde vamos a entrar en más profundidad el día 5.
 
 ## Paso 3 · Tu primer prompt: el mapa de tareas
 
-1. Pulsa **Nuevo chat**.
+Vas a crear tus primeras instrucciones: un mapa interactivo de tareas a realizar.
+
+1. Pulsa **+ Crear**.
 2. Copia el prompt del mapa de tareas que tienes más abajo.
-3. Rellena lo que va entre corchetes con tu vida real: trabajo, estudios, negocio, casa, lo que te ocupe la semana. No hace falta que sea exacto. Aproximado vale.
+3. Rellena lo que va entre corchetes [] con tu vida real: trabajo, estudios, negocio, casa, lo que te ocupe la semana. No hace falta que sea exacto. Aproximado vale.
 4. Envíalo y **responde a sus preguntas**. Te va a hacer hasta cinco, de una en una. No te las saltes: es donde está el valor. Cuanto más concreta sea tu respuesta, más tuyo será el mapa.
-
-### Por qué el prompt está escrito así
-
-No es casualidad, y conviene que lo veas desde el primer día:
-
-- **Le dices quién eres.** Sin eso, te responde como a cualquiera.
-- **Le pides que te pregunte antes de responder.** Así no rellena huecos inventándose cosas.
-- **Le dices qué quieres exactamente** y en qué orden.
-- **Le prohíbes inventarse cifras.** Las horas salen de lo que tú le digas.
-
-El día 3 lo convertimos en receta para que escribas tus propios prompts.
 
 ## Paso 4 · Guarda tu mapa
 
@@ -85,27 +118,27 @@ Como le pides "una página interactiva", Claude te va a devolver el mapa en un p
 - Apunta tus tres tareas en la hoja del calendario imprimible. **Las vas a necesitar el día 24**, así que no las pierdas.
 - Si quieres retocarlo, no empieces de cero: escríbele en el mismo chat qué cambiarías. "Pon el tiempo en horas al mes, no a la semana", por ejemplo.
 
-## Paso 5 · Que Claude se acuerde de ti
+## Paso 5 · ¡Importante! Que Claude se acuerde de ti
 
 Cada chat nuevo empieza sin saber nada de ti. Hay un sitio para contarle lo básico una vez y que lo tenga en cuenta siempre: las **preferencias personales**.
 
-1. Pulsa tu nombre (abajo a la izquierda) y entra en **Ajustes**.
-2. En **General**, busca el cuadro de preferencias personales: algo así como "¿Qué preferencias personales debe tener en cuenta Claude en sus respuestas?".
-3. Descarga la tarjeta de contexto del kit, rellénala y pégala ahí. O, si te da pereza hoy, pon al menos tres líneas: a qué te dedicas, cómo quieres que te hable y que te pregunte cuando le falte información.
+1. Pulsa tu nombre (abajo a la izquierda) y entra en **Configuración**.
+2. En **Cuenta**, busca el cuadro de 'Instrucciones para Claude'.
+3. Descarga la tarjeta de contexto del kit, rellénala y pégala ahí. O, si te da pereza hoy, pon al menos tres líneas sobre: a qué te dedicas, cómo quieres que te hable y que te pregunte cuando le falte información.
 4. Guarda.
 
 ![Los Ajustes de Claude, apartado General, con el cuadro de preferencias personales](capturas/d01-04-preferencias.png)
 
 Desde ahora, cualquier chat nuevo arranca sabiendo eso. No hay que repetirlo.
 
-## Cómo saber si ha salido bien
+## Cómo saber si ha salido bien el mapa interactivo
 
 - Las tres tareas son tuyas de verdad, no genéricas tipo "gestionar el correo".
 - Los tiempos salen de lo que tú le contaste. Si ves cifras que no has dicho, pregúntale de dónde salen.
 - La tarea que "no conviene delegar" tiene sentido para ti.
 - Tienes las preferencias guardadas.
 
-Si el resultado suena a folleto de empresa, es que le faltó contexto. Vuelve a empezar contándole más. No es fallar: es la primera lección.
+Si el resultado suena a folleto de empresa, es que le faltó contexto. Vuelve a empezar contándole más. 
 
 ## Palabras del día
 

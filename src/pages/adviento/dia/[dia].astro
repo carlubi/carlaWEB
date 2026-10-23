@@ -24,6 +24,26 @@ const number = String(day.dia).padStart(2,'0');
     <main class="challenge-main">
       <a class="back-link" href="/adviento"><svg aria-hidden="true" viewBox="0 0 24 24"><use href={iconHref('arrow-left')} /></svg>Volver al calendario</a>
       {localPreview && <div class="preview-banner day-preview-banner" role="status"><span><strong>Vista local</strong> · Contenido completo del día {day.dia}. La apertura y el progreso son de prueba.</span></div>}
+      {localPreview && <section class="local-editor" id="local-editor" aria-labelledby="local-editor-title">
+        <div class="local-editor-heading"><div><h2 id="local-editor-title">Editar este día</h2><p>Se guarda en el proyecto. Al publicar, actualiza también el contenido de Supabase con el SQL generado.</p></div><button type="button" id="editor-toggle" aria-expanded="false" aria-controls="editor-panel">Abrir editor</button></div>
+        <div id="editor-panel" hidden>
+          <form id="editor-form">
+            <div class="editor-fields">
+              <label>Título<input name="titulo" required /></label>
+              <label>Tipo<input name="tipo" required /></label>
+              <label>Herramienta<input name="herramienta" required /></label>
+              <label>Minutos<input name="minutos" type="number" min="1" max="999" required /></label>
+              <label class="editor-wide">Descripción breve<textarea name="descripcion" rows="3" required></textarea></label>
+              <label class="editor-wide">Lo que necesitas<input name="datos" required /></label>
+            </div>
+            <label class="editor-body-label" for="editor-body">Contenido del día</label>
+            <p class="editor-help">Usa «##» para una sección, «###» para un paso, «## Prompt · Nombre» para un prompt y «## Descarga · Nombre» para un documento. El texto admite Markdown.</p>
+            <textarea id="editor-body" name="cuerpo" rows="20" spellcheck="true" required></textarea>
+            <div class="editor-uploads"><button type="button" id="editor-image">Añadir imagen</button><button type="button" id="editor-document">Añadir documento</button><input id="editor-file" type="file" hidden /></div>
+            <div class="editor-actions"><button type="submit" id="editor-save">Guardar cambios</button><span id="editor-status" role="status" aria-live="polite"></span></div>
+          </form>
+        </div>
+      </section>}
       <div id="challenge-loading" class="challenge-loading" role="status" aria-live="polite"><span class="loading-star" aria-hidden="true">✦</span><p>Preparando tu regalo…</p></div>
       <div id="challenge-error" class="challenge-error" hidden><h1>Esta puerta sigue cerrada.</h1><p id="challenge-error-text">Vuelve al calendario para abrirla cuando llegue su día.</p><a class="main-button" href="/adviento">Ir al calendario <span aria-hidden="true">↗</span></a></div>
 

@@ -25,7 +25,7 @@ Cómo se activa:
 2. Busca **Búsqueda web** y comprueba que está activada.
 3. Cuando la use, verás en el chat que está buscando y qué páginas consulta.
 
-![El menú + con la opción de búsqueda web activada](capturas/d14-01-busqueda-web.png)
+![Claude muestra las búsquedas web realizadas antes de responder a una pregunta sobre noticias de IA](capturas/d14-01-busqueda-web.png)
 
 Con la búsqueda activada, Claude decide solo cuándo buscar. Si quieres que busque sí o sí, díselo: "busca en internet...".
 

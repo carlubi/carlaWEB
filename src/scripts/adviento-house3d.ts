@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry.js';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
 import { dayIcon, iconHref } from '../data/adviento-icons';
-import { SNOW_DAYS, keepsLook } from '../data/adviento-tones';
+import { SNOW_DAYS } from '../data/adviento-tones';
 import { createCaganerModel, createSmokePuff } from './adviento-caganer';
 
 /*
@@ -24,18 +24,20 @@ type Drawer = {
   pull:number; openStart:number; button:HTMLButtonElement|null;
 };
 
-/* Sculpt spec: colours sampled from the CSS reference; 1 world unit = one drawer width. */
+/* Sculpt spec: colours are the DESIGN.md tokens (warm white facade with cherry roof and piping,
+   yellow only for «Ábrelo»); lacquered, low-gloss finishes. 1 world unit = one drawer width. */
 const SPEC = {
   color: {
-    facade:'#78233f', side:'#5e1d37', liner:'#2a0c1b', roof:'#5a1a33', roofUnder:'#3d1124',
-    icing:'#fff9ec', gold:'#f3c969', holly:'#2f6b47', hollySoft:'#e9f1e6', rimMuted:'#9a5468', tray:'#b4687e',
-    pine:'#5f755d', pineDark:'#4f6550', trunk:'#b98f63', snow:'#fffdf8', chimney:'#6e2440', shadow:'#3b1225'
+    facade:'#f8f5ed', side:'#e4dacb', liner:'#d9cdbb', roof:'#691b32', roofUnder:'#521326',
+    /* on the light facade: cherry text and piping, a dusty pink for the little stars */
+    onFacade:'#691b32', facadeAccent:'#c68f9f',
+    icing:'#f8f5ed', gold:'#f3c969', holly:'#2f6b47', hollySoft:'#e9f1e6', rimMuted:'#7d3048', rimOpen:'#e9d4d9', tray:'#e9d4d9',
+    cherrySoft:'#e9d4d9', pine:'#5f755d', pineDark:'#4f6550', trunk:'#b98f63', snow:'#fffdf8', chimney:'#691b32', shadow:'#3b252d'
   },
   fronts: {
     cream:{ bg:'#f8f5ed', ink:'#691b32', tile:'rgba(105,27,50,.055)', tileBorder:'rgba(105,27,50,.16)' },
     pink:{ bg:'#e9d4d9', ink:'#691b32', tile:'rgba(105,27,50,.06)', tileBorder:'rgba(105,27,50,.16)' },
-    wine:{ bg:'#78243f', ink:'#fff9ec', tile:'rgba(255,249,236,.12)', tileBorder:'rgba(255,249,236,.28)' },
-    gold:{ bg:'#f3c969', ink:'#691b32', tile:'rgba(105,27,50,.07)', tileBorder:'rgba(105,27,50,.18)' },
+    wine:{ bg:'#691b32', ink:'#fff9ec', tile:'rgba(255,249,236,.12)', tileBorder:'rgba(255,249,236,.28)' },
     /* surprise days: the fir green of the trees beside the house */
     pine:{ bg:'#5f755d', ink:'#fff9ec', tile:'rgba(255,249,236,.14)', tileBorder:'rgba(255,249,236,.3)' },
     /* Christmas Eve: the big present, deep pine wrapped in a gold ribbon with a bow */
@@ -55,8 +57,8 @@ const SPEC = {
 
 /*
  * Fronts run in diagonal ribbons (warm white, cherry soft, cherry), like wrapping paper, so the
- * rhythm reads as intended at 6 and at 4 columns. Yellow is not decoration: DESIGN.md keeps it
- * for progress, so only a drawer you can open now turns yellow. The CSS fallback uses the same
+ * rhythm reads as intended at 6 and at 4 columns. Every drawer keeps its colour; yellow is not
+ * decoration (DESIGN.md), so «Ábrelo» and the rim of a drawer you can open now are the only yellow. The CSS fallback uses the same
  * ribbons through the tone-* classes set in adviento.astro.
  */
 const ribbons = [SPEC.fronts.cream, SPEC.fronts.pink, SPEC.fronts.wine];
@@ -67,7 +69,6 @@ function frontStyle(index:number, cols:number, state:DoorState, day:DayInfo):Fro
   if (day.dia === 15) return SPEC.fronts.halfway;
   if (day.dia === 1) return SPEC.fronts.cane;
   if (SNOW_DAYS.includes(day.dia)) return SPEC.fronts.snow;
-  if (state === 'available') return SPEC.fronts.gold;
   if (day.tipo === 'Sorpresa') return SPEC.fronts.pine;
   const r = Math.floor(index / cols), c = index % cols;
   const base = ribbons[((c - r) % 3 + 3) % 3];
@@ -196,10 +197,10 @@ export async function mountHouse3D(scene:HTMLElement, grid:HTMLElement, days:Day
   pmrem.dispose();
 
   const camera = new THREE.PerspectiveCamera(SPEC.camera.fov, 1, .1, 100);
-  const hemi = new THREE.HemisphereLight('#fff7f0', '#e9d6dc', 1.35); world.add(hemi);
-  const key = new THREE.DirectionalLight('#fff3e6', 2.1); key.castShadow = true;
+  const hemi = new THREE.HemisphereLight('#ffffff', '#f8f5ed', 1.35); world.add(hemi);
+  const key = new THREE.DirectionalLight('#ffffff', 2.1); key.castShadow = true;
   key.shadow.bias = -.0004; key.shadow.normalBias = .025; world.add(key, key.target);
-  const rim = new THREE.DirectionalLight('#ffd7a8', .7); world.add(rim);
+  const rim = new THREE.DirectionalLight('#fff3e6', .5); world.add(rim);
 
   let L = layoutFor(compactQuery.matches);
   let house = new THREE.Group();
@@ -209,7 +210,7 @@ export async function mountHouse3D(scene:HTMLElement, grid:HTMLElement, days:Day
   let sceneWidth = 0;
   const disposables = new Set<{ dispose():void }>();
   let caganer:THREE.Group|null = null;
-  let caganerGone = false;
+  let caganerGone = scene.dataset.caganerFound === 'true';
   let poof:{ start:number; scale:number; group:THREE.Group; update(elapsed:number):boolean; told:boolean }|null = null;
   const track = <T extends { dispose():void }>(item:T) => { disposables.add(item); return item; };
 
@@ -231,7 +232,7 @@ export async function mountHouse3D(scene:HTMLElement, grid:HTMLElement, days:Day
     const tex = canvasTexture(512, 512, (ctx, w, h) => {
       ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, w, h);
       for (let i = 0; i < 260; i++) {
-        const x = rand() * w, a = .025 + rand() * .045;
+        const x = rand() * w, a = .012 + rand() * .02;
         ctx.strokeStyle = `rgba(70,20,40,${a})`; ctx.lineWidth = .6 + rand() * 1.8;
         ctx.beginPath(); ctx.moveTo(x, 0);
         for (let y = 0; y <= h; y += 32) ctx.lineTo(x + Math.sin(y * .02 + i) * 2.5, y);
@@ -244,8 +245,8 @@ export async function mountHouse3D(scene:HTMLElement, grid:HTMLElement, days:Day
   function plankTexture() {
     const tex = canvasTexture(256, 32, (ctx, w, h) => {
       ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, w, h);
-      ctx.fillStyle = 'rgba(40,8,22,.28)'; ctx.fillRect(0, 0, 3, h);
-      ctx.fillStyle = 'rgba(255,240,240,.22)'; ctx.fillRect(3, 0, 2, h);
+      /* faint seams: on the light walls of the drawer holes strong lines shimmer as the house turns */
+      ctx.fillStyle = 'rgba(59,37,45,.07)'; ctx.fillRect(0, 0, 3, h);
     }, true);
     tex.repeat.set(1 / .55, 1);
     return tex;
@@ -257,10 +258,10 @@ export async function mountHouse3D(scene:HTMLElement, grid:HTMLElement, days:Day
       for (let r = 0; r < rows; r++) for (let c = -1; c <= cols; c++) {
         const x = c * cw + (r % 2 ? cw / 2 : 0), y = r * rh;
         const g = ctx.createLinearGradient(0, y, 0, y + rh);
-        g.addColorStop(0, '#4b1529'); g.addColorStop(1, '#7a2c48');
+        g.addColorStop(0, '#5a1630'); g.addColorStop(1, '#7a2440');
         ctx.fillStyle = g; ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x + cw, y); ctx.lineTo(x + cw, y + rh * .55);
         ctx.quadraticCurveTo(x + cw / 2, y + rh * 1.25, x, y + rh * .55); ctx.closePath(); ctx.fill();
-        ctx.strokeStyle = 'rgba(255,230,236,.16)'; ctx.lineWidth = 2; ctx.stroke();
+        ctx.strokeStyle = 'rgba(248,245,237,.12)'; ctx.lineWidth = 2; ctx.stroke();
       }
     }, true);
     tex.repeat.set(length / 1.1, depth / 1.1);
@@ -406,9 +407,9 @@ export async function mountHouse3D(scene:HTMLElement, grid:HTMLElement, days:Day
     } else if (d.state === 'available') {
       const label = 'Ábrelo', tw = ctx.measureText(label).width, ph = labelSize * 1.5, px = labelSize * .6;
       roundRect(ctx, pad - px * .5, mid - ph / 2, tw + px * 2, ph, ph / 2);
-      const special = keepsLook(d.day.dia);
-      ctx.fillStyle = special ? SPEC.color.gold : 'rgba(105,27,50,.12)'; ctx.fill();
-      ctx.fillStyle = special ? '#691b32' : style.ink;
+      /* every drawer keeps its colour, so «Ábrelo» is always the yellow pill */
+      ctx.fillStyle = SPEC.color.gold; ctx.fill();
+      ctx.fillStyle = '#691b32';
       ctx.fillText(label, pad - px * .5 + px, mid + labelSize * .04);
     }
   }
@@ -512,9 +513,11 @@ export async function mountHouse3D(scene:HTMLElement, grid:HTMLElement, days:Day
     const { bodyW, bodyH, gable, depth } = L;
     const grain = grainTexture();
     const planks = plankTexture();
-    const facadeFront = mat({ color:SPEC.color.facade, map:grain, roughness:.74, metalness:0 });
+    const facadeFront = mat({ color:SPEC.color.facade, map:grain, roughness:.8, metalness:0 });
     const facadeSide = mat({ color:SPEC.color.side, map:planks, roughness:.82 });
     const icing = mat({ color:SPEC.color.icing, roughness:.38, metalness:0, envMapIntensity:.8 });
+    /* piping on the facade: cherry, so it reads against the warm white */
+    const piping = mat({ color:SPEC.color.onFacade, roughness:.45, metalness:0 });
     const gold = mat({ color:SPEC.color.gold, roughness:.32, metalness:.45 });
 
     /* facade + body: one extruded house profile with 24 drawer openings */
@@ -531,7 +534,8 @@ export async function mountHouse3D(scene:HTMLElement, grid:HTMLElement, days:Day
     body.position.z = -(depth + bevel.thick);
     root.add(body);
 
-    /* back panel: closes the openings so the cavities read as drawers, not holes */
+    /* back panel: closes the openings so the cavities read as drawers, not holes. A warm shade a
+       little darker than the facade: a dark lining showed as flickering black edges round the drawers */
     const liner = mat({ color:SPEC.color.liner, roughness:.9, side:THREE.BackSide });
     const linerGeo = geo(new THREE.BoxGeometry(L.cellW + L.holePad - 2 * bevel.size, L.cellH + L.holePad - 2 * bevel.size, .56));
     const rimGeo = geo(new THREE.ExtrudeGeometry((() => {
@@ -551,7 +555,7 @@ export async function mountHouse3D(scene:HTMLElement, grid:HTMLElement, days:Day
     drawers = days.slice(0, 24).map((day, i) => {
       const { x, y } = cellCenter(L, i);
       const cavity = new THREE.Mesh(linerGeo, liner); cavity.position.set(x, y, -.3); cavity.receiveShadow = true; root.add(cavity);
-      const rimMat = mat({ color:SPEC.color.rimMuted, roughness:.32, metalness:.45, emissive:SPEC.color.gold, emissiveIntensity:0 });
+      const rimMat = mat({ color:SPEC.color.rimMuted, roughness:.55, metalness:.1, emissive:SPEC.color.gold, emissiveIntensity:0 });
       const rimMesh = shadowed(new THREE.Mesh(rimGeo, rimMat), true, true); rimMesh.position.set(x, y, -.012); root.add(rimMesh);
 
       /* the opened card sits just behind the facade: deep enough to read as a drawer, shallow
@@ -580,15 +584,15 @@ export async function mountHouse3D(scene:HTMLElement, grid:HTMLElement, days:Day
       return drawer;
     });
 
-    /* eave band: thick icing line, star row, thin icing line */
+    /* eave band: thick piping line, star row, thin piping line */
     const eaveTop = L.gridTop + .14 + L.eaveH;
-    const barTop = shadowed(new THREE.Mesh(geo(new RoundedBoxGeometry(bodyW - .06, .075, .07, 2, .03)), icing)); barTop.position.set(0, eaveTop - .05, .02);
-    const barLow = shadowed(new THREE.Mesh(geo(new RoundedBoxGeometry(bodyW - .2, .032, .04, 2, .014)), icing)); barLow.position.set(0, L.gridTop + .14, .01);
+    const barTop = shadowed(new THREE.Mesh(geo(new RoundedBoxGeometry(bodyW - .06, .075, .07, 2, .03)), piping)); barTop.position.set(0, eaveTop - .05, .02);
+    const barLow = shadowed(new THREE.Mesh(geo(new RoundedBoxGeometry(bodyW - .2, .032, .04, 2, .014)), piping)); barLow.position.set(0, L.gridTop + .14, .01);
     const starCount = L.cols * 2 - 1;
     const starH = L.eaveH - .14, starW = bodyW - .3;
     const stars = new THREE.Mesh(geo(new THREE.PlaneGeometry(starW, starH)), mat({ transparent:true, roughness:.5, map:canvasTexture(starW * ppu, starH * ppu, (ctx, w, h) => {
       ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.font = `600 ${h * .62}px ${FONT}`;
-      for (let i = 0; i < starCount; i++) { ctx.fillStyle = i % 2 ? SPEC.color.gold : SPEC.color.icing; ctx.fillText(i % 2 ? '✧' : '✦', (i + .5) * w / starCount, h * .54); }
+      for (let i = 0; i < starCount; i++) { ctx.fillStyle = i % 2 ? SPEC.color.facadeAccent : SPEC.color.onFacade; ctx.fillText(i % 2 ? '✧' : '✦', (i + .5) * w / starCount, h * .54); }
     }) }));
     stars.position.set(0, L.gridTop + .14 + .015 + starH / 2, .004);
     root.add(barTop, barLow, stars);
@@ -596,9 +600,9 @@ export async function mountHouse3D(scene:HTMLElement, grid:HTMLElement, days:Day
     /* plinth caption */
     const plinthW = L.gridW, plinthH = .3;
     const plinth = new THREE.Mesh(geo(new THREE.PlaneGeometry(plinthW, plinthH)), mat({ transparent:true, roughness:.6, map:canvasTexture(plinthW * ppu, plinthH * ppu, (ctx, w, h) => {
-      ctx.textBaseline = 'middle'; ctx.textAlign = 'left'; ctx.fillStyle = SPEC.color.icing;
+      ctx.textBaseline = 'middle'; ctx.textAlign = 'left'; ctx.fillStyle = SPEC.color.onFacade;
       ctx.font = `400 ${h * (L.compact ? .52 : .46)}px ${FONT}`; ctx.fillText('Un pequeño descubrimiento cada día', 0, h * .52);
-      ctx.textAlign = 'right'; ctx.fillStyle = SPEC.color.gold; ctx.font = `600 ${h * .75}px ${FONT}`; ctx.fillText('✦', w, h * .52);
+      ctx.textAlign = 'right'; ctx.fillStyle = SPEC.color.facadeAccent; ctx.font = `600 ${h * .75}px ${FONT}`; ctx.fillText('✦', w, h * .52);
     }) }));
     plinth.position.set(0, L.plinthH / 2 - .02, .003);
     root.add(plinth);
@@ -607,21 +611,21 @@ export async function mountHouse3D(scene:HTMLElement, grid:HTMLElement, days:Day
     const insW = bodyW * (L.compact ? .66 : .44), insH = insW * .4;
     const insignia = new THREE.Mesh(geo(new THREE.PlaneGeometry(insW, insH)), mat({ transparent:true, roughness:.5, map:canvasTexture(insW * ppu, insH * ppu, (ctx, w, h) => {
       ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-      ctx.fillStyle = SPEC.color.gold; ctx.font = `600 ${h * .3}px ${FONT}`; ctx.fillText('✳', w / 2, h * .2);
-      ctx.fillStyle = SPEC.color.icing; ctx.font = `600 ${h * .17}px ${FONT}`; ctx.fillText('24 pequeñas sorpresas', w / 2, h * .55);
+      ctx.fillStyle = SPEC.color.facadeAccent; ctx.font = `600 ${h * .3}px ${FONT}`; ctx.fillText('✳', w / 2, h * .2);
+      ctx.fillStyle = SPEC.color.onFacade; ctx.font = `600 ${h * .17}px ${FONT}`; ctx.fillText('24 pequeñas sorpresas', w / 2, h * .55);
       ctx.globalAlpha = .86; ctx.font = `400 ${h * .085}px ${FONT}`; spacedText(ctx, 'DICIEMBRE · 2026', w / 2, h * .78, h * .016);
     }) }));
     insignia.position.set(0, bodyH + gable * (L.compact ? .4 : .37), .004);
     root.add(insignia);
 
-    /* scalloped icing garland at the base of the gable */
+    /* scalloped cherry garland at the base of the gable */
     const garlandPts:THREE.Vector3[] = [];
     const gx0 = -bodyW / 2 + .35, gx1 = bodyW / 2 - .35, scallops = Math.round((gx1 - gx0) / .34);
     for (let i = 0; i <= scallops * 4; i++) {
       const t = i / (scallops * 4), x = gx0 + (gx1 - gx0) * t;
       garlandPts.push(new THREE.Vector3(x, bodyH + .13 - Math.abs(Math.sin(t * scallops * Math.PI)) * .075, .035));
     }
-    const garland = shadowed(new THREE.Mesh(geo(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(garlandPts), scallops * 24, .03, 8)), icing));
+    const garland = shadowed(new THREE.Mesh(geo(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(garlandPts), scallops * 24, .03, 8)), piping));
     root.add(garland);
 
     /* roof: two shingled slabs with icing on the front edge, icing drips and lights */
@@ -666,7 +670,7 @@ export async function mountHouse3D(scene:HTMLElement, grid:HTMLElement, days:Day
       for (let i = 0; i < bulbCount; i++) {
         p.set(-Lr / 2 + .3 + i * (Lr - .6) / (bulbCount - 1), -T / 2 - .17 - (i % 2) * .03, Dz / 2 + .02);
         lights.setMatrixAt(i, m.compose(p, new THREE.Quaternion(), new THREE.Vector3(1, 1, 1)));
-        lights.setColorAt(i, new THREE.Color(i % 2 ? '#ffd877' : '#fff6e2'));
+        lights.setColorAt(i, new THREE.Color(i % 2 ? '#b8435f' : '#fff6e2'));
       }
       bulbs.push(lights);
       slab.add(drips, lights);
@@ -722,7 +726,7 @@ export async function mountHouse3D(scene:HTMLElement, grid:HTMLElement, days:Day
     }
 
     /* ground: shadow catcher + soft ambient occlusion under the house */
-    const ground = new THREE.Mesh(geo(new THREE.PlaneGeometry(40, 40)), track(new THREE.ShadowMaterial({ color:SPEC.color.shadow, opacity:.17 })));
+    const ground = new THREE.Mesh(geo(new THREE.PlaneGeometry(40, 40)), track(new THREE.ShadowMaterial({ color:SPEC.color.shadow, opacity:.12 })));
     ground.rotation.x = -Math.PI / 2; ground.receiveShadow = true; root.add(ground);
     const ao = new THREE.Mesh(geo(new THREE.PlaneGeometry(bodyW * 1.5, depth * 2.6)), track(new THREE.MeshBasicMaterial({ transparent:true, depthWrite:false, map:canvasTexture(256, 256, (ctx, w, h) => {
       const g = ctx.createRadialGradient(w / 2, h / 2, 0, w / 2, h / 2, w / 2);
@@ -855,8 +859,8 @@ export async function mountHouse3D(scene:HTMLElement, grid:HTMLElement, days:Day
         d.interior.visible = false;
       }
       paintFront(d);
-      const lit = d.state !== 'future';
-      d.rim.color.set(lit ? SPEC.color.gold : SPEC.color.rimMuted);
+      /* yellow only marks «Ábrelo»; done is holly, opened a soft cherry (DESIGN.md) */
+      d.rim.color.set(d.state === 'available' ? SPEC.color.gold : d.state === 'completed' ? SPEC.color.holly : d.state === 'opened' ? SPEC.color.rimOpen : SPEC.color.rimMuted);
     });
     renderer.shadowMap.needsUpdate = true;
     placeButtons();
@@ -985,6 +989,13 @@ export async function mountHouse3D(scene:HTMLElement, grid:HTMLElement, days:Day
   let frame = 0, twinkle = 0, visible = true, dirty = true;
   const easeOut = (t:number) => 1 - Math.pow(1 - t, 3);
   function requestRender() { dirty = true; if (!frame && visible && !document.hidden) frame = requestAnimationFrame(tick); }
+  scene.addEventListener('caganer-achievement-state', event => {
+    if (!(event instanceof CustomEvent) || event.detail?.found !== true) return;
+    caganerGone = true;
+    if (caganer) { caganer.removeFromParent(); caganer = null; }
+    renderer.shadowMap.needsUpdate = true;
+    requestRender();
+  });
 
   function tick(time:number) {
     frame = 0;
@@ -1024,7 +1035,7 @@ export async function mountHouse3D(scene:HTMLElement, grid:HTMLElement, days:Day
       bulbs.forEach((mesh, m) => {
         for (let i = 0; i < mesh.count; i++) {
           const pulse = .86 + .14 * Math.sin(time * .0021 + i * 1.7 + m * 2.3);
-          c.set(i % 2 ? '#ffd877' : '#fff6e2').multiplyScalar(pulse * 1.2);
+          c.set(i % 2 ? '#b8435f' : '#fff6e2').multiplyScalar(pulse * 1.2);
           mesh.setColorAt(i, c);
         }
         if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true;

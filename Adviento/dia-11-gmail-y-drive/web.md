@@ -37,7 +37,7 @@ En la pantalla de Google de Gmail verás que menciona **enviar correos**. Tranqu
 - **Solo ve lo que tú ya puedes abrir.** Si un documento no está compartido contigo, Claude tampoco lo ve.
 - Además de buscar por su cuenta, puedes **añadir un archivo concreto** a un chat: **+** › **Añadir desde Google Drive** › buscas el archivo o pegas el enlace.
 
-![El menú + del chat con la opción de añadir desde Google Drive y el buscador de archivos](capturas/d11-02-anadir-desde-drive.png)
+![El selector «Añadir desde Google Drive» abierto en Claude, con documentos recientes y el campo para buscar o pegar un enlace](capturas/d11-02-anadir-desde-drive.png)
 
 - Y en un **proyecto**, puedes añadir archivos de Drive a su conocimiento: en el apartado de archivos, **+** › **Drive**.
 

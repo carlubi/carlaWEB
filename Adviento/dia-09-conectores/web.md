@@ -1,10 +1,13 @@
 # Conectores sin miedo
 resumen: Qué es un conector, qué puede ver y hacer Claude cuando conectas tu correo o tu calendario, dónde están todos y cómo se controlan los permisos. Hoy no conectas nada: lo entiendes para hacerlo mañana con calma.
 datos: Hoy no se conecta nada
+tipo: Tip
+herramienta: Claude (conectores)
+minutos: 10
 
 ## Hasta ahora, Claude vivía en una burbuja
 
-Todo lo que ha sabido estos días es lo que tú le has escrito o adjuntado. No ve tu correo, ni tu agenda, ni tus documentos de Drive. Para que trabaje con tus cosas tienes que copiar y pegar.
+Todo lo que has sabido estos días es lo que tú le has escrito o adjuntado. No ve tu correo, ni tu agenda, ni tus documentos de Drive. Para que trabaje con tus cosas tienes que copiar y pegar.
 
 Un **conector** rompe esa burbuja: le da a Claude acceso a una herramienta tuya (Gmail, Google Calendar, Google Drive, Notion, Slack...) para que lea lo que necesita y, si le dejas, haga cosas por ti.
 

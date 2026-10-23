@@ -1,10 +1,13 @@
 # Tu primer proyecto
 resumen: Un proyecto es una carpeta con memoria: le dejas instrucciones y documentos una vez y todo lo que hagas dentro sale ajustado a ti. Hoy creas el primero paso a paso, lo llenas y ves la diferencia con un chat normal.
 datos: Tu tarjeta de contexto del día 1 y uno o dos documentos tuyos sin datos personales
+tipo: Reto
+herramienta: Claude (Proyectos)
+minutos: 25
 
 ## El problema que resuelve
 
-Cada chat nuevo empieza de cero. Si estás preparando unas oposiciones, llevando las redes de tu negocio o haciendo los presupuestos de tu trabajo, cada vez tienes que volver a explicarle quién eres, qué estás haciendo y cómo lo quieres. Es un rollo, y además se te olvida algo cada vez.
+Cada chat nuevo empieza de cero. Si estás preparando unas oposiciones, llevando las redes de tu empresa o haciendo los presupuestos de tu trabajo, cada vez tienes que volver a explicarle quién eres, qué estás haciendo y cómo lo quieres. Es un rollo, y además se te olvida algo cada vez.
 
 Un **proyecto** lo arregla. Es un espacio dentro de Claude con tres cosas:
 
@@ -57,7 +60,7 @@ Unas buenas instrucciones dicen tres cosas: quién eres, para qué es el proyect
 
 En el apartado de **archivos** (también a la derecha), pulsa **+** y elige **Subir desde el dispositivo**. Sube uno o dos documentos que uses de verdad para esto.
 
-![El apartado de archivos del proyecto con el botón + y un documento ya subido](capturas/d07-04-archivos.png)
+![La ventana Contexto del proyecto, con un documento ya subido y el botón Añadir](capturas/d07-04-archivos.png)
 
 **Qué subir:** plantillas vacías, apuntes, guías de estilo, tu catálogo de productos, el temario, una receta que siempre haces, tu CV.
 

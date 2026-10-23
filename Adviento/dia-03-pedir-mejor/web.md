@@ -1,10 +1,13 @@
 # Aprende a pedir
 resumen: La receta de cinco piezas para escribir tus propios prompts sin depender de listas. Y los tres botones que casi nadie usa: editar, reintentar y seguir la conversación.
 datos: Ninguno. Usa un encargo tuyo que te salió flojo
+tipo: Reto
+herramienta: Claude
+minutos: 15
 
 ## La diferencia entre una respuesta mediocre y una buena
 
-Casi nunca está en el modelo. Está en el encargo.
+Casi nunca está en el modelo. Está en la forma en que se lo pides.
 
 Piénsalo así: si le dices a alguien nuevo "hazme un correo para un cliente", te va a hacer algo correcto y sin alma, porque no sabe quién es el cliente, qué ha pasado ni qué quieres conseguir. A Claude le pasa igual. No lee la mente: **trabaja con lo que le das**. Lo que en el mundillo se llama *prompting*, o ingeniería de prompts, es eso y nada más: aprender a dar un buen encargo.
 

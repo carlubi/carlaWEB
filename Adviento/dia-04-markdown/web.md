@@ -1,10 +1,15 @@
 # Markdown: el idioma de la IA
 resumen: Esos asteriscos y almohadillas que salen cuando copias una respuesta de Claude tienen nombre: markdown. Hoy aprendes qué es, por qué la IA lo adora y cómo usarlo a tu favor. Lo vas a necesitar el día 8.
 datos: El documento de ejemplo y unas notas tuyas desordenadas
+tipo: Formación
+herramienta: Claude
+minutos: 15
 
 ## El misterio de los asteriscos
 
-Te habrá pasado ya: copias una respuesta de Claude, la pegas en un correo o en Word y aparece llena de `**` y de `#`. No es un error. Es **markdown**, el formato en el que la IA escribe por dentro. Claude lo "pinta" en pantalla y por eso tú ves negritas y títulos bonitos, pero el texto original lleva esos símbolos.
+Te habrá pasado ya: copias una respuesta de Claude, la pegas en un correo o en Word y aparece llena de `**` y de `#`. No es un error. 
+
+Es el famoso **markdown**, el formato en el que la IA escribe por dentro sin que tu lo veas: ES SU IDIOMA. Claude lo "estiliza" en pantalla y por eso tú ves negritas y títulos bonitos, pero el texto original lleva esos símbolos.
 
 Hoy le pierdes el miedo, porque markdown es una de las cosas más útiles que puedes aprender para trabajar con IA. Y se aprende en diez minutos.
 
@@ -38,6 +43,25 @@ Esto es lo que escribes:
 ```
 
 Y esto es lo que se ve cuando se "pinta": un título grande, un subtítulo, una lista con "Pasaportes" en negrita, una tabla ordenada y una cita destacada. Mismo texto, dos caras.
+
+### Así queda al verlo
+
+# Viaje a Lisboa
+
+#### Lo que no se nos puede olvidar
+
+- **Pasaportes** (el de Leo caduca en marzo)
+- Cargador del móvil
+- Reserva del hotel impresa
+
+#### Presupuesto
+
+| Concepto | Precio |
+|---|---|
+| Vuelos | 240 € |
+| Hotel, 3 noches | 310 € |
+
+> Ojo: el museo de los azulejos cierra los lunes.
 
 ## La chuleta: lo que necesitas saber
 
@@ -78,7 +102,7 @@ Aquí está lo interesante, y por qué te lo cuento en un calendario de IA:
 
 - **En Windows:** botón derecho sobre el archivo › Abrir con › Bloc de notas.
 - **En Mac:** botón derecho › Abrir con › TextEdit. Si te lo enseña raro, ve a Formato › Convertir a texto normal.
-- **Si le coges el gusto:** hay apps gratuitas que lo pintan mientras escribes, como Obsidian o Typora. No hace falta para el calendario.
+- **Si le coges el gusto:** hay apps gratuitas que lo pintan mientras escribes, como Obsidian o Typora. 
 
 ## El truco de los asteriscos al copiar
 
@@ -87,6 +111,8 @@ Cuando copies una respuesta de Claude para pegarla en otro sitio:
 - **En Google Docs:** activa en Herramientas › Preferencias la opción de markdown. Desde ahí, al pegar respeta las negritas y los títulos.
 - **En un correo o en WhatsApp:** pídele a Claude "dámelo en texto plano, sin formato markdown". Y listo.
 - **Si quieres un documento:** pídele que te lo dé como archivo descargable.
+
+Por eso cuando escribes un prompt, es importante pedirle en qué formato lo necesitas. 
 
 ## El reto
 

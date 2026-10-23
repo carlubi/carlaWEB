@@ -1,12 +1,12 @@
 [
   {
     "dia": 1,
-    "titulo": "Empieza aquí: tu mapa con Claude",
+    "titulo": "Empieza por el principio: Tour por Claude",
     "tipo": "Reto + regalo",
     "herramienta": "Claude",
     "minutos": 20,
-    "datos": "Nada. Solo lo que tú le cuentes de tu semana",
-    "descripcion": "Te haces la cuenta, das una vuelta por la pantalla para saber qué es cada cosa y sacas tu primer resultado: un mapa con las tareas donde la IA te va a ahorrar más tiempo. Hoy además te llevas el kit de arranque.",
+    "datos": "Descargar Claude para escritorios",
+    "descripcion": "El objetivo de este primer reto, es investigar la app de Claude. Para ello, deberás descargarte la aplicación de escritorio y te darás una vuelta por la pantalla para saber qué es cada cosa y vas a realizar tu primera acción: pedirle que te genere un mapa identificando qué tareas puede la IA ahorrarte más tiempo. Hoy además te llevas el kit de arranque.",
     "simbolo": "⌖",
     "abre_el": "2026-12-01"
   },
@@ -16,7 +16,7 @@
     "tipo": "Formación",
     "herramienta": "Claude",
     "minutos": 20,
-    "datos": "Las facturas de prueba, para la tarea pesada",
+    "datos": "Las facturas de prueba que te adjunto más abajo",
     "descripcion": "Qué es un modelo, por qué Claude tiene varios, qué son los tokens y por qué un día te dice que has llegado al límite. Y lo más práctico: dónde ver cuánto llevas gastado y cómo hacer que te cunda.",
     "simbolo": "◔",
     "abre_el": "2026-12-02"
@@ -48,7 +48,7 @@
     "titulo": "Tu mini-app en 5 minutos",
     "tipo": "Sorpresa",
     "herramienta": "Claude (artefactos)",
-    "minutos": 15,
+    "minutos": 30,
     "datos": "Ninguno",
     "descripcion": "Es sábado y toca jugar. Le pides a Claude una herramienta hecha a tu medida (una calculadora, un planificador, un juego para los críos), la usas, la retocas y la compartes con un enlace. Sin saber programar.",
     "simbolo": "✦",
@@ -70,7 +70,7 @@
     "titulo": "Tu primer proyecto",
     "tipo": "Reto",
     "herramienta": "Claude (Proyectos)",
-    "minutos": 20,
+    "minutos": 25,
     "datos": "Tu tarjeta de contexto del día 1 y uno o dos documentos tuyos sin datos personales",
     "descripcion": "Un proyecto es una carpeta con memoria: le dejas instrucciones y documentos una vez y todo lo que hagas dentro sale ajustado a ti. Hoy creas el primero paso a paso, lo llenas y ves la diferencia con un chat normal.",
     "simbolo": "▣",
@@ -133,12 +133,12 @@
   },
   {
     "dia": 13,
-    "titulo": "Tu presentación sin abrir PowerPoint",
+    "titulo": "Crea una presentación sin abrir PowerPoint",
     "tipo": "Sorpresa",
     "herramienta": "Claude (creación de archivos)",
     "minutos": 20,
     "datos": "Las ventas de prueba, o un tema tuyo",
-    "descripcion": "Domingo de sorpresa: Claude te fabrica una presentación de verdad, en un archivo que abres en PowerPoint, Keynote o Google Slides. Con un truco que cambia el resultado: pedir primero la estructura. Y una regla: cada cifra se comprueba.",
+    "descripcion": "Claude te fabrica una presentación de verdad, en un archivo que abres en PowerPoint, Keynote o Google Slides. Con un truco que cambia el resultado: pedir primero la estructura. Y una regla: cada cifra se comprueba.",
     "simbolo": "▰",
     "abre_el": "2026-12-13"
   },
@@ -221,23 +221,23 @@
   },
   {
     "dia": 21,
-    "titulo": "Prepara tu semana",
+    "titulo": "Tu lista de la compra en Artefactos",
     "tipo": "Reto",
-    "herramienta": "Claude (varios conectores)",
+    "herramienta": "Claude (Artefactos)",
     "minutos": 20,
-    "datos": "Tu calendario, tu Gmail y tu Drive, o la agenda y los correos de prueba",
-    "descripcion": "Lunes de la semana de Navidad. Juntas calendario, correo y Drive en un solo encargo y Claude te devuelve lo que de verdad importa esta semana: lo que no puede esperar, lo que hay que preparar, quién te espera y lo que puede esperar a enero. Y le pides que justifique su criterio.",
+    "datos": "La lista de ejemplo descargable o tus propios productos",
+    "descripcion": "Crea en Claude una lista de la compra que puedas marcar, ampliar y ordenar por secciones. La probarás con productos de ejemplo y harás un cambio para dejarla a tu gusto.",
     "simbolo": "◒",
     "abre_el": "2026-12-21"
   },
   {
     "dia": 22,
-    "titulo": "De reunión a próximos pasos",
+    "titulo": "Diseña un cartel con Claude Design",
     "tipo": "Reto",
-    "herramienta": "Claude (Calendar y Gmail)",
+    "herramienta": "Claude Design",
     "minutos": 25,
-    "datos": "Las notas de ejemplo, o notas tuyas sin datos personales",
-    "descripcion": "De unas notas hechas un desastre a un acta con tareas, responsables y lo que quedó en el aire. Y luego, con los conectores, Claude mira tu agenda, te propone los eventos y te deja el correo para el equipo preparado. Tú apruebas cada paso.",
+    "datos": "El brief descargable o una idea tuya sin datos personales",
+    "descripcion": "Aprende a usar Claude Design con una tarea concreta: crear un cartel, revisarlo en el lienzo, pedir dos cambios y exportarlo en PDF. Tienes un brief descargable para empezar.",
     "simbolo": "☷",
     "abre_el": "2026-12-22"
   },
@@ -259,7 +259,7 @@
     "herramienta": "Claude",
     "minutos": 15,
     "datos": "El mapa que hiciste el día 1",
-    "descripcion": "Nochebuena. Nada que montar: vuelves al mapa del día 1, ves todo lo que has aprendido y te llevas tres pasos concretos para enero. Y un último regalo: la chuleta de qué parte de Claude usar para cada cosa.",
+    "descripcion": "Hoy es nochebuena, por lo que no te voy a mandar deberes. Pero quiero que te pares a pensar en todo lo que has aprendido. Y un último regalo: la chuleta de qué parte de Claude usar para cada cosa.",
     "simbolo": "✶",
     "abre_el": "2026-12-24"
   }

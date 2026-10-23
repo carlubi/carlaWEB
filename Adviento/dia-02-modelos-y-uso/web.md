@@ -1,6 +1,9 @@
 # Modelos y gasto: lo que nadie te cuenta
 resumen: Qué es un modelo, por qué Claude tiene varios, qué son los tokens y por qué un día te dice que has llegado al límite. Y lo más práctico: dónde ver cuánto llevas gastado y cómo hacer que te cunda.
-datos: Las facturas de prueba, para la tarea pesada
+datos: Las facturas de prueba que te adjunto más abajo
+tipo: Formación
+herramienta: Claude
+minutos: 20
 
 ## Por qué te cuento esto el día 2
 
@@ -10,18 +13,18 @@ Porque es lo primero que desconcierta a todo el mundo. Vas tan a gusto y de repe
 
 Ayer te dije que Claude es un modelo de lenguaje. Vamos un poco más a fondo.
 
-Un **modelo** es el "cerebro" que contesta. Se ha entrenado leyendo cantidades enormes de texto y ha aprendido una cosa muy concreta: **predecir qué viene después**. Cuando le escribes, no busca la respuesta en una base de datos. La va construyendo trozo a trozo, eligiendo en cada momento lo más probable y lo que mejor encaja con lo que le has pedido. Por eso escribe tan bien. Y por eso, a veces, se inventa cosas que suenan perfectas (de eso va el día 6).
+Un **modelo** es el "cerebro" que contesta. Se ha entrenado leyendo cantidades enormes de texto y ha aprendido una cosa muy concreta: **predecir qué viene después**. Cuando le escribes, no busca la respuesta en una base de datos. La va construyendo trozo a trozo, eligiendo en cada momento lo más probable y lo que mejor encaja con lo que le has pedido. Por eso escribe tan bien. Y por eso, a veces, se inventa cosas que suenan perfectas.
 
 Ojo con una diferencia que lía mucho:
 
 - **Claude** es la aplicación: la pantalla, los chats, los proyectos, los conectores.
-- **El modelo** es el motor que hay dentro. Y lo puedes cambiar.
+- **El modelo** es el motor que hay dentro. Y lo puedes cambiar según el objetivo que quieras que la IA te consiga.
 
 Es como un coche al que le puedes poner un motor más rápido y que gasta menos, o uno más potente que gasta más.
 
-## Las familias de Claude
+## Los modelos de Claude
 
-Anthropic saca versiones nuevas cada pocos meses, así que los números cambian (Sonnet 5.5, Opus 5.5...). Lo que no cambia es la familia, y con eso te basta:
+Anthropic, la empresa detrás de Claude, saca versiones nuevas cada pocos meses, así que los números cambian (Sonnet 5.5, Opus 5.5...). Lo que no cambia es la familia, y con eso te basta:
 
 | Modelo | Cómo es | Úsalo para | Gasto |
 |---|---|---|---|
@@ -47,9 +50,9 @@ En el plan gratuito puede que no te deje elegir todos. Es normal: los más poten
 
 En ese mismo menú verás una opción para que Claude **piense más** antes de responder (puede aparecer como pensamiento ampliado o como nivel de esfuerzo). Con ella activada, Claude se toma su tiempo para razonar el problema por partes antes de contestar. Sale mejor en cosas difíciles, pero tarda más y gasta más. Para un correo no hace falta. Para analizar un contrato o cuadrar unas cuentas, sí.
 
-## Los tokens: la moneda de la IA
+## *BONUS* Los tokens: ¿qué son?
 
-La IA no lee palabras ni letras: lee **tokens**, que son trocitos de texto. Una palabra corta es un token; una larga puede ser dos o tres. En español, calcula más o menos un token y medio por palabra.
+La IA no lee palabras ni letras: lee **tokens**, que son trocitos de texto. Una palabra corta es un token; una larga puede ser dos o tres. En español, calcula más o menos un token y medio por palabra. En inglés, calcula más o menos un token por palabra: por eso dicen que gastas menos si le hablas en inglés. 
 
 Todo se mide en tokens:
 
@@ -60,13 +63,15 @@ Todo se mide en tokens:
 
 Esto último es lo que casi nadie sabe. Cada vez que envías un mensaje, Claude vuelve a leerse la conversación entera desde el principio para no perder el hilo. Un chat de 80 mensajes gasta muchísimo más por mensaje que uno de 5. Y encima, cuando el chat es enorme, la calidad baja: se le van mezclando cosas.
 
+🧠 Por eso se recomienda no mantener conversaciones largas en un mismo chat. Para cada tarea, empieza una nueva conversación. A eso se le llama, 'ventana de contexto'. 
+
 ## La ventana de contexto
 
 Es la **memoria de trabajo** de una conversación: cuánto puede tener en la cabeza a la vez. Es grande, pero no infinita. Cuando una conversación se pasa, Claude tiene que resumir o descartar lo más antiguo, y ahí se pierden detalles.
 
 Moraleja: **un tema, un chat**. Cuando cambias de asunto, chat nuevo.
 
-## Los planes, sin rollos
+## Los planes
 
 - **Gratuito:** chat, proyectos (hasta 5), artefactos y conectores con Google. Con un límite de mensajes más bajo. Te sirve para la mayoría de días del calendario.
 - **Pro:** varias veces más uso, todos los modelos y las funciones de los días más avanzados.
@@ -75,7 +80,7 @@ Moraleja: **un tema, un chat**. Cuando cambias de asunto, chat nuevo.
 
 Los precios cambian; míralos en **claude.com/pricing**.
 
-### Qué días necesitan plan de pago
+### Para alguno retos neecesitaras un plan de pago
 
 | Día | Por qué |
 |---|---|

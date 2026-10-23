@@ -58,7 +58,9 @@ Descripción corta.
 
 **`formato: md`:** para los días de markdown (4), contexto (8) y plantillas (12), donde la gracia es abrir o subir el `.md` tal cual.
 
-Los `.md` se descargan como PDF con la marca; los `.csv`, tal cual. `archivo: @calendario-imprimible` es el calendario del kit: no tiene archivo propio, se maqueta solo con los títulos, tipos, herramientas y tiempos de los 24 días (`scripts/adviento-calendario.mjs`), así que siempre coincide con la web. Después de cambiar algo, ejecuta `npm run build:adviento` (necesita Chrome instalado para los PDF) y vuelve a cargar `supabase/adviento-seed.sql` en Supabase. El script se para si el texto visible menciona un archivo interno (`.md`, `00-kit-de-arranque`...) o si un prompt pide adjuntar algo que no está en las descargas.
+Los `.md` se descargan como PDF con la marca salvo que lleven `formato: md`; los `.csv` y los documentos subidos se descargan tal cual. `archivo: @calendario-imprimible` es el calendario del kit: no tiene archivo propio, se maqueta solo con los títulos, tipos, herramientas y tiempos de los 24 días (`scripts/adviento-calendario.mjs`), así que siempre coincide con la web. Después de cambiar algo, ejecuta `npm run build:adviento` (necesita Chrome instalado para los PDF) y vuelve a cargar `supabase/adviento-seed.sql` en Supabase. El script se para si el texto visible menciona un archivo interno (`.md`, `00-kit-de-arranque`...) o si un prompt pide adjuntar algo que no está en las descargas.
+
+En `npm run dev`, abre el detalle de cualquier día desde `localhost` y pulsa «Abrir editor». Puedes cambiar la cabecera y el cuerpo en Markdown, añadir imágenes y subir documentos de hasta 15 MB. «Guardar cambios» actualiza `web.md`, los datos de la vista local, las descargas y el SQL. Para verlo en producción, despliega la web con los archivos generados y aplica `supabase/adviento-seed.sql` a la base de datos: los detalles privados se leen de Supabase.
 
 ## Regla de los datos de prueba
 
@@ -72,7 +74,7 @@ Ningún reto debe pedir datos reales de empresa. Todo lo que se practique usa lo
 
 - [x] Texto de web de cada día
 - [ ] Correo de cada día
-- [ ] Las 45 capturas de `_capturas/LEEME.md`
+- [ ] Las 48 capturas de `_capturas/LEEME.md` (48 incorporadas)
 
 ## Antes de publicar
 

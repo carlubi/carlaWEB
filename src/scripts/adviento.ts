@@ -215,6 +215,7 @@ if (root) {
     today = new URLSearchParams(location.search).get('hoy')?.match(/^2026-12-\d\d$/)?.[0] || '2026-12-25';
     progress = readPreview();
     earned = previewAchievements(progress);
+    board.dataset.caganerFound = String(earned.has('caganer'));
     stage.classList.remove('is-locked'); board.inert = false; gate.hidden = true;
     $('achievements').hidden = false;
     $('welcome-name').textContent = 'Vista de prueba';
@@ -230,6 +231,7 @@ if (root) {
     ]);
     today = state.hoy; adminPreview = state.vista_anticipada === true;
     progress = rows || []; earned = new Set((medals || []).map(item => item.logro));
+    board.dataset.caganerFound = String(earned.has('caganer'));
     stage.classList.remove('is-locked'); board.inert = false; gate.hidden = true;
     $('signout').hidden = false; $('achievements').hidden = false;
     $('admin-preview-banner').hidden = !adminPreview;
@@ -342,6 +344,9 @@ if (root) {
     } catch (error) { button.disabled = false; button.classList.remove('opening'); setMessage(errorText(error)); alert('No se ha podido abrir el cajón. ' + errorText(error)); }
   }
   function renderAchievements() {
+    const caganerFound = earned.has('caganer');
+    board.dataset.caganerFound = String(caganerFound);
+    board.dispatchEvent(new CustomEvent('caganer-achievement-state', { detail:{ found:caganerFound } }));
     const grid = $('achievement-grid');
     if (!grid.children.length) {
       for (const [key,title,description] of achievements) {

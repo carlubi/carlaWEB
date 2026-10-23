@@ -1,6 +1,9 @@
 # Tu mapa de 2027
-resumen: Nochebuena. Nada que montar: vuelves al mapa del día 1, ves todo lo que has aprendido y te llevas tres pasos concretos para enero. Y un último regalo: la chuleta de qué parte de Claude usar para cada cosa.
+resumen: Hoy es nochebuena, por lo que no te voy a mandar deberes. Pero quiero que te pares a pensar en todo lo que has aprendido. Y un último regalo: la chuleta de qué parte de Claude usar para cada cosa.
 datos: El mapa que hiciste el día 1
+tipo: Regalo
+herramienta: Claude
+minutos: 15
 
 ## Cerrar el círculo
 
@@ -47,6 +50,13 @@ Si quieres seguir, en enero abriré un curso para profundizar en lo que has prac
 Y si lo dejas aquí, también está bien: te llevas 24 cosas que antes no sabías hacer.
 
 Feliz Navidad.
+
+## Palabras del día
+
+- **Modelo:** versión de Claude que responde a tus instrucciones.
+- **Contexto:** instrucciones, archivos y conversación que Claude usa para entender el encargo.
+- **Conector:** acceso autorizado que permite a Claude consultar una herramienta, como el calendario o Drive.
+- **Revisión humana:** comprobar lo que ha preparado la IA antes de usarlo o compartirlo.
 
 ## Prompt · Cerrar el círculo
 

@@ -33,10 +33,9 @@ const plain = text => text.replace(/\*\*|`/g, '').trim();
 const fail = (where, message) => { throw new Error(`${where}: ${message}`); };
 
 const pdf = createPdfRenderer();
-rmSync(downloadsDir, { recursive:true, force:true });
-rmSync(capturesDir, { recursive:true, force:true });
 const missingCaptures = [];
 const published = new Map();
+const usedCaptures = new Set();
 
 function formatSize(bytes) {
   return bytes < 1024 * 1024 ? `${Math.max(1, Math.round(bytes / 1024))} KB` : `${(bytes / 1024 / 1024).toFixed(1).replace('.', ',')} MB`;
@@ -60,7 +59,7 @@ function publishGenerated(where, file) {
     const hash = createHash('sha256').update(html).digest('hex').slice(0, 12);
     const dir = join(downloadsDir, hash); mkdirSync(dir, { recursive:true });
     const out = join(dir, item.name);
-    pdf.renderDocument(html, out);
+    if (!existsSync(out)) pdf.renderDocument(html, out);
     published.set(file, { url:`/adviento/descargas/${hash}/${item.name}`, peso:formatSize(statSync(out).size) });
   }
   return { nombre:item.name, formato:'PDF', ...published.get(file) };
@@ -69,22 +68,27 @@ function publishGenerated(where, file) {
 /* «formato: md» publica el .md tal cual en vez de maquetarlo como PDF (días de markdown y de contexto). */
 function publishDownload(where, file, copy, rawMd) {
   if (file.startsWith('@')) return publishGenerated(where, file);
+  if (!/^[a-zA-Z0-9._/-]+$/.test(file) || file.startsWith('/') || file.split('/').some(part => !part || part === '.' || part === '..')) fail(where, `ruta de descarga no permitida: ${file}`);
   const source = join(root, file);
   if (!existsSync(source)) fail(where, `no existe ${source}`);
-  const content = readFileSync(source, 'utf8');
+  const content = readFileSync(source);
   const isCsv = extname(file) === '.csv';
-  if (!isCsv && extname(file) !== '.md') fail(where, `solo se publican .md (como PDF o tal cual) o .csv: ${file}`);
-  const asIs = isCsv || rawMd;
+  const isMd = extname(file) === '.md';
+  const allowed = ['.pdf','.doc','.docx','.ppt','.pptx','.xls','.xlsx','.txt','.zip','.odt','.ods','.odp'];
+  if (!isCsv && !isMd && !allowed.includes(extname(file).toLowerCase())) fail(where, `formato de descarga no permitido: ${file}`);
+  const asIs = isCsv || rawMd || !isMd;
   const name = asIs ? basename(file) : basename(file, '.md') + '.pdf';
   const key = rawMd ? `${file}#md` : file;
   if (!published.has(key)) {
     const hash = createHash('sha256').update(content).update(asIs ? (rawMd ? 'md' : '') : PDF_TEMPLATE_VERSION).digest('hex').slice(0, 12);
     const dir = join(downloadsDir, hash); mkdirSync(dir, { recursive:true });
     const out = join(dir, name);
-    if (asIs) copyFileSync(source, out); else pdf.render(toHtml(content), out);
+    if (!existsSync(out)) {
+      if (asIs) copyFileSync(source, out); else pdf.render(toHtml(content.toString('utf8')), out);
+    }
     published.set(key, { url:`/adviento/descargas/${hash}/${name}`, peso:formatSize(statSync(out).size) });
   }
-  return { nombre:name, formato:isCsv ? 'CSV' : rawMd ? 'MD' : 'PDF', ...published.get(key), ...(copy ? { copiar:templateText(content) } : {}) };
+  return { nombre:name, formato:isCsv ? 'CSV' : isMd ? (rawMd ? 'MD' : 'PDF') : extname(file).slice(1).toUpperCase(), ...published.get(key), ...(copy && isMd ? { copiar:templateText(content.toString('utf8')) } : {}) };
 }
 
 /* Capturas de pantalla: cada <img src="capturas/…"> se publica con huella y se envuelve en una figura con pie. */
@@ -96,6 +100,7 @@ function publishCaptures(where, html) {
       return `<figure class="captura captura-pendiente"><div>Captura pendiente</div><figcaption>${alt}</figcaption></figure>`;
     }
     const hash = createHash('sha256').update(readFileSync(source)).digest('hex').slice(0, 12);
+    usedCaptures.add(hash);
     const dir = join(capturesDir, hash); mkdirSync(dir, { recursive:true });
     copyFileSync(source, join(dir, file));
     return `<figure class="captura"><img src="/adviento/capturas/${hash}/${file}" alt="${alt}" loading="lazy"><figcaption>${alt}</figcaption></figure>`;
@@ -137,13 +142,40 @@ function parseDownload(where, title, body) {
 }
 
 function parseWeb(where, source) {
-  const [head, ...chunks] = source.split(/^## /m);
+  /* Only split real section headings. A Markdown example may itself contain
+     lines beginning with ## inside a fenced code block. */
+  const headLines = [];
+  const chunks = [];
+  let section = null;
+  let fence = null;
+  for (const line of source.split('\n')) {
+    const fenceLine = line.match(/^\s*(`{3,}|~{3,})/);
+    if (fence) {
+      section ? section.lines.push(line) : headLines.push(line);
+      if (fenceLine && fenceLine[1][0] === fence[0] && fenceLine[1].length >= fence.length) fence = null;
+      continue;
+    }
+    if (fenceLine) {
+      fence = fenceLine[1];
+      section ? section.lines.push(line) : headLines.push(line);
+      continue;
+    }
+    const heading = line.match(/^## (.+)$/);
+    if (heading) {
+      if (section) chunks.push(section);
+      section = { heading:heading[1], lines:[] };
+    } else {
+      section ? section.lines.push(line) : headLines.push(line);
+    }
+  }
+  if (section) chunks.push(section);
+  const head = headLines.join('\n');
   const title = head.match(/^# (.+)$/m)?.[1]?.trim() || fail(where, 'falta el título «# …»');
   const field = key => head.match(new RegExp(`^${key}:\\s*(.+)$`, 'm'))?.[1]?.trim() || '';
   const content = { secciones:[], prompts:[], descargas:[] };
   for (const chunk of chunks) {
-    const [heading, ...rest] = chunk.split('\n');
-    const body = rest.join('\n').trim();
+    const heading = chunk.heading;
+    const body = chunk.lines.join('\n').trim();
     const kind = heading.match(/^(Prompt|Descarga) · (.+)$/);
     if (kind?.[1] === 'Prompt') content.prompts.push(parsePrompt(where, kind[2].trim(), body));
     else if (kind?.[1] === 'Descarga') content.descargas.push(parseDownload(where, kind[2].trim(), body));
@@ -155,7 +187,7 @@ function parseWeb(where, source) {
   const visible = JSON.stringify([title, field('resumen'), field('datos'), content.secciones, content.prompts.map(p => p.bloques.map(b => b.html)), content.descargas.map(d => [d.titulo, d.descripcion])]);
   const leak = visible.match(internalRef);
   if (leak) fail(where, `el texto visible menciona «${leak[0]}», que es interno`);
-  return { title, summary:field('resumen'), data:field('datos'), content };
+  return { title, summary:field('resumen'), data:field('datos'), type:field('tipo'), tool:field('herramienta'), minutes:field('minutos'), content };
 }
 
 const dirs = readdirSync(root, { withFileTypes:true }).filter(d => d.isDirectory() && /^dia-\d\d-/.test(d.name)).sort((a, b) => a.name.localeCompare(b.name));
@@ -181,8 +213,11 @@ try {
     const web = parseWeb(where, readFileSync(where, 'utf8'));
     if (!web.summary) fail(where, 'falta la línea «resumen: …»');
     return {
-      ...calendarDays[index], titulo:web.title, datos:web.data,
-      descripcion:web.summary, simbolo:symbols[index], abre_el:`2026-12-${String(day).padStart(2, '0')}`,
+      ...calendarDays[index], titulo:web.title, tipo:web.type || types[index],
+      herramienta:web.tool || calendarDays[index].herramienta,
+      minutos:Number(web.minutes) || calendarDays[index].minutos,
+      datos:web.data, descripcion:web.summary,
+      simbolo:symbols[index], abre_el:`2026-12-${String(day).padStart(2, '0')}`,
       contenido:web.content
     };
   });
@@ -196,5 +231,11 @@ writeFileSync('src/data/adviento-preview.json', JSON.stringify(days, null, 2) + 
 const quote = value => `'${String(value).replaceAll("'", "''")}'`;
 const sql = days.map(day => `insert into public.adviento_dias (dia,titulo,tipo,herramienta,minutos,datos,descripcion,simbolo,abre_el) values (${day.dia},${quote(day.titulo)},${quote(day.tipo)},${quote(day.herramienta)},${day.minutos},${quote(day.datos)},${quote(day.descripcion)},${quote(day.simbolo)},${quote(day.abre_el)}) on conflict (dia) do update set titulo=excluded.titulo,tipo=excluded.tipo,herramienta=excluded.herramienta,minutos=excluded.minutos,datos=excluded.datos,descripcion=excluded.descripcion,simbolo=excluded.simbolo,abre_el=excluded.abre_el;\ninsert into public.adviento_contenido (dia,contenido) values (${day.dia},${quote(JSON.stringify(day.contenido))}::jsonb) on conflict (dia) do update set contenido=excluded.contenido;`).join('\n');
 writeFileSync('supabase/adviento-seed.sql', '-- Generado desde Adviento/ con npm run build:adviento.\n' + sql + '\n');
+for (const [folder, used] of [
+  [downloadsDir, new Set([...published.values()].map(item => item.url.split('/')[3]))],
+  [capturesDir, usedCaptures]
+]) {
+  if (existsSync(folder)) for (const item of readdirSync(folder)) if (!used.has(item)) rmSync(join(folder, item), { recursive:true, force:true });
+}
 if (missingCaptures.length) console.warn(`Faltan ${missingCaptures.length} capturas (se ven como «Captura pendiente»):\n  ${missingCaptures.join('\n  ')}`);
 console.log(`Preparados ${days.length} días, ${days.reduce((n, d) => n + d.contenido.prompts.length, 0)} prompts y ${published.size} archivos descargables.`);

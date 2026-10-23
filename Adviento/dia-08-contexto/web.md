@@ -1,6 +1,9 @@
 # El contexto lo es todo
 resumen: Un experimento para verlo con tus ojos: dos proyectos iguales, las mismas preguntas, y un único cambio, el documento de contexto. Uno pobre, otro completo. Después te llevas la estructura de un buen contexto para escribir el tuyo.
 datos: Los dos archivos de contexto de este día. Después, tu propio proyecto
+tipo: Reto
+herramienta: Claude (Proyectos)
+minutos: 25
 
 ## Hoy es festivo, así que hoy toca el experimento bueno
 

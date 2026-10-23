@@ -1,6 +1,9 @@
 # Tu primera tarea programada
 resumen: Hoy Claude empieza a trabajar sin que se lo pidas. Montas paso a paso una tarea que cada mañana busca las noticias de IA, elige las tres que importan, te explica cómo te pueden ayudar en tu día a día y te lo deja en tu Gmail. El prompt va hecho y explicado pieza a pieza.
 datos: Gmail conectado (día 11). Plan de pago para programarla; alternativa para el gratuito
+tipo: Formación
+herramienta: Claude (tareas programadas)
+minutos: 25
 
 ## De pedirle cosas a que trabaje para ti
 
@@ -75,7 +78,7 @@ La pantalla de las tareas programadas depende de cómo tengas Claude. Mira tu ca
 
 **2. Abre las tareas programadas.** En la barra lateral, pulsa **Programadas** (en inglés, *Scheduled*).
 
-![La barra lateral de Cowork con el apartado de tareas programadas](capturas/d16-01-programadas.png)
+![La página de Tareas programadas de Claude, con el botón Nueva tarea](capturas/d16-01-programadas.png)
 
 **3. Crea una nueva.** Pulsa **Nueva tarea** (arriba a la derecha) y elige **Configurar manualmente**. Hay otra opción, **Crear con Claude**, en la que Claude te hace preguntas y la monta por ti; está bien, pero hoy hazla a mano para entender cada campo.
 
@@ -101,6 +104,10 @@ La pantalla de las tareas programadas depende de cómo tengas Claude. Mira tu ca
 
 ![La propuesta de tarea programada dentro de un chat, con el resumen y el botón de programar](capturas/d16-03-programar-desde-chat.png)
 
+Cuando esté creada, verás una tarjeta con el nombre y la próxima ejecución. Comprueba que la frecuencia y la hora sean las que querías.
+
+![La confirmación en el chat de una tarea programada ya creada, con su tarjeta y los detalles de frecuencia](capturas/d16-03b-tarea-creada.png)
+
 ## Pruébala ya, sin esperar a mañana
 
 En la lista de tareas programadas, abre la tuya y pulsa **ejecutar ahora** (o "run now"). Se pondrá en marcha en ese momento. Cuando acabe, mira tus **Borradores** de Gmail.
@@ -121,8 +128,6 @@ Todo desde la lista de tareas programadas:
 ## Lo que gasta
 
 Cada ejecución consume uso, como una conversación con búsqueda web (día 2). Con Sonnet y cinco días a la semana es asumible en Pro. Si ves que la barra semanal sube mucho, baja a Haiku o pásala a tres días.
-
-## El paso que casi nadie da
 
 Una tarea programada que no se lee es ruido. **Si en una semana te la estás saltando, cámbiala o bórrala.** Puede que te sobre una noticia y quieras solo una. Puede que el consejo no sea útil y haya que contarle más de ti. Ajusta.
 

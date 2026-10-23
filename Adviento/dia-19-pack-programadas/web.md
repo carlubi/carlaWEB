@@ -49,6 +49,13 @@ Cada tarea se puede convertir en una **palabra clave dentro de un proyecto**, co
 
 Si en una semana no has leído lo que te llega, no sirve. Cámbiala o bórrala. Una automatización que se ignora es ruido disfrazado de productividad.
 
+## Palabras del día
+
+- **Tarea programada:** encargo que Claude ejecuta automáticamente con la frecuencia que eliges.
+- **Agente:** IA que sigue varios pasos y usa herramientas para completar un encargo.
+- **Modo de aprobación:** control de cuándo Claude debe pedir permiso antes de actuar.
+- **Ensayo o entorno de pruebas:** prueba con datos ficticios para revisar una automatización sin efectos reales.
+
 ## Prompt · 1. El resumen de la mañana
 
 Necesita calendario y Gmail. De lunes a viernes, antes de empezar el día.

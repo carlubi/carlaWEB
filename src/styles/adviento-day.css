@@ -6,6 +6,30 @@
 .back-link svg{width:18px;height:18px}
 .back-link:hover{text-decoration:underline;text-underline-offset:4px}
 .day-preview-banner{margin:0 0 16px}
+.local-editor{margin:0 0 24px;border:1px solid var(--hairline);border-radius:14px;background:var(--surface);color:var(--ink)}
+.local-editor-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 20px}
+.local-editor-heading h2{margin:0 0 3px;color:var(--cherry);font:600 20px/1.2 var(--font)}
+.local-editor-heading p,.editor-help{margin:0;color:var(--muted);font-size:14px;line-height:1.5}
+.local-editor button{min-height:44px;padding:9px 16px;border:1px solid var(--cherry);border-radius:8px;background:#fff;color:var(--cherry);font:600 14px/1.3 var(--font);cursor:pointer}
+.local-editor button:hover{background:#f6e9ed}
+.local-editor button:focus-visible,.local-editor input:focus-visible,.local-editor textarea:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
+.local-editor button:disabled{cursor:progress;opacity:.55}
+#editor-panel[hidden]{display:none}
+#editor-form{padding:20px;border-top:1px solid var(--hairline)}
+.editor-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-bottom:20px}
+.editor-fields label,.editor-body-label{display:flex;flex-direction:column;gap:7px;font-size:14px;font-weight:600}
+.editor-fields .editor-wide{grid-column:1/-1}
+.local-editor input:not([type=file]),.local-editor textarea{width:100%;min-height:44px;padding:10px 12px;border:1px solid rgba(59,37,45,.3);border-radius:8px;background:#fff;color:var(--ink);font:400 16px/1.5 var(--font)}
+.local-editor textarea{resize:vertical}
+.editor-help{max-width:85ch;margin:5px 0 10px}
+#editor-body{min-height:350px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:14px;line-height:1.55;tab-size:2}
+.editor-uploads,.editor-actions{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin-top:16px}
+.editor-actions{padding-top:16px;border-top:1px solid var(--hairline)}
+.local-editor #editor-save{min-height:48px;padding-inline:24px;border-color:var(--cherry);background:var(--cherry);color:#fff;font-size:16px}
+.local-editor #editor-save:hover{background:var(--cherry-active)}
+#editor-status{font-size:14px;color:var(--muted)}
+#editor-status.is-error{color:#a52837}
+@media(max-width:600px){.local-editor-heading{align-items:flex-start;flex-direction:column}.editor-fields{grid-template-columns:1fr}.editor-fields .editor-wide{grid-column:auto}#editor-form{padding:16px}}
 
 /* carga y error */
 .challenge-loading,.challenge-error{min-height:55dvh;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center}
@@ -85,6 +109,38 @@
 .slide-body.has-media{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:40px;align-items:start}
 .slide-media .captura:last-child{margin-bottom:0}
 .captura-zoom{display:block;border-radius:12px;cursor:zoom-in}
+/* ilustración de la diapositiva: un dibujo SVG hecho para su texto (adviento-drawings.ts) */
+.slide-body.has-illustration{display:grid;grid-template-columns:minmax(0,1fr) minmax(310px,.9fr);gap:clamp(24px,4vw,48px);align-items:center}
+.learning-illustration{margin:0;min-width:0;padding:20px;border:1px solid var(--hairline);border-radius:14px;background:var(--surface)}
+.learning-illustration svg{display:block;width:100%;max-width:460px;height:auto;margin:auto;overflow:visible;font-family:var(--font)}
+.learning-illustration .o{stroke:var(--ink);stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+.learning-illustration .n{fill:none}.learning-illustration .p{fill:#fff}.learning-illustration .s{fill:var(--surface)}.learning-illustration .i{fill:var(--ink)}
+.learning-illustration .c{fill:var(--cherry)}.learning-illustration .cs{fill:var(--cherry-soft)}.learning-illustration .y{fill:var(--yellow)}
+.learning-illustration .h{fill:var(--holly)}.learning-illustration .hs{fill:var(--holly-soft)}
+.learning-illustration .thick{stroke-width:3.5}.learning-illustration .handle{stroke-width:9}
+.learning-illustration .ln{fill:none;stroke:#d8cdd0;stroke-width:5;stroke-linecap:round}.learning-illustration .ln.dark{stroke:rgba(59,37,45,.35)}
+.learning-illustration .faint{opacity:.35}.learning-illustration .faded{opacity:.45}
+.learning-illustration .grid{fill:none;stroke:var(--hairline);stroke-width:1}
+.learning-illustration .arw{fill:none;stroke:var(--cherry);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}.learning-illustration .arw.thin{stroke-width:1.4;opacity:.7}
+.learning-illustration .w3{fill:none;stroke:#fff;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.learning-illustration .dash{fill:none;stroke:var(--cherry);stroke-width:1.6;stroke-dasharray:5 5}.learning-illustration .dash2{stroke-dasharray:7 6}
+.learning-illustration .dashbox{stroke-dasharray:6 5}
+.learning-illustration .lens{fill:rgba(243,201,105,.25);stroke-width:4}
+.learning-illustration .stop,.learning-illustration .strikeline{stroke:var(--cherry);stroke-width:4}
+.learning-illustration .tcstroke{stroke:var(--cherry)}
+.learning-illustration .stamp{fill:rgba(105,27,50,.06);stroke:var(--cherry);stroke-width:3}
+.learning-illustration .tape{fill:var(--yellow);stroke:var(--ink);stroke-width:2;stroke-dasharray:14 10}
+.learning-illustration .beam{fill:rgba(243,201,105,.45)}
+.learning-illustration .web{stroke-width:1;opacity:.5}
+.learning-illustration .tx{fill:var(--ink);font-size:13px;font-weight:600}
+.learning-illustration .sm{font-size:11.5px}.learning-illustration .xs{font-size:10px}.learning-illustration .xxs{font-size:8.5px}
+.learning-illustration .lg{font-size:17px}.learning-illustration .xl{font-size:28px}.learning-illustration .xxl{font-size:56px}.learning-illustration .quote{font-size:84px;font-weight:700;font-family:Georgia,serif}
+.learning-illustration .b{font-weight:800}.learning-illustration .reg{font-weight:500}
+.learning-illustration .mono{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace}
+.learning-illustration .hand{font-style:italic;font-weight:600}
+.learning-illustration .mid{text-anchor:middle}.learning-illustration .end{text-anchor:end}
+.learning-illustration .tc{fill:var(--cherry)}.learning-illustration .tw{fill:#fff}.learning-illustration .tm{fill:var(--muted)}
+.learning-illustration .strike{fill:var(--muted)}
 
 /* primera diapositiva: de qué va hoy e índice */
 .agenda-summary{font-size:clamp(18px,1.6vw,21px);line-height:1.5}
@@ -137,6 +193,40 @@
 .reading-body blockquote p{margin:0}
 .reading-body table{width:100%;margin:0 0 16px;border-collapse:collapse;font-size:15px;line-height:1.45}
 .reading-body th{text-align:left;font-weight:600;background:var(--surface)}
+
+/* Palabras del día: la misma lámina todos los días. Una tarjeta por palabra (DESIGN.md · Tarjeta: blanca,
+   borde fino, radio 14), número en círculo cherry suave como los pasos, palabra en cherry y la inicial
+   grande al fondo como en un diccionario. Las tarjetas se estiran para llenar la diapositiva. */
+.glossary-slide .glossary-body{display:flex;min-height:clamp(290px,calc(62dvh - 170px),480px)}
+.glossary-grid{counter-reset:glossary;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));grid-auto-rows:minmax(0,1fr);gap:16px;width:100%;max-width:none!important;margin:0!important;padding:0}
+.glossary-term{counter-increment:glossary;position:relative;isolation:isolate;display:flex;flex-direction:column;grid-column:span 2;min-width:0;min-height:0;overflow:hidden;padding:24px 28px 28px;border:1px solid var(--hairline);border-radius:14px;background:#fff}
+/* 2 y 4 palabras: dos por fila; 5: tres arriba y dos abajo */
+.glossary-grid[data-count="1"] .glossary-term{grid-column:1/-1}
+.glossary-grid[data-count="2"] .glossary-term,.glossary-grid[data-count="4"] .glossary-term,.glossary-grid[data-count="5"] .glossary-term:nth-child(n+4){grid-column:span 3}
+.glossary-term::before{content:counter(glossary,decimal-leading-zero);display:grid;place-items:center;width:36px;height:36px;margin-bottom:auto;border-radius:50%;background:var(--cherry-soft);color:var(--cherry);font-size:13px;font-weight:600;line-height:1;font-variant-numeric:tabular-nums}
+.glossary-term::after{content:attr(data-initial) / "";position:absolute;right:-6px;bottom:-34px;z-index:-1;color:var(--surface);font-size:clamp(130px,13vw,180px);font-weight:600;line-height:1;letter-spacing:-.04em;pointer-events:none}
+.glossary-word{margin:24px 0 10px;color:var(--cherry);font-size:clamp(22px,2.3vw,30px);font-weight:600;line-height:1.15;letter-spacing:-.015em;text-wrap:balance;overflow-wrap:anywhere}
+.glossary-definition{margin:0;max-width:52ch;color:var(--ink);font-size:17px;line-height:1.5}
+.glossary-definition::first-letter{text-transform:uppercase}
+/* con dos palabras las tarjetas son muy altas: la misma estructura, a mayor tamaño */
+.glossary-grid[data-count="1"] .glossary-word,.glossary-grid[data-count="2"] .glossary-word{font-size:clamp(28px,3.2vw,42px)}
+.glossary-grid[data-count="1"] .glossary-definition,.glossary-grid[data-count="2"] .glossary-definition{font-size:20px}
+.glossary-grid[data-count="1"] .glossary-term::after,.glossary-grid[data-count="2"] .glossary-term::after{font-size:clamp(180px,19vw,260px);bottom:-50px}
+.glossary-definition code{padding:2px 5px;border-radius:4px;background:var(--surface);font-size:.9em}
+@media(max-width:960px){
+  .glossary-grid .glossary-term,.glossary-grid[data-count] .glossary-term{grid-column:span 3}
+  .glossary-grid[data-count="3"] .glossary-term:last-child,.glossary-grid[data-count="5"] .glossary-term:last-child{grid-column:1/-1}
+}
+@media(max-width:760px){
+  .glossary-slide .glossary-body{min-height:0}
+  .glossary-grid{grid-template-columns:minmax(0,1fr);grid-auto-rows:auto;gap:12px}
+  .glossary-grid .glossary-term,.glossary-grid[data-count] .glossary-term,.glossary-grid[data-count] .glossary-term:last-child{grid-column:auto;padding:20px}
+  .glossary-term::before{width:32px;height:32px;margin-bottom:0;font-size:12px}
+  .glossary-term::after{font-size:110px;bottom:-24px}
+  .glossary-word,.glossary-grid[data-count] .glossary-word{margin-top:14px;font-size:22px}
+  .glossary-definition,.glossary-grid[data-count] .glossary-definition{font-size:16px}
+  .glossary-grid[data-count] .glossary-term::after{font-size:110px;bottom:-24px}
+}
 .reading-body th,.reading-body td{padding:10px 12px;border-bottom:1px solid var(--hairline);vertical-align:top}
 .reading-body code{padding:1px 6px;border-radius:6px;background:var(--surface);font:500 .875em/1.5 ui-monospace,SFMono-Regular,Menlo,monospace}
 .reading-body pre{margin:0 0 16px;padding:16px 18px;border-radius:14px;background:var(--surface);overflow-x:auto}
@@ -226,6 +316,8 @@
 
 @media(max-width:960px){
   .slide-body.has-media{grid-template-columns:minmax(0,1fr);gap:8px}
+  .slide-body.has-illustration{grid-template-columns:minmax(0,1fr);gap:20px;align-items:start}
+  .learning-illustration{width:min(100%,520px);padding:16px 12px}
   .resources.has-both{grid-template-columns:minmax(0,1fr)}
   .resources.has-both .resource-downloads{position:static}
 }
