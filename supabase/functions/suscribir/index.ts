@@ -26,6 +26,8 @@ Deno.serve(async request => {
 
   try {
     if (!await allowed(`suscribir:ip:${clientIp(request)}`, 20, 3600)) return json(request, { error:'Demasiados intentos. Prueba dentro de un rato.' }, 429);
+    /* red de seguridad si alguien falsifica la IP llamando directamente a la función */
+    if (!await allowed('suscribir:global', 300, 3600)) return json(request, { error:'Demasiados intentos. Prueba dentro de un rato.' }, 429);
     /* por correo: sin mensaje distinto, para que nadie pueda saturar el buzón de otra persona ni averiguar nada */
     if (!await allowed(`suscribir:email:${email}`, 3, 3600)) return json(request, { ok:true });
 
@@ -43,7 +45,7 @@ Deno.serve(async request => {
         intro:`${nombre ? `Hola, ${nombre}. ` : ''}Aquí tienes tu guía. Al descargarla confirmas también tu suscripción a la newsletter semanal, un correo cada domingo con ideas de IA para tu trabajo.`,
         button:'Descargar la guía',
         url,
-        note:`El enlace caduca en ${LINK_DAYS} días. Si no has pedido esta guía, ignora este correo: no te enviaremos nada más.`
+        note:`El enlace caduca en ${LINK_DAYS} días. Si no has pedido esta guía, ignora este correo: no te enviaré nada más.`
       });
       await sendEmail({ to:email, subject:`Tu guía: ${guia.titulo}`, ...mail });
     } else if (!row.confirmado) {

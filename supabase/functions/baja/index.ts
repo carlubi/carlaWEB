@@ -25,7 +25,7 @@ Deno.serve(async request => {
 
   try {
     /* la baja de un clic se atiende siempre; el límite solo frena a quien prueba tokens al azar */
-    if (!oneClick && !await allowed(`baja:ip:${clientIp(request)}`, 30, 600)) return json(request, { error:'Demasiados intentos. Prueba dentro de un rato.' }, 429);
+    if (!oneClick && !await allowed(`baja:ip:${clientIp(request)}`, 120, 600)) return json(request, { error:'Demasiados intentos. Prueba dentro de un rato.' }, 429);
     const ok = await rpc<boolean>(accion === 'deshacer' ? 'suscripcion_deshacer_baja' : 'suscripcion_baja', { p_token:token, p_lista:lista });
     if (oneClick) return new Response('ok', { status:200, headers:cors(request) });
     return ok ? json(request, { ok:true }) : json(request, { error:'No encontramos esta suscripción. Usa el enlace de tu último correo.' }, 404);

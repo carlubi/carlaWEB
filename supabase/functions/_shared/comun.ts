@@ -39,9 +39,15 @@ export async function rpc<T = unknown>(name:string, args:Record<string, unknown>
   return data as T;
 }
 
-/* Límite de peticiones por clave (IP o correo). La IP la pone la red de Supabase o, detrás de Vercel, x-forwarded-for. */
+/*
+ * IP del visitante para el límite de peticiones. Detrás de la reescritura de Vercel, x-forwarded-for trae la IP
+ * de Vercel (la misma para todos), así que se prefiere la cabecera de Vercel con la IP real. Se puede falsificar
+ * llamando directamente a la función, por eso los límites por correo y el tope global siguen haciendo de red.
+ */
 export function clientIp(request:Request) {
-  return (request.headers.get('x-forwarded-for') || '').split(',')[0].trim() || 'desconocida';
+  const first = (name:string) => (request.headers.get(name) || '').split(',')[0].trim();
+  const ip = first('x-vercel-forwarded-for') || first('x-real-ip') || first('x-forwarded-for');
+  return ip || 'desconocida';
 }
 export async function allowed(key:string, max:number, seconds:number) {
   return await rpc<boolean>('permitir_peticion', { p_clave:key, p_max:max, p_segundos:seconds });

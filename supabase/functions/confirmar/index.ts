@@ -11,7 +11,7 @@ Deno.serve(async request => {
   if (request.method !== 'POST') return json(request, { error:'Método no permitido' }, 405);
   const body = await request.json().catch(() => null);
   try {
-    if (!await allowed(`confirmar:ip:${clientIp(request)}`, 30, 600)) return json(request, { error:'Demasiados intentos. Prueba dentro de un rato.' }, 429);
+    if (!await allowed(`confirmar:ip:${clientIp(request)}`, 60, 600)) return json(request, { error:'Demasiados intentos. Prueba dentro de un rato.' }, 429);
     const link = await verifyLink(body?.d, body?.s);
     if (!link) return json(request, { error:'Este enlace no es válido o ha caducado.' }, 400);
 
