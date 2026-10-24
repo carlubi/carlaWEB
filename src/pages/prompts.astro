@@ -1,0 +1,66 @@
+---
+/*
+ * /prompts/<numero> (vercel.json la reescribe a esta página) o /prompts?n=<numero> en local.
+ * Muestra el prompt de un número ya enviado de la newsletter con un botón «Copiar».
+ */
+import Layout from '../layouts/Layout.astro';
+import LegalFooter from '../components/LegalFooter.astro';
+import SiteLogo from '../components/SiteLogo.astro';
+const supabase = import.meta.env.DEV
+  ? { url: 'http://127.0.0.1:54321', key: 'sb_publishable_ACJWlzQHlZjBrEguHvfOxg_3BJgxAaH' }
+  : { url: 'https://zqautpepyjivwkzobfha.supabase.co', key: 'sb_publishable_Ly0aaOm_Ef50mPeui_ke4w_0Y5sxcv7' };
+---
+<Layout title="El prompt de la semana · carla lópez" description="El prompt de la newsletter La IA no espera, listo para copiar.">
+  <header class="site-header mx-auto flex w-[min(1120px,calc(100%-32px))] items-center py-6 sm:w-[min(1120px,calc(100%-40px))]">
+    <SiteLogo />
+  </header>
+  <main class="mx-auto w-[min(720px,calc(100%-32px))] py-12 sm:py-16" data-url={supabase.url} data-key={supabase.key}>
+    <p id="numero" class="mb-2 text-sm font-semibold text-muted">La IA no espera</p>
+    <h1 id="titulo" class="site-section-title mb-6 text-burgundy">El prompt de la semana</h1>
+    <section id="cargando" class="text-muted">Cargando…</section>
+    <section id="contenido" hidden>
+      <div class="rounded-[14px] border border-[#F3C969] bg-[#FFF8E8] p-6 sm:p-8">
+        <pre id="prompt" class="whitespace-pre-wrap break-words font-sans text-[17px] leading-relaxed text-ink"></pre>
+      </div>
+      <button id="copiar" class="site-button mt-6 min-h-12 w-full sm:w-auto" type="button">Copiar el prompt</button>
+      <p id="copiado" class="min-h-6 pt-3 text-sm text-muted" role="status" aria-live="polite"></p>
+      <p class="mt-6 leading-relaxed text-muted">Pégalo en Claude o en ChatGPT y cambia lo que va entre corchetes por lo tuyo.</p>
+    </section>
+    <section id="vacio" class="site-card p-6 sm:p-8" hidden>
+      <h2 class="mb-2 font-sans text-2xl font-semibold text-burgundy">No encuentro este prompt</h2>
+      <p class="text-muted">Abre el enlace desde el botón «Copiar» de la newsletter. Si aún no la recibes, <a class="font-semibold text-burgundy underline" href="/">apúntate aquí</a>.</p>
+    </section>
+  </main>
+  <LegalFooter />
+  <script>
+    const main = document.querySelector('main') as HTMLElement;
+    const $ = (id:string) => document.getElementById(id) as HTMLElement;
+    const fromPath = location.pathname.match(/\/prompts\/(\d{1,5})\/?$/)?.[1];
+    const numero = Number(fromPath || new URLSearchParams(location.search).get('n'));
+    const empty = () => { $('cargando').hidden = true; $('vacio').hidden = false; };
+
+    async function load() {
+      if (!Number.isInteger(numero) || numero < 1) return empty();
+      try {
+        const response = await fetch(`${main.dataset.url}/rest/v1/rpc/newsletter_prompt`, {
+          method: 'POST', headers: { apikey: main.dataset.key!, 'Content-Type': 'application/json' }, body: JSON.stringify({ p_numero: numero })
+        });
+        const [row] = response.ok ? await response.json() : [];
+        if (!row) return empty();
+        $('numero').textContent = `La IA no espera · Nº ${row.numero}`;
+        $('titulo').textContent = row.asunto;
+        $('prompt').textContent = row.prompt;
+        $('cargando').hidden = true; $('contenido').hidden = false;
+      } catch { empty(); }
+    }
+    $('copiar').addEventListener('click', async () => {
+      try { await navigator.clipboard.writeText($('prompt').textContent || ''); $('copiado').textContent = 'Copiado. Ya puedes pegarlo.'; }
+      catch {
+        const range = document.createRange(); range.selectNodeContents($('prompt'));
+        getSelection()?.removeAllRanges(); getSelection()?.addRange(range);
+        $('copiado').textContent = 'Selecciona el texto y cópialo a mano.';
+      }
+    });
+    load();
+  </script>
+</Layout>

@@ -1,22 +1,30 @@
 ---
-interface Props { download?: boolean; source?: string; downloadHref?: string; downloadFilename?: string; }
-const {
-  download = false,
-  source = 'directo',
-  downloadHref = '/assets/reto-7-dias-claude-carlaylz.pdf?v=2026-10-07',
-  downloadFilename = 'Reto-7-dias-Claude-carlaylz.pdf'
-} = Astro.props;
-const id = download ? 'reto' : 'principal';
+/*
+ * Formulario de alta: newsletter (sin guia) o guía descargable (con guia). Todo pasa por /api/suscribir.
+ * La guía llega por correo con un enlace que caduca; al descargarla se confirma la suscripción.
+ */
+import guias from '../../supabase/functions/_shared/guias.json';
+import { API_BASE, CONSENTIMIENTO_GUIA, CONSENTIMIENTO_NEWSLETTER, VERSION_POLITICA } from '../data/suscripciones';
+
+interface Props { source?: string; guia?: string; }
+const { source = 'web', guia } = Astro.props;
+const guiaData = guia ? guias.find(item => item.slug === guia) : undefined;
+if (guia && !guiaData) throw new Error(`Guía desconocida: ${guia}`);
+const isGuide = Boolean(guiaData);
+const id = isGuide ? `guia-${guia}` : 'principal';
+const origen = isGuide ? `guia:${guia}` : source;
+const consentText = isGuide ? CONSENTIMIENTO_GUIA : CONSENTIMIENTO_NEWSLETTER;
+const consentParts = consentText.split(/(\{privacidad\}|\{terminos\})/);
 ---
-<div class={download ? 'site-card p-6 sm:p-8' : ''}>
+<div class={isGuide ? 'site-card p-6 sm:p-8' : ''}>
   <div data-form-content>
-    {download && <p class="mb-2 text-xs font-semibold uppercase tracking-[.12em] text-[#805A00]">Desbloquea la descarga</p>}
-    {download && <h3 class="mb-6 font-sans text-2xl font-semibold leading-tight text-burgundy">Descarga tu guía gratuita</h3>}
-    <form data-newsletter-form data-source={source} data-download={download ? 'true' : 'false'} novalidate>
+    {isGuide && <p class="mb-2 text-xs font-semibold uppercase tracking-[.12em] text-[#805A00]">Te la envío por correo</p>}
+    {isGuide && <h3 class="mb-6 font-sans text-2xl font-semibold leading-tight text-burgundy">Recibe tu guía gratuita</h3>}
+    <form data-newsletter-form data-origen={origen} data-guia={guia || ''} data-version={VERSION_POLITICA} data-api={API_BASE} novalidate>
       <div class="grid gap-3">
         <div>
-          <label class="field-label" for={`${id}-nombre`}>Nombre</label>
-          <input class="field-input" id={`${id}-nombre`} name="nombre" type="text" placeholder="Tu nombre" autocomplete="given-name" maxlength="80" required />
+          <label class="field-label" for={`${id}-nombre`}>Nombre <span class="font-normal text-muted">(opcional)</span></label>
+          <input class="field-input" id={`${id}-nombre`} name="nombre" type="text" placeholder="Tu nombre" autocomplete="given-name" maxlength="80" />
         </div>
         <div>
           <label class="field-label" for={`${id}-email`}>Correo electrónico</label>
@@ -26,58 +34,64 @@ const id = download ? 'reto' : 'principal';
       <div aria-hidden="true" class="absolute -left-[9999px] h-px w-px overflow-hidden"><label for={`${id}-web`}>No rellenar</label><input id={`${id}-web`} name="empresa_web" type="text" tabindex="-1" autocomplete="off" /></div>
       <label class="mt-3 flex cursor-pointer items-start gap-2 text-xs leading-relaxed text-muted" for={`${id}-consentimiento`}>
         <input class="mt-0.5 h-4 w-4 shrink-0 accent-burgundy" id={`${id}-consentimiento`} name="consentimiento" type="checkbox" required />
-        <span>Acepto recibir comunicaciones por correo electrónico y he leído la <a class="legal-link" href="/privacidad" target="_blank">política de privacidad</a> y los <a class="legal-link" href="/terminos" target="_blank">términos y condiciones</a>.</span>
+        <span>{consentParts.map(part => part === '{privacidad}'
+          ? <a class="legal-link" href="/privacidad" target="_blank">política de privacidad</a>
+          : part === '{terminos}' ? <a class="legal-link" href="/terminos" target="_blank">términos y condiciones</a> : part)}</span>
       </label>
-      <button class="site-button mt-4 min-h-12 w-full disabled:cursor-wait" type="submit">{download ? 'Quiero descargar la guía' : 'Quiero recibirlo'}</button>
+      <button class="site-button mt-4 min-h-12 w-full disabled:cursor-wait" type="submit">{isGuide ? 'Quiero recibir la guía' : 'Quiero recibirlo'}</button>
       <p class="min-h-6 pt-2 text-center text-sm" data-message role="alert" aria-live="polite"></p>
       <p class="text-center text-xs text-muted">Sin spam. Puedes darte de baja cuando quieras.</p>
     </form>
   </div>
-  <section class={download ? 'hidden' : 'hidden site-card px-6 py-8 sm:px-8'} data-success aria-live="polite">
-    <p class={`mb-4 grid h-12 w-12 place-items-center rounded-full bg-warm text-xl font-semibold text-ink ${download ? '' : 'mx-auto'}`} aria-hidden="true">✓</p>
-    <h3 class="mb-2 font-sans text-2xl font-semibold leading-tight text-burgundy" data-success-title>¡Ya estás dentro!</h3>
-    <p class="text-muted" data-success-text>{download ? 'Ya puedes descargarla. También recibirás mis ideas de IA por correo.' : 'Gracias. Te escribiré pronto con ideas de IA aplicables al trabajo real.'}</p>
-    {download && <a class="site-button mt-5 items-center gap-2" href={downloadHref} download={downloadFilename}>Descargar el PDF <span aria-hidden="true">↓</span></a>}
+  <section class={isGuide ? 'hidden' : 'hidden site-card px-6 py-8 sm:px-8'} data-success aria-live="polite" tabindex="-1">
+    <p class={`mb-4 grid h-12 w-12 place-items-center rounded-full bg-warm text-xl font-semibold text-ink ${isGuide ? '' : 'mx-auto'}`} aria-hidden="true">✓</p>
+    <h3 class="mb-2 font-sans text-2xl font-semibold leading-tight text-burgundy">Revisa tu correo</h3>
+    <p class="text-muted">{isGuide
+      ? `Te he enviado «${guiaData!.titulo}». El enlace de descarga caduca en 7 días. Si no lo ves en unos minutos, mira en Promociones o en Spam.`
+      : 'Te he enviado un correo para confirmar tu suscripción. Hasta que no lo confirmes no recibirás nada. Si no lo ves, mira en Promociones o en Spam.'}</p>
   </section>
 </div>
 
 <script>
   const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-  const SUPABASE_URL = 'https://zqautpepyjivwkzobfha.supabase.co';
-  const SUPABASE_KEY = 'sb_publishable_Ly0aaOm_Ef50mPeui_ke4w_0Y5sxcv7';
-  const VERSION_POLITICA = '2026-09-26';
 
-  document.querySelectorAll('[data-newsletter-form]').forEach((form) => {
-    const message = form.querySelector('[data-message]');
-    const button = form.querySelector('button');
-    const content = form.closest('[data-form-content]');
-    const success = content?.nextElementSibling;
-    const source = form.getAttribute('data-source') || 'directo';
+  document.querySelectorAll<HTMLFormElement>('[data-newsletter-form]').forEach((form) => {
+    const message = form.querySelector<HTMLElement>('[data-message]')!;
+    const button = form.querySelector<HTMLButtonElement>('button')!;
+    const label = button.textContent;
+    const content = form.closest('[data-form-content]')!;
+    const success = content.nextElementSibling as HTMLElement;
+    const field = (name:string) => form.elements.namedItem(name) as HTMLInputElement;
 
-    const showError = (text) => { message.textContent = text; message.className = 'min-h-6 pt-2 text-center text-sm text-[#b3261e]'; };
+    const showError = (text:string) => { message.textContent = text; message.className = 'min-h-6 pt-2 text-center text-sm text-[#b3261e]'; };
     form.addEventListener('submit', async (event) => {
       event.preventDefault();
       message.textContent = '';
-      const name = form.elements.namedItem('nombre').value.trim();
-      const email = form.elements.namedItem('email').value.trim().toLowerCase();
-      if (form.elements.namedItem('empresa_web').value) return;
-      if (!name) return showError('Escribe tu nombre.');
+      const nombre = field('nombre').value.trim();
+      const email = field('email').value.trim().toLowerCase();
       if (!EMAIL_RE.test(email)) return showError('Revisa tu correo electrónico.');
-      if (!form.elements.namedItem('consentimiento').checked) return showError('Necesito tu consentimiento para poder escribirte.');
+      if (!field('consentimiento').checked) return showError('Necesito tu consentimiento para poder escribirte.');
       button.disabled = true;
       button.textContent = 'Enviando…';
       try {
-        const response = await fetch(`${SUPABASE_URL}/rest/v1/rpc/suscribir`, { method: 'POST', headers: { 'Content-Type': 'application/json', apikey: SUPABASE_KEY }, body: JSON.stringify({ p_nombre: name, p_email: email, p_version: VERSION_POLITICA, p_origen: source }) });
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        await response.json();
-        content.hidden = true;
+        const response = await fetch(`${form.dataset.api}/suscribir`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            nombre, email, lista: 'newsletter', consentimiento: true,
+            origen: form.dataset.origen, version: form.dataset.version,
+            guia: form.dataset.guia || undefined, empresa_web: field('empresa_web').value
+          })
+        });
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok) throw new Error(data.error || 'No se ha podido enviar. Inténtalo de nuevo en unos minutos.');
+        content.classList.add('hidden');
         success.classList.remove('hidden');
-        success.querySelector('[data-success-title]').textContent = form.dataset.download === 'true' ? `Ya tienes la guía, ${name}.` : `¡Ya estás dentro, ${name}!`;
+        success.focus();
       } catch (error) {
-        console.error(error);
-        showError('No se ha podido enviar. Inténtalo de nuevo en unos minutos.');
+        showError(error instanceof Error && !(error instanceof TypeError) ? error.message : 'No se ha podido enviar. Inténtalo de nuevo en unos minutos.');
         button.disabled = false;
-        button.textContent = form.dataset.download === 'true' ? 'Quiero descargar la guía' : 'Quiero recibirlo';
+        button.textContent = label;
       }
     });
   });

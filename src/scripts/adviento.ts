@@ -1,4 +1,4 @@
-import { auth, db, saveSession, savedSession, verifiedSession, signOut, subscribeNewsletter } from './adviento-api';
+import { auth, db, saveSession, savedSession, verifiedSession, signOut } from './adviento-api';
 import { findCaganerPreview, openPreview, previewAchievements, readPreview, resetPreview } from './adviento-preview';
 import { achievementIcon, dayIcon, iconHref } from '../data/adviento-icons';
 import { doorClass } from '../data/adviento-tones';
@@ -23,6 +23,7 @@ if (root) {
   const codeInput = $<HTMLInputElement>('code');
   const privacyInput = $<HTMLInputElement>('privacy-check');
   const mailInput = $<HTMLInputElement>('mail-check');
+  const newsletterInput = $<HTMLInputElement>('newsletter-check');
   const registerButton = $<HTMLButtonElement>('register-button');
   const gift = $<HTMLDialogElement>('gift-dialog');
   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
@@ -112,7 +113,7 @@ if (root) {
     startResendCooldown();
   }
   async function loadProfile() {
-    const rows = await db<Profile[]>('adviento_perfiles?select=user_id,nombre,avisos_email&limit=1');
+    const rows = await db<Profile[]>('rpc/adviento_mi_perfil', 'POST', {});
     profile = rows?.[0] || null;
     if (profile) await unlock(); else step('register');
   }
@@ -200,9 +201,9 @@ if (root) {
     if (!session) { step('email'); setMessage('Tu sesión ha terminado. Entra de nuevo con tu correo.'); return; }
     const nombre = nameInput.value.trim(); busy(registerButton, 'Creando tu calendario…');
     try {
-      const rows = await db<Profile[]>('adviento_perfiles','POST',{user_id:session.user.id,nombre,acepto_politicas:true,version_politica:'2026-10-12',avisos_email:mailInput.checked});
+      /* una sola llamada: ficha, calendario y, si se marcan, las listas de avisos y newsletter (cada una con su casilla) */
+      const rows = await db<Profile[]>('rpc/adviento_registrar','POST',{p_nombre:nombre,p_avisos:mailInput.checked,p_newsletter:newsletterInput.checked,p_version:root.dataset.versionPolitica||''});
       profile = rows[0];
-      if (mailInput.checked) await subscribeNewsletter(nombre, session.user.email).catch(() => {});
       await unlock();
     } catch (error) { setMessage('No se ha podido crear tu calendario. ' + errorText(error)); registerButton.disabled = false; }
     finally { busy(registerButton, null); registrationReady(); }

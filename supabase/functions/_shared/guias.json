@@ -1,0 +1,23 @@
+[
+  {
+    "slug": "reto-7-dias",
+    "titulo": "Reto de 7 días con Claude",
+    "archivo": "reto-7-dias-claude-carlaylz.pdf",
+    "nombreDescarga": "Reto-7-dias-Claude-carlaylz.pdf",
+    "pagina": "/reto-7-dias"
+  },
+  {
+    "slug": "chatgpt-para-tu-trabajo",
+    "titulo": "ChatGPT, para tu trabajo",
+    "archivo": "chatgpt-para-tu-trabajo.pdf",
+    "nombreDescarga": "ChatGPT-para-tu-trabajo.pdf",
+    "pagina": "/chatgpt-para-tu-trabajo"
+  },
+  {
+    "slug": "herramientas-de-claude",
+    "titulo": "Claude, sin complicarte",
+    "archivo": "claude-sin-complicarte.pdf",
+    "nombreDescarga": "Claude-sin-complicarte.pdf",
+    "pagina": "/herramientas-de-claude"
+  }
+]

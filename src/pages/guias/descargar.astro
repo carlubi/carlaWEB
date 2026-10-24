@@ -1,0 +1,20 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import LegalFooter from '../../components/LegalFooter.astro';
+import SiteLogo from '../../components/SiteLogo.astro';
+import LinkAction from '../../components/LinkAction.astro';
+---
+<Layout title="Descarga tu guía · carla lópez" noindex>
+  <header class="site-header mx-auto flex w-[min(1120px,calc(100%-32px))] items-center py-6 sm:w-[min(1120px,calc(100%-40px))]">
+    <SiteLogo />
+  </header>
+  <LinkAction
+    mode="guia"
+    title="Tu guía está lista"
+    intro="Pulsa el botón para descargarla. Al hacerlo confirmas también tu suscripción a la newsletter semanal, un correo cada domingo con ideas de IA para tu trabajo."
+    button="Descargar la guía"
+    doneTitle="¡Descargando!"
+    doneText="Si la descarga no empieza sola, pulsa el botón. Desde ahora recibirás la newsletter cada domingo; puedes darte de baja cuando quieras desde el enlace del final de cada correo."
+  />
+  <LegalFooter />
+</Layout>

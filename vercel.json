@@ -1,0 +1,41 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "rewrites": [
+    {
+      "source": "/api/:fn(suscribir|confirmar|baja|resend-webhook)",
+      "destination": "https://zqautpepyjivwkzobfha.supabase.co/functions/v1/:fn"
+    },
+    {
+      "source": "/prompts/:numero(\\d+)",
+      "destination": "/prompts"
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/assets/reto-7-dias-claude-carlaylz.pdf",
+      "destination": "/reto-7-dias#descarga",
+      "permanent": true
+    },
+    {
+      "source": "/assets/chatgpt-para-tu-trabajo.pdf",
+      "destination": "/chatgpt-para-tu-trabajo#descarga",
+      "permanent": true
+    },
+    {
+      "source": "/assets/claude-sin-complicarte.pdf",
+      "destination": "/herramientas-de-claude#descarga",
+      "permanent": true
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(baja|newsletter/confirmar|guias/descargar)",
+      "headers": [
+        {
+          "key": "Referrer-Policy",
+          "value": "no-referrer"
+        }
+      ]
+    }
+  ]
+}

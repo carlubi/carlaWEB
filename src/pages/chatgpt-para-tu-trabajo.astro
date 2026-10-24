@@ -76,16 +76,11 @@ const tools = [
       <div>
         <p class="mb-4 text-sm font-bold text-softRose">La guía, en PDF</p>
         <h2 id="descarga-titulo" class="site-section-title mb-6 max-w-xl text-ink">Descárgala y empieza con tu primera tarea.</h2>
-        <p class="max-w-lg text-lg leading-relaxed text-muted">Déjame tu nombre y correo para unirte a mi newsletter. Al completar el registro podrás descargar la guía y practicar a tu ritmo.</p>
+        <p class="max-w-lg text-lg leading-relaxed text-muted">Déjame tu correo y te envío la guía para que practiques a tu ritmo. Al descargarla te unes a mi newsletter.</p>
         <p class="mt-7 max-w-lg border-t border-ink/15 pt-4 text-sm leading-relaxed text-ink">Escribo un email cortito cada semana, con ideas de IA que puedas aplicar en tu vida profesional y personal.</p>
       </div>
       <div class="rounded-[14px] site-band p-2 sm:p-3">
-        <NewsletterForm
-          download
-          source="guia-chatgpt-trabajo"
-          downloadHref="/assets/chatgpt-para-tu-trabajo.pdf"
-          downloadFilename="ChatGPT-para-tu-trabajo.pdf"
-        />
+        <NewsletterForm guia="chatgpt-para-tu-trabajo" />
       </div>
     </section>
   </main>

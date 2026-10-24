@@ -1,5 +1,6 @@
 ---
 import SiteLogo from '../components/SiteLogo.astro';
+import { CASILLA_AVISOS_ADVIENTO, CASILLA_NEWSLETTER_ADVIENTO, VERSION_POLITICA } from '../data/suscripciones';
 import Layout from '../layouts/Layout.astro';
 import days from '../data/adviento-meta.json';
 import { dayIcon, iconHref } from '../data/adviento-icons';
@@ -10,7 +11,7 @@ const localPreview = import.meta.env.DEV;
 const otpLength = 8;
 ---
 <Layout title="Calendario de Adviento IA · carlaylz" description="Abre 24 pequeñas sorpresas para trabajar mejor con IA. Un nuevo reto cada día de diciembre.">
-  <div class="advent-world" id="advent-app" data-days={JSON.stringify(days)} data-preview={localPreview ? 'true' : 'false'}>
+  <div class="advent-world" id="advent-app" data-version-politica={VERSION_POLITICA} data-days={JSON.stringify(days)} data-preview={localPreview ? 'true' : 'false'}>
     <div class="winter-glow" aria-hidden="true"></div>
     <canvas id="snow" class="snow" aria-hidden="true"></canvas>
     <header class="advent-topbar">
@@ -70,7 +71,7 @@ const otpLength = 8;
               <p class="form-help" id="code-help">¿No te llega? Mira en spam o en promociones. El código caduca en una hora.</p>
               <button id="resend-code" class="link-button" type="button">Reenviar código</button>
             </div>
-            <form id="register-form" novalidate hidden><label for="name">Tu nombre</label><input id="name" type="text" autocomplete="given-name" maxlength="80" placeholder="¿Cómo te llamas?" required /><label class="check-line" for="privacy-check"><input id="privacy-check" type="checkbox" /><span>He leído y acepto la <a href="/privacidad" target="_blank" rel="noopener">política de privacidad</a>.</span></label><label class="check-line" for="mail-check"><input id="mail-check" type="checkbox" /><span>Quiero recibir el aviso de cada día y otras ideas de IA por correo. <em>Opcional.</em></span></label><button class="main-button" id="register-button" type="submit" disabled><span class="button-label">Crear mi calendario</span></button></form>
+            <form id="register-form" novalidate hidden><label for="name">Tu nombre</label><input id="name" type="text" autocomplete="given-name" maxlength="80" placeholder="¿Cómo te llamas?" required /><label class="check-line" for="privacy-check"><input id="privacy-check" type="checkbox" /><span>He leído y acepto la <a href="/privacidad" target="_blank" rel="noopener">política de privacidad</a>.</span></label><label class="check-line" for="mail-check"><input id="mail-check" type="checkbox" /><span>{CASILLA_AVISOS_ADVIENTO} <em>Opcional.</em></span></label><label class="check-line" for="newsletter-check"><input id="newsletter-check" type="checkbox" /><span>{CASILLA_NEWSLETTER_ADVIENTO} <em>Opcional.</em></span></label><button class="main-button" id="register-button" type="submit" disabled><span class="button-label">Crear mi calendario</span></button></form>
             <p class="form-message" id="auth-message" role="alert" aria-live="polite"></p>
           </div>
         </div>

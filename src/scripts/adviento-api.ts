@@ -19,6 +19,11 @@ const publishableKey = 'sb_publishable_Ly0aaOm_Ef50mPeui_ke4w_0Y5sxcv7';
 const storageKey = 'carlaylz_adviento_session';
 let refreshing: Promise<AdventSession> | null = null;
 
+/* the browser keeps only what the page uses: no metadata or identities on a shared computer */
+function minimalUser(user: any): AdventSession['user'] {
+  return { id: String(user?.id || ''), email: String(user?.email || '') };
+}
+
 export function savedSession(): AdventSession | null {
   try { return JSON.parse(localStorage.getItem(storageKey) || 'null'); }
   catch { localStorage.removeItem(storageKey); return null; }
@@ -30,7 +35,7 @@ export function saveSession(data: any): AdventSession {
     access_token: data.access_token,
     refresh_token: data.refresh_token,
     expires_at: Math.floor(Date.now() / 1000) + (Number(data.expires_in) || 3600),
-    user: data.user || prior?.user || { id: '', email: '' }
+    user: data.user ? minimalUser(data.user) : prior?.user || { id: '', email: '' }
   };
   localStorage.setItem(storageKey, JSON.stringify(session));
   return session;
@@ -62,7 +67,7 @@ export async function verifiedSession(): Promise<AdventSession | null> {
   if (!session) return null;
   const response = await fetch(`${base}/auth/v1/user`, { headers: { apikey: publishableKey, Authorization: `Bearer ${session.access_token}` } });
   if (!response.ok) throw new Error('No hemos podido recuperar tu sesión. Entra de nuevo con tu correo.');
-  session.user = await response.json();
+  session.user = minimalUser(await response.json());
   localStorage.setItem(storageKey, JSON.stringify(session));
   return session;
 }
@@ -86,15 +91,6 @@ export async function db<T>(path: string, method = 'GET', body?: unknown): Promi
   const data = raw ? JSON.parse(raw) : null;
   if (!response.ok) throw new Error(data?.message || `Error ${response.status}`);
   return data as T;
-}
-
-export async function subscribeNewsletter(name: string, email: string) {
-  const response = await fetch(`${base}/rest/v1/rpc/suscribir`, {
-    method: 'POST',
-    headers: { apikey: publishableKey, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ p_nombre: name, p_email: email, p_version: '2026-10-12', p_origen: 'adviento' })
-  });
-  if (!response.ok) throw new Error('No se ha guardado la suscripción a la newsletter.');
 }
 
 export async function signOut() {

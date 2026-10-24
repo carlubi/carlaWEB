@@ -1,0 +1,20 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import LegalFooter from '../../components/LegalFooter.astro';
+import SiteLogo from '../../components/SiteLogo.astro';
+import LinkAction from '../../components/LinkAction.astro';
+---
+<Layout title="Confirma tu suscripción · carla lópez" noindex>
+  <header class="site-header mx-auto flex w-[min(1120px,calc(100%-32px))] items-center py-6 sm:w-[min(1120px,calc(100%-40px))]">
+    <SiteLogo />
+  </header>
+  <LinkAction
+    mode="confirmar"
+    title="Confirma tu suscripción"
+    intro="Pulsa el botón para empezar a recibir la newsletter semanal: un correo cada domingo con una noticia de IA, una idea y un prompt listo para copiar."
+    button="Confirmar mi suscripción"
+    doneTitle="¡Ya estás dentro!"
+    doneText="Te llegará el primer correo el próximo domingo. Puedes darte de baja cuando quieras desde el enlace del final de cada correo."
+  />
+  <LegalFooter />
+</Layout>

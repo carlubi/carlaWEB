@@ -1,0 +1,57 @@
+---
+/*
+ * Página de destino de un enlace firmado del correo (?d=…&s=…). Abrirla no hace nada: hace falta pulsar
+ * el botón, para que los antivirus y las vistas previas que abren enlaces no confirmen por nadie.
+ * mode="confirmar": confirma la newsletter. mode="guia": además devuelve la descarga de la guía.
+ */
+import { API_BASE } from '../data/suscripciones';
+interface Props { mode:'confirmar'|'guia'; title:string; intro:string; button:string; doneTitle:string; doneText:string; }
+const { mode, title, intro, button, doneTitle, doneText } = Astro.props;
+---
+<main class="mx-auto flex min-h-[70dvh] w-[min(520px,calc(100%-32px))] flex-col justify-center py-12" data-api={API_BASE} data-mode={mode}>
+  <section id="pedir" class="site-card p-6 sm:p-8">
+    <h1 class="mb-3 font-sans text-[28px] font-semibold leading-tight text-burgundy">{title}</h1>
+    <p class="mb-6 leading-relaxed text-muted">{intro}</p>
+    <button id="accion" class="site-button min-h-12 w-full" type="button">{button}</button>
+  </section>
+  <section id="hecho" class="site-card p-6 sm:p-8" hidden tabindex="-1">
+    <h2 class="mb-3 font-sans text-[28px] font-semibold leading-tight text-burgundy">{doneTitle}</h2>
+    <p class="mb-6 leading-relaxed text-muted">{doneText}</p>
+    <a id="descarga" class="site-button min-h-12 w-full" hidden>Descargar de nuevo</a>
+    <a class="mt-4 block text-center text-sm font-semibold text-burgundy hover:underline" href="/">Ir al inicio</a>
+  </section>
+  <section id="invalido" class="site-card p-6 sm:p-8" hidden>
+    <h1 class="mb-3 font-sans text-[28px] font-semibold leading-tight text-burgundy">Este enlace no es válido</h1>
+    <p class="leading-relaxed text-muted">Puede que haya caducado. Vuelve a pedirlo desde la web y te llegará uno nuevo.</p>
+  </section>
+  <p id="mensaje" class="min-h-6 pt-3 text-center text-sm text-[#b3261e]" role="alert" aria-live="polite"></p>
+</main>
+<script>
+  const main = document.querySelector('main') as HTMLElement;
+  const $ = (id:string) => document.getElementById(id) as HTMLElement;
+  const params = new URLSearchParams(location.search);
+  const d = params.get('d') || '', s = params.get('s') || '';
+  history.replaceState(null, '', location.pathname);
+  if (!/^[A-Za-z0-9_-]{10,600}$/.test(d) || !/^[A-Za-z0-9_-]{20,}$/.test(s)) { $('pedir').hidden = true; $('invalido').hidden = false; }
+
+  const button = $('accion') as HTMLButtonElement;
+  const label = button.textContent;
+  button.addEventListener('click', async () => {
+    button.disabled = true; button.textContent = 'Un momento…'; $('mensaje').textContent = '';
+    try {
+      const response = await fetch(`${main.dataset.api}/confirmar`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ d, s }) });
+      const data = await response.json().catch(() => ({}));
+      if (response.status === 400) { $('pedir').hidden = true; $('invalido').hidden = false; return; }
+      if (!response.ok) throw new Error(data.error || 'No se ha podido completar. Inténtalo de nuevo en unos minutos.');
+      $('pedir').hidden = true; $('hecho').hidden = false; $('hecho').focus();
+      if (main.dataset.mode === 'guia' && data.url) {
+        const link = $('descarga') as HTMLAnchorElement;
+        link.href = data.url; link.hidden = false;
+        location.assign(data.url);
+      }
+    } catch (error) {
+      $('mensaje').textContent = error instanceof Error && !(error instanceof TypeError) ? error.message : 'No se ha podido completar. Inténtalo de nuevo en unos minutos.';
+      button.disabled = false; button.textContent = label;
+    }
+  });
+</script>
