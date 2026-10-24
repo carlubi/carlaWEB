@@ -422,6 +422,10 @@ if (app) {
       if (!profile.length) { showError('Completa tu registro en el calendario para guardar tus avances.'); return; }
       const content = await db<AdventContent>('rpc/adviento_abrir','POST',{p_dia:day});
       if (!content) throw new Error('Este reto todavía no tiene contenido.');
+      /* content in the database comes from npm run build:adviento; an older format would break the slides */
+      if (!Array.isArray(content.secciones) || content.secciones.some(section => typeof section?.titulo !== 'string' || typeof section?.html !== 'string')) {
+        throw new Error('El contenido de este reto está desactualizado. Avísanos y lo revisamos.');
+      }
       render(content);
       const progressRows = await db<{completado_en:string|null}[]>(`adviento_progreso?select=completado_en&dia=eq.${day}`);
       if (progressRows[0]?.completado_en) markCompleted('Ya lo tienes. Puedes volver siempre que quieras.');

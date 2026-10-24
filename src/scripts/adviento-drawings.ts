@@ -729,7 +729,7 @@ function padlock(x:number, y:number) {
 }
 
 export function drawingFor(day:number, title:string):Drawing|null {
-  const entry = drawings[day]?.[title.trim()];
+  const entry = drawings[day]?.[(title || '').trim()];
   return entry ? { alt:entry.alt, svg:svg(entry.svg) } : null;
 }
 
